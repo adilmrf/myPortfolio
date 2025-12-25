@@ -16,6 +16,7 @@ export const PROJECTS: Project[] = [
       { label: "Report (PDF)", url: "#" },
       { label: "Test Video", url: "#" },
     ],
+    thumbnail: { src: "/media/placeholder-1.svg", alt: "RCRM thrust chamber" },
     featured: true,
   },
   {
@@ -25,8 +26,11 @@ export const PROJECTS: Project[] = [
     description:
       "Developed sensor fusion pipeline with inertial+camera inputs and a real-time GNC stack for waypoint following and obstacle avoidance.",
     tags: ["UAVs", "GNC", "Software"],
-    media: ["/public/uav-flight.jpg"],
+    media: [
+      { type: "image", src: "/uav-flight.jpg", alt: "VTOL UAV in flight", caption: "Flight test of perception stack" },
+    ],
     featured: true,
+    thumbnail: { src: "/media/placeholder-2.svg", alt: "VTOL UAV" },
   },
   {
     id: "ait-pipeline",
@@ -35,6 +39,7 @@ export const PROJECTS: Project[] = [
     description:
       "Built reproducible test benches, defined pass/fail criteria, and automated test runners to accelerate pre-flight checks.",
     tags: ["AIT", "Software", "Systems"],
+    thumbnail: { src: "/media/placeholder-3.svg", alt: "AIT bench" },
   },
   {
     id: "structure-lite",
@@ -51,6 +56,9 @@ export const PROJECTS: Project[] = [
     description:
       "Modeled thermal environment, selected heaters and insulation, and validated via thermal-vacuum testing.",
     tags: ["Thermal", "Systems"],
+    media: [
+      { type: "image", src: "/thermal-chamber.jpg", alt: "Thermal vacuum chamber", caption: "Thermal-vac validation" },
+    ],
   },
   {
     id: "test-automation",

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { PROFILE } from "../content/profile";
 import { PROJECTS } from "../content/projects";
+import ProjectListCard from "../components/ProjectListCard";
+import { TAGS } from "../lib/types";
 
 export const metadata: Metadata = {
   title: "Home - Aerospace Portfolio",
@@ -12,26 +14,38 @@ export default function Home() {
 
   return (
     <section className="py-8">
+      <div className="mb-6">
+        <h1 className="text-4xl font-extrabold tracking-tight">{PROFILE.name}</h1>
+        <p className="text-zinc-700 mt-2 text-lg">{PROFILE.headline} — multidisciplinary systems, propulsion, and embedded software.</p>
+      </div>
+
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold">{PROFILE.name}</h1>
-        <p className="text-zinc-700 mt-1">{PROFILE.headline}</p>
+        <h2 className="text-xl font-semibold">Highlights</h2>
+        <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {PROFILE.highlights?.map((h) => (
+            <div key={h.label} className="rounded-md border p-3 bg-white/90">
+              <div className="text-xs text-zinc-500">{h.label}</div>
+              <div className="text-lg font-semibold">{h.value}</div>
+              {h.detail && <div className="text-sm text-zinc-600">{h.detail}</div>}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="mb-8">
         <h2 className="text-xl font-semibold">Featured Projects</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {featured.map((p) => (
-            <article key={p.id} className="rounded-md border p-4">
-              <h3 className="font-medium">{p.title}</h3>
-              <p className="text-sm text-zinc-700">{p.summary}</p>
-              <div className="mt-2 flex flex-wrap gap-2 text-xs text-zinc-600">
-                {p.tags.map((t) => (
-                  <span key={t} className="rounded bg-zinc-100 px-2 py-1">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </article>
+            <ProjectListCard key={p.id} project={p} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-sm font-medium uppercase text-zinc-500">Domains</h2>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {TAGS.map((t) => (
+            <span key={t} className="rounded bg-zinc-100 px-2 py-1 text-xs">{t}</span>
           ))}
         </div>
       </div>

@@ -37,7 +37,17 @@ export interface Project {
   tags: Tag[];
   links?: LinkItem[];
   featured?: boolean;
-  media?: string[]; // simple array of image paths or urls
+  media?: {
+    type: "image" | "video";
+    src: string;
+    alt?: string;
+    caption?: string;
+  }[]; // media objects (images or videos) served from /public
+  // Optional lightweight thumbnail for list views
+  thumbnail?: {
+    src: string;
+    alt?: string;
+  };
 }
 
 /**
@@ -67,6 +77,8 @@ export interface Profile {
     email?: string;
     [key: string]: string | undefined;
   };
+  // Small highlight/key-stats area for Home
+  highlights?: { label: string; value: string; detail?: string }[];
 }
 
 export type { TAGS as ALL_TAGS };

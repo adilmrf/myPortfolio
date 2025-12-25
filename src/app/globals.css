@@ -42,3 +42,26 @@ body::before{
   @apply rounded-md border bg-white/80 p-4;
 }
 
+/* Layout container */
+.container-max {
+  max-width: 88ch;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Elevated card for subtle glass effect */
+.elevated {
+  @apply rounded-md border bg-white/90 shadow-sm;
+}
+
+/* Motion utilities */
+.motion-safe-raise {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+}
+

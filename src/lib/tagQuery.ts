@@ -30,7 +30,10 @@ export function serializeTagsToQuery(tags: Iterable<string> | undefined): string
 export function parseTagsFromSearchParams(searchParams: any): string[] {
   if (!searchParams) return [];
 
-  // If SearchParams instance
+  // Guard against a Promise-like value (some Next internals may present a thenable)
+  if (typeof searchParams.then === "function") return [];
+
+  // If SearchParams instance (browser URLSearchParams or similar)
   try {
     if (typeof searchParams.get === "function") {
       const raw = searchParams.get("tags");
@@ -38,7 +41,7 @@ export function parseTagsFromSearchParams(searchParams: any): string[] {
       return normalizeTags(raw.split(","));
     }
   } catch (e) {
-    // ignore
+    // ignore and continue to object handling
   }
 
   // If plain object ({ tags?: string | string[] })

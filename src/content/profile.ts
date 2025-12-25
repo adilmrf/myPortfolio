@@ -11,6 +11,14 @@ export const PROFILE: Profile = {
     linkedin: "https://linkedin.com/in/your-username",
     email: "mailto:you@example.com",
   },
+  highlights: [
+    { label: "Research", value: "2+ years", detail: "Propulsion & GNC" },
+    { label: "Propulsion", value: "H2O2 microthrusters" },
+    { label: "UAV", value: "VTOL design" },
+    { label: "Satellite", value: "AIT exposure" },
+    { label: "Competitions", value: "Multiple wins" },
+    { label: "Leadership", value: "Team lead roles" },
+  ],
 };
 
 export default PROFILE;
