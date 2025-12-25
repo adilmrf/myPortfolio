@@ -9,7 +9,7 @@ import ProjectListCard from "../../components/ProjectListCard";
 
 
 export const metadata: Metadata = {
-    title: "Projects - Aerospace Portfolio",
+    title: "Projects - Adil Mahroof",
     description: "List of projects and short summaries.",
        openGraph: {
            images: [new URL('../opengraph-image.svg', import.meta.url).toString()],

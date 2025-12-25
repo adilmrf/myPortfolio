@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PROFILE } from "../../content/profile";
 
 export const metadata: Metadata = {
-  title: "Contact - Aerospace Portfolio",
+  title: "Contact - Adil Mahroof",
   description: "Contact links and socials.",
   openGraph: {
     images: [new URL('../opengraph-image.svg', import.meta.url).toString()],

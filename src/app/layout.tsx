@@ -3,7 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 import { PROFILE } from "../content/profile";
 
-const siteName = PROFILE.name + " — Aerospace Portfolio";
+const siteName = PROFILE.name + " — Adil Mahroof";
 const description = PROFILE.summary ?? "A concise portfolio highlighting projects and experience in aerospace engineering.";
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function RootLayout({
         <div className="mx-auto max-w-5xl px-6">
           <header className="flex items-center justify-between py-6">
             <Link href="/" className="text-xl font-semibold">
-              Aerospace Portfolio
+              Adil Mahroof
             </Link>
             <nav className="flex gap-4 text-sm">
               <Link href="/">Home</Link>
@@ -54,7 +54,7 @@ export default function RootLayout({
           <main className="min-h-[60vh] pb-12">{children}</main>
 
           <footer className="border-t pt-6 text-sm text-zinc-600">
-            © {year} Aerospace Portfolio
+            © {year} Adil Mahroof
           </footer>
         </div>
       </body>

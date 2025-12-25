@@ -6,7 +6,7 @@ import TAG_LIST from "../../content/tags";
 import ExperienceList from "../../components/ExperienceList";
 
 export const metadata: Metadata = {
-  title: "Experience - Aerospace Portfolio",
+  title: "Experience - Adil Mahroof",
   description: "Professional experience and roles.",
   openGraph: {
     images: [new URL('../opengraph-image.svg', import.meta.url).toString()],
