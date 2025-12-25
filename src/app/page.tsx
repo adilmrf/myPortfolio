@@ -7,6 +7,12 @@ import { TAGS } from "../lib/types";
 export const metadata: Metadata = {
   title: "Home - Aerospace Portfolio",
   description: "Home — featured projects and short profile summary.",
+  openGraph: {
+    images: [new URL('./opengraph-image.svg', import.meta.url).toString()],
+  } as any,
+  twitter: {
+    images: [new URL('./twitter-image.svg', import.meta.url).toString()],
+  } as any,
 };
 
 export default function Home() {

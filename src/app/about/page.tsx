@@ -4,6 +4,12 @@ import { PROFILE } from "../../content/profile";
 export const metadata: Metadata = {
   title: "About - Aerospace Portfolio",
   description: "Profile and background summary.",
+  openGraph: {
+    images: [new URL('../opengraph-image.svg', import.meta.url).toString()],
+  } as any,
+  twitter: {
+    images: [new URL('../twitter-image.svg', import.meta.url).toString()],
+  } as any,
 };
 
 export default function AboutPage() {

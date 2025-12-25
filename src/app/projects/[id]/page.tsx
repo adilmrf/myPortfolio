@@ -14,12 +14,19 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const project = getProjectById(params.id);
   if (!project) return { title: "Project not found" };
+  const defaultOg = new URL('../../opengraph-image.svg', import.meta.url).toString();
+  const defaultTw = new URL('../../twitter-image.svg', import.meta.url).toString();
+  const imageUrl = project.thumbnail?.src ?? defaultOg;
   return {
     title: `${project.title} — Aerospace Portfolio`,
     description: project.summary,
     openGraph: {
       title: project.title,
       description: project.summary,
+      images: [imageUrl],
+    } as any,
+    twitter: {
+      images: [project.thumbnail?.src ?? defaultTw],
     } as any,
   };
 }

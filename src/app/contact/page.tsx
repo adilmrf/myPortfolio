@@ -4,6 +4,12 @@ import { PROFILE } from "../../content/profile";
 export const metadata: Metadata = {
   title: "Contact - Aerospace Portfolio",
   description: "Contact links and socials.",
+  openGraph: {
+    images: [new URL('../opengraph-image.svg', import.meta.url).toString()],
+  } as any,
+  twitter: {
+    images: [new URL('../twitter-image.svg', import.meta.url).toString()],
+  } as any,
 };
 
 export default function ContactPage() {

@@ -1,10 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { PROFILE } from "../content/profile";
+
+const siteName = PROFILE.name + " — Aerospace Portfolio";
+const description = PROFILE.summary ?? "A concise portfolio highlighting projects and experience in aerospace engineering.";
 
 export const metadata: Metadata = {
-  title: "Aerospace Portfolio",
-  description: "Portfolio showcasing projects and experience in aerospace engineering.",
+  title: {
+    default: siteName,
+    template: "%s | " + siteName,
+  },
+  description,
+  openGraph: {
+    title: siteName,
+    description,
+    siteName,
+    type: "website",
+    images: [new URL("./opengraph-image.svg", import.meta.url).toString()],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description,
+    images: [new URL("./twitter-image.svg", import.meta.url).toString()],
+  },
 };
 
 export default function RootLayout({
