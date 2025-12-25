@@ -24,3 +24,21 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Subtle background texture to add quiet depth for HR-friendly look */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+}
+
+/* Small card uplift used across the app */
+.card {
+  @apply rounded-md border bg-white/80 p-4;
+}
+
