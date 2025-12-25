@@ -13,7 +13,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     : experiences;
 
   return (
-    <div className="sm:col-span-2 grid gap-4">
+    <div className="grid gap-4">
       {filtered.map((e) => (
         <article key={e.id} className="rounded-md border p-4 hover:shadow-md transition-shadow">
           <h2 className="font-medium text-lg">{e.role} — {e.organization}</h2>

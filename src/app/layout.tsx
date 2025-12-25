@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import HeaderNav from "../components/HeaderNav";
 import "./globals.css";
 import { PROFILE } from "../content/profile";
 
@@ -42,16 +43,12 @@ export default function RootLayout({
             <Link href="/" className="text-xl font-semibold">
               Adil Mahroof
             </Link>
-            <nav className="flex gap-4 text-sm">
-              <Link href="/">Home</Link>
-              <Link href="/projects">Projects</Link>
-              <Link href="/experience">Experience</Link>
-              <Link href="/about">About</Link>
-              <Link href="/contact">Contact</Link>
-            </nav>
+            <HeaderNav />
           </header>
 
-          <main className="min-h-[60vh] pb-12">{children}</main>
+          <main className="min-h-[60vh] pb-12">
+            <div className="mx-4 sm:mx-6 md:mx-[100px]">{children}</div>
+          </main>
 
           <footer className="border-t pt-6 text-sm text-zinc-600">
             © {year} Adil Mahroof

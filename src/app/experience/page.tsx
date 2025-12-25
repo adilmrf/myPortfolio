@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { EXPERIENCE } from "../../content/experience";
 import TagFilter from "../../components/TagFilter";
+import TagDropdown from "../../components/TagDropdown";
 import TAG_LIST from "../../content/tags";
 import ExperienceList from "../../components/ExperienceList";
 
@@ -20,18 +21,17 @@ export default function ExperiencePage() {
   return (
     <section className="py-8">
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between">
           <h1 className="text-2xl font-semibold">Experience</h1>
-          <div className="text-sm text-zinc-600">Showing {EXPERIENCE.length} roles</div>
+          <div className="text-sm text-zinc-600 text-right">
+            <div>Showing {EXPERIENCE.length} roles</div>
+            <div className="mt-2">
+              <TagDropdown allTags={TAG_LIST} />
+            </div>
+          </div>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-3">
-          <aside className="sm:col-span-1">
-            <React.Suspense fallback={<div className="text-sm text-zinc-500">Loading filters...</div>}>
-              <TagFilter allTags={TAG_LIST} />
-            </React.Suspense>
-          </aside>
-
+        <div className="grid gap-6">
           <React.Suspense fallback={<div className="text-sm text-zinc-500">Loading experiences...</div>}>
             <ExperienceList experiences={EXPERIENCE} />
           </React.Suspense>
