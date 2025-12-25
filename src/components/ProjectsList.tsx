@@ -14,7 +14,7 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
     : projects;
 
   return (
-    <div className="sm:col-span-2 grid gap-4">
+    <div className="grid gap-4">
       {filtered.map((p) => (
         <ProjectListCard key={p.id} project={p} />
       ))}

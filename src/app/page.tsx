@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PROFILE } from "../content/profile";
-import { PROJECTS } from "../content/projects";
-import ProjectListCard from "../components/ProjectListCard";
+import { EXPERIENCE } from "../content/experience";
 import { TAGS } from "../lib/types";
 
 export const metadata: Metadata = {
-  title: "Home - Aerospace Portfolio",
-  description: "Home — featured projects and short profile summary.",
+  title: "Home - Adil Mahroof",
+  description: "Home — brief CV-style summary for Adil Mahroof.",
   openGraph: {
     images: [new URL('./opengraph-image.svg', import.meta.url).toString()],
   } as any,
@@ -16,42 +16,70 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const featured = PROJECTS.filter((p) => p.featured).slice(0, 3);
-
   return (
     <section className="py-8">
-      <div className="mb-6">
-        <h1 className="text-4xl font-extrabold tracking-tight">{PROFILE.name}</h1>
-        <p className="text-zinc-700 mt-2 text-lg">{PROFILE.headline} — multidisciplinary systems, propulsion, and embedded software.</p>
+      <div className="mb-6 flex flex-col md:flex-row-reverse items-center gap-6">
+        <img
+          src="/media/placeholder-1.svg"
+          alt="Headshot"
+          className="w-36 h-36 md:w-44 md:h-44 rounded-full ring-4 ring-white/80 shadow-xl bg-white/90 object-cover transform transition-transform hover:scale-105"
+        />
+        <div className="text-center md:text-left md:flex-1">
+          <h1 className="text-[48px] md:text-[60px] font-extrabold tracking-tight leading-tight">{PROFILE.name}</h1>
+          <p className="text-[30px] text-zinc-700 mt-2">{PROFILE.headline}</p>
+          {PROFILE.location && <p className="text-[18px] text-zinc-600 mt-1">{PROFILE.location}</p>}
+        </div>
       </div>
 
       <div className="mb-8">
-        <h2 className="text-xl font-semibold">Highlights</h2>
+        <h2 className="text-[28px] font-semibold">Highlights</h2>
         <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {PROFILE.highlights?.map((h) => (
             <div key={h.label} className="rounded-md border p-3 bg-white/90">
-              <div className="text-xs text-zinc-500">{h.label}</div>
-              <div className="text-lg font-semibold">{h.value}</div>
-              {h.detail && <div className="text-sm text-zinc-600">{h.detail}</div>}
+              <div className="text-[12px] text-zinc-500">{h.label}</div>
+              <div className="text-[18px] font-semibold">{h.value}</div>
+              {h.detail && <div className="text-[18px] text-zinc-600">{h.detail}</div>}
             </div>
           ))}
         </div>
       </div>
 
       <div className="mb-8">
-        <h2 className="text-xl font-semibold">Featured Projects</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          {featured.map((p) => (
-            <ProjectListCard key={p.id} project={p} />
-          ))}
+        <h2 className="text-[28px] font-semibold">Education</h2>
+        <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
+          <div>
+            <div className="font-medium">M.Sc. Aerospace Engineering</div>
+            <div className="text-zinc-600 text-[18px]">University Name — 2020–2022</div>
+          </div>
+          <div>
+            <div className="font-medium">B.Sc. Mechanical Engineering</div>
+            <div className="text-zinc-600 text-[18px]">University Name — 2016–2020</div>
+          </div>
         </div>
       </div>
 
       <div className="mb-8">
-        <h2 className="text-sm font-medium uppercase text-zinc-500">Domains</h2>
+        <h2 className="text-[28px] font-semibold">Experience</h2>
+        <div className="mt-4 border-l pl-4 text-[18px]">
+          {EXPERIENCE.slice(0, 4).map((e) => (
+            <div key={e.id} className="mb-3">
+              <Link href="/experience" className="text-[18px] font-medium hover:underline">
+                {e.role} — {e.organization}
+              </Link>
+              <div className="text-[12px] text-zinc-600">{e.startDate} — {e.endDate ?? 'Present'}</div>
+            </div>
+          ))}
+          <div className="mt-2">
+            <Link href="/experience" className="text-blue-600 text-[14px]">See full experience</Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-[28px] font-medium uppercase text-zinc-500">Domains</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {TAGS.map((t) => (
-            <span key={t} className="rounded bg-zinc-100 px-2 py-1 text-xs">{t}</span>
+            <span key={t} className="rounded bg-zinc-100 px-2 py-1 text-[12px]">{t}</span>
           ))}
         </div>
       </div>

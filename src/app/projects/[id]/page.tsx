@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const defaultTw = new URL('../../twitter-image.svg', import.meta.url).toString();
   const imageUrl = project.thumbnail?.src ?? defaultOg;
   return {
-    title: `${project.title} — Aerospace Portfolio`,
+    title: `${project.title} — Adil Mahroof`,
     description: project.summary,
     openGraph: {
       title: project.title,
