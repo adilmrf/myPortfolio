@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PROFILE } from "../content/profile";
 import { EXPERIENCE } from "../content/experience";
-import { TAGS } from "../lib/types";
+import RECOMMENDATIONS from "../content/recommendations";
+import RecommendationsCarousel from "../components/RecommendationsCarousel";
 
 export const metadata: Metadata = {
   title: "Home - Adil Mahroof",
@@ -20,7 +21,7 @@ export default function Home() {
     <section className="py-8">
       <div className="mb-6 flex flex-col md:flex-row-reverse items-center gap-6">
         <img
-          src="/media/placeholder-1.svg"
+          src="/media/Headshot.jpeg"
           alt="Headshot"
           className="w-36 h-36 md:w-44 md:h-44 rounded-full ring-4 ring-white/80 shadow-xl bg-white/90 object-cover transform transition-transform hover:scale-105"
         />
@@ -76,13 +77,15 @@ export default function Home() {
       </div>
 
       <div className="mb-8">
-        <h2 className="text-[28px] font-medium uppercase text-zinc-500">Domains</h2>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {TAGS.map((t) => (
-            <span key={t} className="rounded bg-zinc-100 px-2 py-1 text-[12px]">{t}</span>
-          ))}
+        <h2 className="text-[28px] font-semibold">Recommendations</h2>
+        <div className="mt-4">
+          <RecommendationsCarousel recommendations={RECOMMENDATIONS} />
         </div>
       </div>
+
+      
+
+
     </section>
   );
 }

@@ -26,7 +26,8 @@ body {
 }
 
 /* Increase base font size for the site as requested */
-html, body {
+html,
+body {
   font-size: 24px;
 }
 
@@ -39,12 +40,12 @@ body {
 }
 
 /* Subtle background texture to add quiet depth for HR-friendly look */
-body::before{
+body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;
   opacity: 0.8;
   mix-blend-mode: overlay;
@@ -73,8 +74,26 @@ body::before{
 .motion-safe-raise {
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
+
 .focus-ring {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
+/* Utility to hide native scrollbars for horizontal carousels */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
