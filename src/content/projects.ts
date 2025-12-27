@@ -11,7 +11,7 @@ export const PROJECTS: Project[] = [
       "Designed and tested a 1kN regeneratively-cooled liquid rocket engine demonstrator.",
     description:
       "End-to-end design of a regeneratively-cooled thrust chamber, integrated feed system, and hot-fire testing campaign with instrumentation and data analysis.",
-    tags: ["Propulsion", "Manufacturing", "Research"],
+    tags: ["Propulsion", "Research"],
     links: [
       { label: "Report (PDF)", url: "#" },
       { label: "Test Video", url: "#" },
@@ -25,7 +25,7 @@ export const PROJECTS: Project[] = [
     summary: "Onboard computer vision and guidance system for urban VTOL operations.",
     description:
       "Developed sensor fusion pipeline with inertial+camera inputs and a real-time GNC stack for waypoint following and obstacle avoidance.",
-    tags: ["UAVs", "GNC", "Software"],
+    tags: ["UAVs", "GNC"],
     media: [
       { type: "image", src: "/uav-flight.jpg", alt: "VTOL UAV in flight", caption: "Flight test of perception stack" },
     ],
@@ -38,7 +38,7 @@ export const PROJECTS: Project[] = [
     summary: "CI-style AIT for avionics boards with hardware-in-the-loop checks.",
     description:
       "Built reproducible test benches, defined pass/fail criteria, and automated test runners to accelerate pre-flight checks.",
-    tags: ["AIT", "Software", "Systems"],
+    tags: ["AIT", "Systems"],
     thumbnail: { src: "/media/placeholder-3.svg", alt: "AIT bench" },
   },
   {
@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
     summary: "Optimized composite layups to reduce mass while meeting stiffness targets.",
     description:
       "Performed laminate-level analysis, made tooling, and validated with static test rigs. Delivered manufacturing drawings and BOM.",
-    tags: ["Structures", "Manufacturing"],
+    tags: ["Structures"],
   },
   {
     id: "thermal-control",
@@ -55,7 +55,7 @@ export const PROJECTS: Project[] = [
     summary: "Passive + active thermal design for a 6U CubeSat payload.",
     description:
       "Modeled thermal environment, selected heaters and insulation, and validated via thermal-vacuum testing.",
-    tags: ["Thermal", "Systems"],
+    tags: ["Systems"],
     media: [
       { type: "image", src: "/thermal-chamber.jpg", alt: "Thermal vacuum chamber", caption: "Thermal-vac validation" },
     ],
@@ -66,7 +66,7 @@ export const PROJECTS: Project[] = [
     summary: "Test harness and dashboard for flight hardware telemetry.",
     description:
       "Created an embedded logger, host-side parsers, and a small dashboard to visualize telemetry and run automated acceptance tests.",
-    tags: ["Software", "AIT"],
+    tags: ["AIT"],
   },
 ];
 

@@ -8,13 +8,13 @@ export const TAGS = [
   "UAVs",
   "AIT",
   "Systems",
-  "Software",
   "Research",
   "GNC",
   "Structures",
-  "Manufacturing",
-  "Thermal",
+  "3D Printing",
   "Controls",
+  "Sustainability",
+  "Space"
 ] as const;
 
 export type Tag = typeof TAGS[number];
