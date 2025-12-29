@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import type { Project } from "../lib/types";
+import { withBasePath } from "../lib/assetPath";
 
 export default function MediaThumb({ project, className = "" }: { project: Project; className?: string }) {
   const thumb = project.thumbnail ?? project.media?.find((m) => m.type === "image");
@@ -8,7 +9,13 @@ export default function MediaThumb({ project, className = "" }: { project: Proje
   if (thumb && (thumb as any).src) {
     return (
       <div className={`overflow-hidden rounded-md bg-zinc-50 ${className}`}>
-        <Image src={(thumb as any).src} alt={(thumb as any).alt ?? project.title} width={520} height={320} className="object-cover w-full h-40 sm:h-28 lg:h-40" />
+        <Image
+          src={withBasePath((thumb as any).src)}
+          alt={(thumb as any).alt ?? project.title}
+          width={520}
+          height={320}
+          className="object-cover w-full h-40 sm:h-28 lg:h-40"
+        />
       </div>
     );
   }

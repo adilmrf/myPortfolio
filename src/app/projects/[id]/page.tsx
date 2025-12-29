@@ -1,9 +1,10 @@
-﻿// Project detail page (single-source content rendering)
+// Project detail page (single-source content rendering)
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getAllProjects, getProjectById } from "../../../lib/projects";
+import { withBasePath } from "../../../lib/assetPath";
 
 type Params = { id: string };
 
@@ -16,9 +17,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!project) return { title: "Project not found" };
   const defaultOg = new URL('../../opengraph-image.svg', import.meta.url).toString();
   const defaultTw = new URL('../../twitter-image.svg', import.meta.url).toString();
-  const imageUrl = project.thumbnail?.src ?? defaultOg;
+  const imageUrl = project.thumbnail?.src ? withBasePath(project.thumbnail.src) : defaultOg;
   return {
-    title: `${project.title} — Adil Mahroof`,
+    title: `${project.title} \u2014 Adil Mahroof`,
     description: project.summary,
     openGraph: {
       title: project.title,
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       images: [imageUrl],
     } as any,
     twitter: {
-      images: [project.thumbnail?.src ?? defaultTw],
+      images: [project.thumbnail?.src ? withBasePath(project.thumbnail.src) : defaultTw],
     } as any,
   };
 }
@@ -43,7 +44,7 @@ export default function ProjectPage({ params }: { params: Params }) {
   return (
     <article className="py-8">
       <nav className="text-sm text-zinc-600 mb-4">
-        <Link href="/projects" className="hover:underline">← Projects</Link>
+        <Link href="/projects" className="hover:underline">&larr; Projects</Link>
       </nav>
 
       <header className="mb-6">
@@ -92,10 +93,10 @@ export default function ProjectPage({ params }: { params: Params }) {
                 {project.media.map((m, i) => (
                   <div key={i}>
                     {m.type === "image" ? (
-                      <Image src={m.src} alt={m.alt ?? project.title} width={800} height={500} className="rounded" />
+                      <Image src={withBasePath(m.src)} alt={m.alt ?? project.title} width={800} height={500} className="rounded" />
                     ) : (
                       <video controls className="w-full rounded">
-                        <source src={m.src} />
+                        <source src={withBasePath(m.src)} />
                       </video>
                     )}
                     {m.caption && <div className="text-xs text-zinc-600 mt-1">{m.caption}</div>}
@@ -109,10 +110,10 @@ export default function ProjectPage({ params }: { params: Params }) {
 
       <footer className="mt-8 flex items-center justify-between">
         <div className="flex gap-4">
-          {prev && <Link href={`/projects/${prev.id}`} className="text-sm text-zinc-600 hover:underline">← {prev.title}</Link>}
+          {prev && <Link href={`/projects/${prev.id}`} className="text-sm text-zinc-600 hover:underline">&larr; {prev.title}</Link>}
         </div>
         <div className="flex gap-4">
-          {next && <Link href={`/projects/${next.id}`} className="text-sm text-zinc-600 hover:underline">{next.title} →</Link>}
+          {next && <Link href={`/projects/${next.id}`} className="text-sm text-zinc-600 hover:underline">{next.title} &rarr;</Link>}
         </div>
       </footer>
     </article>

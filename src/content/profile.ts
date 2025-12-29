@@ -2,10 +2,10 @@ import type { Profile } from "../lib/types";
 
 export const PROFILE: Profile = {
     name: "Adil Mahroof",
-    headline: "Aerospace Engineer — propulsion, UAV systems, satellite AIT",
+    headline: "Aerospace Engineer \u2014 propulsion, UAV systems, satellite AIT",
     location: "Dubai,UAE",
     summary:
-        "A multidisciplinary aerospace engineer building flight-proven systems — propulsion subsystems, guidance and control algorithms, and embedded avionics. I focus on practical experimentation, data-driven design, and clear engineering documentation.",
+        "A multidisciplinary aerospace engineer building flight-proven systems \u2014 propulsion subsystems, guidance and control algorithms, and embedded avionics. I focus on practical experimentation, data-driven design, and clear engineering documentation.",
     links: {
         github: "https://github.com/your-username",
         linkedin: "https://linkedin.com/in/adil-mahroof",

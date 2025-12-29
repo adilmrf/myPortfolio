@@ -5,10 +5,11 @@ import { PROFILE } from "../content/profile";
 import { EXPERIENCE } from "../content/experience";
 import RECOMMENDATIONS from "../content/recommendations";
 import RecommendationsCarousel from "../components/RecommendationsCarousel";
+import { withBasePath } from "../lib/assetPath";
 
 export const metadata: Metadata = {
   title: "Home - Adil Mahroof",
-  description: "Home — brief CV-style summary for Adil Mahroof.",
+  description: "Home \u2014 brief CV-style summary for Adil Mahroof.",
   openGraph: {
     images: [new URL('./opengraph-image.svg', import.meta.url).toString()],
   } as any,
@@ -22,7 +23,7 @@ export default function Home() {
     <section className="py-8">
       <div className="mb-6 flex flex-col md:flex-row-reverse items-center gap-6">
         <Image
-          src="/media/headshot.jpeg"
+          src={withBasePath("/media/headshot.jpeg")}
           alt="Headshot"
           width={176}
           height={176}
@@ -53,11 +54,11 @@ export default function Home() {
         <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
           <div>
             <div className="font-medium">M.Sc. Aerospace Engineering</div>
-            <div className="text-zinc-600 text-[18px]">University Name — 2020–2022</div>
+            <div className="text-zinc-600 text-[18px]">University Name {"\u2014"} 2020{"\u2013"}2022</div>
           </div>
           <div>
             <div className="font-medium">B.Sc. Mechanical Engineering</div>
-            <div className="text-zinc-600 text-[18px]">University Name — 2016–2020</div>
+            <div className="text-zinc-600 text-[18px]">University Name {"\u2014"} 2016{"\u2013"}2020</div>
           </div>
         </div>
       </div>
@@ -68,9 +69,9 @@ export default function Home() {
           {EXPERIENCE.slice(0, 4).map((e) => (
             <div key={e.id} className="mb-3">
               <Link href="/experience" className="text-[18px] font-medium hover:underline">
-                {e.role} — {e.organization}
+                {e.role} {"\u2014"} {e.organization}
               </Link>
-              <div className="text-[12px] text-zinc-600">{e.startDate} — {e.endDate ?? 'Present'}</div>
+              <div className="text-[12px] text-zinc-600">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
             </div>
           ))}
           <div className="mt-2">
@@ -86,7 +87,7 @@ export default function Home() {
         </div>
       </div>
 
-      
+
 
 
     </section>
