@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PROFILE } from "../content/profile";
 import { EXPERIENCE } from "../content/experience";
+import { EDUCATION } from "../content/education";
 import RECOMMENDATIONS from "../content/recommendations";
 import RecommendationsCarousel from "../components/RecommendationsCarousel";
 import { withBasePath } from "../lib/assetPath";
@@ -52,14 +53,18 @@ export default function Home() {
       <div className="mb-8">
         <h2 className="text-[28px] font-semibold">Education</h2>
         <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
-          <div>
-            <div className="font-medium">M.Sc. Aerospace Engineering</div>
-            <div className="text-zinc-600 text-[18px]">University Name {"\u2014"} 2020{"\u2013"}2022</div>
-          </div>
-          <div>
-            <div className="font-medium">B.Sc. Mechanical Engineering</div>
-            <div className="text-zinc-600 text-[18px]">University Name {"\u2014"} 2016{"\u2013"}2020</div>
-          </div>
+          {EDUCATION.map((e) => (
+            <div key={e.id}>
+              <div className="font-medium">{e.degree}</div>
+              <div className="text-zinc-600 text-[18px]">
+                {e.institution}
+              </div>
+              <div className="text-zinc-600 text-[18px]">
+                {e.startDate} {"\u2014"} {e.endDate ?? "Present"}
+              </div>
+              {e.notes && <div className="text-zinc-600 text-[16px]">{e.notes}</div>}
+            </div>
+          ))}
         </div>
       </div>
 

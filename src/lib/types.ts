@@ -64,6 +64,18 @@ export interface ExperienceItem {
 }
 
 /**
+ * Education entries for the Home page.
+ */
+export interface EducationItem {
+  id: ID;
+  degree: string;
+  institution: string;
+  startDate: string; // ISO-ish (YYYY) or human readable
+  endDate?: string; // empty for present
+  notes?: string;
+}
+
+/**
  * Profile for the person / hero section.
  */
 export interface Profile {

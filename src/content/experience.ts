@@ -5,7 +5,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-1",
     role: "CubeSat Development Instructor",
     organization: "SpacePoint (Space.)",
-    startDate: "04-2025",
+    startDate: "04.2025",
     endDate: "Present",
     bullets: [
       "Led 10+ lectures on Introduction to Space, satellites, and space technology",
@@ -17,8 +17,8 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-2",
     role: "Satellite AIT Intern",
     organization: "Orbitworks",
-    startDate: "08-2025",
-    endDate: "11-2025",
+    startDate: "08.2025",
+    endDate: "11.2025",
     bullets: [
       "Designed and manufactured a mechanical ground support equipment (MGSE) to store 40 solar array modules",
       "Created work and build procedures for MGSEs and Satellite AIT steps.",
@@ -31,8 +31,8 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-3",
     role: "Future Sustainability Leader",
     organization: " Youth4Sustainability Masdar",
-    startDate: " 01-2024",
-    endDate: "01-2025",
+    startDate: "01.2024",
+    endDate: "01.2025",
     bullets: [
       "Attended 20+ workshops, lectures and discussion sessions about sustainability.",
       "Competed in 3 SkillUp competitions solving real-life sustainability challenges.",
@@ -44,8 +44,8 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-4",
     role: "Rocket Propulsion Intern",
     organization: "HALCON, EDGE Group",
-    startDate: "05-2024",
-    endDate: "12-2024",
+    startDate: "05.2024",
+    endDate: "12.2024",
     bullets: [
       "Attended on-boarding sessions on missiles developments and subsystems at different departments.",
       "Researched liquid rocket engines (LRE) and testing setups.",
