@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { PROFILE } from "../content/profile";
 import { EXPERIENCE } from "../content/experience";
 import RECOMMENDATIONS from "../content/recommendations";
@@ -20,9 +21,11 @@ export default function Home() {
   return (
     <section className="py-8">
       <div className="mb-6 flex flex-col md:flex-row-reverse items-center gap-6">
-        <img
-          src="/media/Headshot.jpeg"
+        <Image
+          src="/media/headshot.jpeg"
           alt="Headshot"
+          width={176}
+          height={176}
           className="w-36 h-36 md:w-44 md:h-44 rounded-full ring-4 ring-white/80 shadow-xl bg-white/90 object-cover transform transition-transform hover:scale-105"
         />
         <div className="text-center md:text-left md:flex-1">
