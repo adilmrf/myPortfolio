@@ -33,7 +33,6 @@ export default function Home() {
         <div className="text-center md:text-left md:flex-1">
           <h1 className="text-[48px] md:text-[60px] font-extrabold tracking-tight leading-tight">{PROFILE.name}</h1>
           <p className="text-[30px] text-zinc-700 mt-2">{PROFILE.headline}</p>
-          {PROFILE.location && <p className="text-[18px] text-zinc-600 mt-1">{PROFILE.location}</p>}
         </div>
       </div>
 
@@ -54,15 +53,26 @@ export default function Home() {
         <h2 className="text-[28px] font-semibold">Education</h2>
         <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
           {EDUCATION.map((e) => (
-            <div key={e.id}>
-              <div className="font-medium">{e.degree}</div>
-              <div className="text-zinc-600 text-[18px]">
-                {e.institution}
+            <div key={e.id} className="flex items-start gap-3">
+              {e.logo && (
+                <Image
+                  src={withBasePath(e.logo)}
+                  alt={`${e.institution} logo`}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-md object-contain bg-white/90"
+                />
+              )}
+              <div>
+                <div className="font-medium">{e.degree}</div>
+                <div className="text-zinc-600 text-[18px]">
+                  {e.institution}
+                </div>
+                <div className="text-zinc-600 text-[18px]">
+                  {e.startDate} {"\u2014"} {e.endDate ?? "Present"}
+                </div>
+                {e.notes && <div className="text-zinc-600 text-[16px]">{e.notes}</div>}
               </div>
-              <div className="text-zinc-600 text-[18px]">
-                {e.startDate} {"\u2014"} {e.endDate ?? "Present"}
-              </div>
-              {e.notes && <div className="text-zinc-600 text-[16px]">{e.notes}</div>}
             </div>
           ))}
         </div>
@@ -72,11 +82,22 @@ export default function Home() {
         <h2 className="text-[28px] font-semibold">Experience</h2>
         <div className="mt-4 border-l pl-4 text-[18px]">
           {EXPERIENCE.slice(0, 4).map((e) => (
-            <div key={e.id} className="mb-3">
-              <Link href="/experience" className="text-[18px] font-medium hover:underline">
-                {e.role} {"\u2014"} {e.organization}
-              </Link>
-              <div className="text-[12px] text-zinc-600">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
+            <div key={e.id} className="mb-3 flex items-start gap-3">
+              {e.logo && (
+                <Image
+                  src={withBasePath(e.logo)}
+                  alt={`${e.organization} logo`}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-md object-contain bg-white/90"
+                />
+              )}
+              <div>
+                <Link href="/experience" className="text-[18px] font-medium hover:underline">
+                  {e.role} {"\u2014"} {e.organization}
+                </Link>
+                <div className="text-[12px] text-zinc-600">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
+              </div>
             </div>
           ))}
           <div className="mt-2">

@@ -8,6 +8,7 @@ export default function HeaderNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [isContactInView, setIsContactInView] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement | null>(null);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/" && !isContactInView;
@@ -38,6 +39,8 @@ export default function HeaderNav() {
     }
   };
 
+  const handleNavSelect = () => setOpen(false);
+
   React.useEffect(() => {
     if (pathname !== "/") {
       setIsContactInView(false);
@@ -53,12 +56,24 @@ export default function HeaderNav() {
     return () => observer.disconnect();
   }, [pathname]);
 
+  React.useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (menuRef.current && target && !menuRef.current.contains(target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <nav className="hidden md:flex gap-4 text-sm">
         <Link href="/" className={linkClass("/")}>Home</Link>
-        <Link href="/projects" className={linkClass("/projects")}>Projects</Link>
         <Link href="/experience" className={linkClass("/experience")}>Experience</Link>
+        <Link href="/projects" className={linkClass("/projects")}>Projects</Link>
         <Link href="/about" className={linkClass("/about")}>About</Link>
         <Link href="/#contact" className={linkClass("/#contact")} onClick={handleContactClick}>Contact</Link>
       </nav>
@@ -76,11 +91,11 @@ export default function HeaderNav() {
         {open && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md border shadow-lg z-50">
             <ul className="flex flex-col">
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/">Home</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/projects">Projects</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/experience">Experience</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/about">About</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/#contact" onClick={handleContactClick}>Contact</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/" onClick={handleNavSelect}>Home</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/experience" onClick={handleNavSelect}>Experience</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/projects" onClick={handleNavSelect}>Projects</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/about" onClick={handleNavSelect}>About</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/#contact" onClick={(e) => { handleContactClick(e); handleNavSelect(); }}>Contact</Link></li>
             </ul>
           </div>
         )}

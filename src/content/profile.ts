@@ -2,8 +2,8 @@ import type { Profile } from "../lib/types";
 
 export const PROFILE: Profile = {
     name: "Adil Mahroof",
-    headline: "Aerospace Engineer \u2014 propulsion, UAV systems, satellite AIT",
-    location: "Dubai,UAE",
+    headline: "Aerospace Engineer",
+    location: "Dubai, United Arab Emirates",
     summary:
         "A multidisciplinary aerospace engineer building flight-proven systems \u2014 propulsion subsystems, guidance and control algorithms, and embedded avionics. I focus on practical experimentation, data-driven design, and clear engineering documentation.",
     links: {
@@ -12,12 +12,9 @@ export const PROFILE: Profile = {
         email: "mailto:you@example.com",
     },
     highlights: [
-        { label: "Research", value: "2+ years", detail: "Propulsion & GNC" },
-        { label: "Propulsion", value: "H2O2 microthrusters" },
-        { label: "UAV", value: "VTOL design" },
-        { label: "Satellite", value: "AIT exposure" },
-        { label: "Competitions", value: "Multiple wins" },
-        { label: "Sustainability", value: "Future Sustainability Leader - Masdar" },
+        { label: "Research", value: "3+ years", detail: "Rocket Propulsion, UAVs, Space Systems" },
+        { label: "SMSP", value: "Sheikh Mohamed Bin Zayed Scholar 2023" },
+        { label: "Sustainability", value: "Future Sustainability Leader 2024" },
     ],
 };
 

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import HeaderNav from "../components/HeaderNav";
 import "./globals.css";
 import { PROFILE } from "../content/profile";
+import { withBasePath } from "../lib/assetPath";
 
 const siteName = PROFILE.name + " — Adil Mahroof";
 const description = PROFILE.summary ?? "A concise portfolio highlighting projects and experience in aerospace engineering.";
@@ -37,12 +39,21 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="antialiased min-h-screen bg-white text-zinc-900">
+      <body className="antialiased min-h-screen bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
         <header className="fixed top-0 left-0 right-0 z-50 hover:bg-white/90 transition-colors duration-200 backdrop-blur-sm">
           <div className="mx-auto max-w-5xl px-6">
             <div className="flex items-center justify-between py-6">
-              <Link href="/" className="text-xl font-semibold">
-                Adil Mahroof
+              <Link href="/" className="flex items-center gap-2 text-xl font-semibold">
+                <span className="h-7 w-7 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center">
+                  <Image
+                    src={withBasePath("/media/am.png")}
+                    alt="Adil Mahroof"
+                    width={28}
+                    height={28}
+                    className="h-full w-full object-cover object-center scale-125"
+                  />
+                </span>
+                <span>Adil Mahroof</span>
               </Link>
               <HeaderNav />
             </div>
@@ -91,7 +102,7 @@ export default function RootLayout({
             </div>
 
             <div className="mt-4 flex items-center justify-between">
-              <div />
+              <div className="text-zinc-600">{PROFILE.location ?? ""}</div>
               <div className="text-right">© {year} Adil Mahroof</div>
             </div>
           </footer>

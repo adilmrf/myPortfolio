@@ -57,6 +57,7 @@ export interface ExperienceItem {
   id: ID;
   role: string;
   organization: string;
+  logo?: string; // /public path for organization logo
   startDate: string; // ISO-ish (YYYY-MM) or human readable
   endDate?: string; // empty for present
   bullets: string[];
@@ -70,6 +71,7 @@ export interface EducationItem {
   id: ID;
   degree: string;
   institution: string;
+  logo?: string; // /public path for institution logo
   startDate: string; // ISO-ish (YYYY) or human readable
   endDate?: string; // empty for present
   notes?: string;

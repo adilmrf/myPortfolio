@@ -5,6 +5,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-1",
     role: "CubeSat Development Instructor",
     organization: "SpacePoint (Space.)",
+    logo: "/media/logos/spacepoint.jpg",
     startDate: "04.2025",
     endDate: "Present",
     bullets: [
@@ -17,6 +18,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-2",
     role: "Satellite AIT Intern",
     organization: "Orbitworks",
+    logo: "/media/logos/orbitworks.jfif",
     startDate: "08.2025",
     endDate: "11.2025",
     bullets: [
@@ -31,6 +33,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-3",
     role: "Future Sustainability Leader",
     organization: " Youth4Sustainability Masdar",
+    logo: "/media/logos/y4s.png",
     startDate: "01.2024",
     endDate: "01.2025",
     bullets: [
@@ -44,6 +47,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-4",
     role: "Rocket Propulsion Intern",
     organization: "HALCON, EDGE Group",
+    logo: "/media/logos/halcon.png",
     startDate: "05.2024",
     endDate: "12.2024",
     bullets: [
