@@ -7,6 +7,23 @@ export default function HeaderNav() {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const [isContactInView, setIsContactInView] = React.useState(false);
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/" && !isContactInView;
+    if (href === "/projects") return pathname.startsWith("/projects");
+    if (href === "/experience") return pathname.startsWith("/experience");
+    if (href === "/about") return pathname.startsWith("/about");
+    if (href === "/#contact") return pathname === "/" && isContactInView;
+    return false;
+  };
+
+  const linkClass = (href: string) =>
+    `rounded-full transition-colors ${
+      isActive(href)
+        ? "bg-zinc-900 text-white px-2 py-0.5 -mx-2 -my-0.5"
+        : "text-zinc-700 hover:text-zinc-900"
+    }`;
 
   const handleContactClick = (e: React.MouseEvent) => {
     // If already on home, smooth-scroll to the contact section
@@ -21,14 +38,29 @@ export default function HeaderNav() {
     }
   };
 
+  React.useEffect(() => {
+    if (pathname !== "/") {
+      setIsContactInView(false);
+      return;
+    }
+    const titleEl = document.querySelector("#contact h3");
+    if (!titleEl) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsContactInView(entry.isIntersecting),
+      { threshold: 1.0 }
+    );
+    observer.observe(titleEl);
+    return () => observer.disconnect();
+  }, [pathname]);
+
   return (
     <div className="relative">
       <nav className="hidden md:flex gap-4 text-sm">
-        <Link href="/">Home</Link>
-        <Link href="/projects">Projects</Link>
-        <Link href="/experience">Experience</Link>
-        <Link href="/about">About</Link>
-        <Link href="/#contact" onClick={handleContactClick}>Contact</Link>
+        <Link href="/" className={linkClass("/")}>Home</Link>
+        <Link href="/projects" className={linkClass("/projects")}>Projects</Link>
+        <Link href="/experience" className={linkClass("/experience")}>Experience</Link>
+        <Link href="/about" className={linkClass("/about")}>About</Link>
+        <Link href="/#contact" className={linkClass("/#contact")} onClick={handleContactClick}>Contact</Link>
       </nav>
 
       <div className="md:hidden">

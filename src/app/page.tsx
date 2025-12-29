@@ -88,7 +88,7 @@ export default function Home() {
       <div className="mb-8">
         <h2 className="text-[28px] font-semibold">Recommendations</h2>
         <div className="mt-4">
-          <RecommendationsCarousel recommendations={RECOMMENDATIONS} />
+          <RecommendationsCarousel recommendations={RECOMMENDATIONS} comingSoon comingSoonLabel="Recommendations" />
         </div>
       </div>
 

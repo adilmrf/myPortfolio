@@ -10,14 +10,18 @@ type Recommendation = {
 
 type Props = {
     recommendations: Recommendation[];
+    comingSoon?: boolean;
+    comingSoonLabel?: string;
 };
 
-export default function RecommendationsCarousel({ recommendations }: Props) {
+export default function RecommendationsCarousel({ recommendations, comingSoon = false, comingSoonLabel = "Coming soon" }: Props) {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const autoplayRef = React.useRef<number | null>(null);
     const cardWidthRef = React.useRef<number>(0);
     const [index, setIndex] = React.useState<number>(1); // start at first real item
     const [isPaused, setIsPaused] = React.useState(false);
+    const isComingSoon = comingSoon;
+    const comingSoonRef = React.useRef(isComingSoon);
 
     if (!recommendations || recommendations.length === 0) return null;
 
@@ -66,7 +70,7 @@ export default function RecommendationsCarousel({ recommendations }: Props) {
 
     // handle autoplay
     React.useEffect(() => {
-        if (isPaused || recommendations.length <= 1) return;
+        if (isPaused || comingSoonRef.current || recommendations.length <= 1) return;
         autoplayRef.current = window.setInterval(() => {
             setIndex((i) => i + 1);
         }, 3000);
@@ -74,6 +78,14 @@ export default function RecommendationsCarousel({ recommendations }: Props) {
             if (autoplayRef.current) window.clearInterval(autoplayRef.current);
         };
     }, [isPaused, recommendations.length]);
+
+    React.useEffect(() => {
+        comingSoonRef.current = isComingSoon;
+        if (isComingSoon && autoplayRef.current) {
+            window.clearInterval(autoplayRef.current);
+            autoplayRef.current = null;
+        }
+    }, [isComingSoon]);
 
     // when index changes, scroll and handle loop reset
     React.useEffect(() => {
@@ -112,6 +124,7 @@ export default function RecommendationsCarousel({ recommendations }: Props) {
     return (
         <div className="group">
             <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+                <div className={isComingSoon ? "blur-sm pointer-events-none" : undefined} aria-hidden={isComingSoon}>
                 <button
                     aria-label="Scroll left"
                     onClick={prev}
@@ -153,6 +166,15 @@ export default function RecommendationsCarousel({ recommendations }: Props) {
                 >
                     ›
                 </button>
+                </div>
+                {isComingSoon && (
+                    <div className="absolute inset-0 z-30 grid place-items-center rounded-md border border-dashed border-zinc-300 bg-white/70 backdrop-blur-sm">
+                        <div className="text-center">
+                            <div className="text-sm uppercase tracking-[0.2em] text-zinc-500">Coming soon</div>
+                            <div className="text-lg font-semibold text-zinc-800">{comingSoonLabel}</div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
