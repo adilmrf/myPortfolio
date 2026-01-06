@@ -5,69 +5,101 @@ import type { Project } from "../lib/types";
  */
 export const PROJECTS: Project[] = [
   {
-    id: "rp-1",
-    title: "Regeneratively Cooled Rocket Motor (RCRM)",
+    id: "fsl-spacer",
+    title: "Design of a Novel Water Desalination Spacer Using Biomimicry Techniques to Reduce Biofouling",
     summary:
-      "Designed and tested a 1kN regeneratively-cooled liquid rocket engine demonstrator.",
-    description:
-      "End-to-end design of a regeneratively-cooled thrust chamber, integrated feed system, and hot-fire testing campaign with instrumentation and data analysis.",
-    tags: ["Propulsion", "Research"],
+      "A novel water desalination spacer inspired by the lotus leaf was designed and 3D printed to reduce biofouling in reverse osmosis membranes.",
+    responsibilities: [
+      "Conducted in-depth research on water desalination, reverse osmosis membranes and spacers.",
+      "Designed the spacer using CAD software and biomimicry principles.",
+      "3D printed the prototype.",
+    ],
+    results: [
+      "Produced a conceptual prototype to present in front of experts.",
+    ],
+    presentations: [
+      "ADSW 2025, Abu Dhabi, UAE.",
+    ],
+    tags: ["Research", "Sustainability", "3D Printing"],
     links: [
       { label: "Report (PDF)", url: "#" },
       { label: "Test Video", url: "#" },
     ],
-    thumbnail: { src: "/media/placeholder-1.svg", alt: "RCRM thrust chamber" },
-    featured: true,
   },
   {
-    id: "uav-vision",
-    title: "Autonomous VTOL UAV — Perception & GNC",
-    summary: "Onboard computer vision and guidance system for urban VTOL operations.",
-    description:
-      "Developed sensor fusion pipeline with inertial+camera inputs and a real-time GNC stack for waypoint following and obstacle avoidance.",
-    tags: ["UAVs", "GNC"],
-    media: [
-      { type: "image", src: "/uav-flight.jpg", alt: "VTOL UAV in flight", caption: "Flight test of perception stack" },
+    id: "vtol-uav",
+    title: "Design and Control for Vertical Take-off and Landing (VTOL) UAV",
+    summary:
+      " A tri-motor vertical take-off and landing UAV with two tilt motors was designed, additively manufactured and flight tested.",
+    responsibilities: [
+      "Conducted preliminary research on UAVs and VTOL technology.",
+      "Performed aerodynamic analysis using XFLR5 and CAD modeling of the UAV structure and VTOL tilt mechanisms.",
+      "3D printed the prototype and prepared it for testing.",
     ],
-    featured: true,
-    thumbnail: { src: "/media/placeholder-2.svg", alt: "VTOL UAV" },
-  },
-  {
-    id: "ait-pipeline",
-    title: "Automated Integration & Test (AIT) Pipeline",
-    summary: "CI-style AIT for avionics boards with hardware-in-the-loop checks.",
-    description:
-      "Built reproducible test benches, defined pass/fail criteria, and automated test runners to accelerate pre-flight checks.",
-    tags: ["AIT", "Systems"],
-    thumbnail: { src: "/media/placeholder-3.svg", alt: "AIT bench" },
-  },
-  {
-    id: "structure-lite",
-    title: "Lightweight Composite Wing Spar",
-    summary: "Optimized composite layups to reduce mass while meeting stiffness targets.",
-    description:
-      "Performed laminate-level analysis, made tooling, and validated with static test rigs. Delivered manufacturing drawings and BOM.",
-    tags: ["Structures"],
-  },
-  {
-    id: "thermal-control",
-    title: "Thermal Control for Small Satellite",
-    summary: "Passive + active thermal design for a 6U CubeSat payload.",
-    description:
-      "Modeled thermal environment, selected heaters and insulation, and validated via thermal-vacuum testing.",
-    tags: ["Systems"],
-    media: [
-      { type: "image", src: "/thermal-chamber.jpg", alt: "Thermal vacuum chamber", caption: "Thermal-vac validation" },
+    results: [
+      "Produced a fully functional prototype with successful flight tests.",
+    ],
+    presentations: [
+      "IDEX 2025, Abu Dhabi, UAE.",
+    ],
+    tags: ["Research", "UAVs", "Systems Engineering", "3D Printing", "Control", "AIT"],
+    links: [
+      { label: "Report (PDF)", url: "#" },
+      { label: "Test Video", url: "#" },
     ],
   },
   {
-    id: "test-automation",
-    title: "Embedded Test Automation",
-    summary: "Test harness and dashboard for flight hardware telemetry.",
-    description:
-      "Created an embedded logger, host-side parsers, and a small dashboard to visualize telemetry and run automated acceptance tests.",
-    tags: ["AIT"],
+    id: "mbrsc-propulsion",
+    title: "Performance Improvement of Chemical Space Propulsion with Thermal Decomposition of Propellant",
+    summary:
+      "An experimental study on improving the performance of micro-thrusters using Hydrogen Peroxide (H2O2) as propellant by introducing thermal decomposition.",
+    responsibilities: [
+      "Researched thermal decomposition of H2O2 for micro-thrusters.",
+      "Set up experiments, executed test procedures, and recorded data.",
+    ],
+    results: [
+      "Completed 10+ tests confirming feasibility of thermal decomposition to improve H2O2 thruster performance.",
+    ],
+    presentations: [
+      "IAC 2024, Milan, Italy.",
+    ],
+    tags: ["Propulsion", "Research", "Space"],
   },
+  {
+    id: "green-propellant",
+    title: "Green Propellant Space Propulsion for Mode Changeable Micro Thrust Generation",
+    summary:
+      "A feasibility study on using Hydrogen Peroxide as a green propellant in chemical and electric microthrust generation.",
+    responsibilities: [
+      "Led a team of four undergraduate students and managed schedules and proposals.",
+      "Designed a 100 mN class thruster using NACA CEA, RPA, and CATIA V5.",
+    ],
+    results: [
+      "Manufactured and tested a micro-thruster for chemical propulsion.",
+      "Validated performance across different initial conditions and H2O2 concentrations.",
+    ],
+    presentations: [
+      "IAC 2023, Baku, Azerbaijan.",
+    ],
+    tags: ["Propulsion", "Research", "Space", "Sustainability"],
+  },
+  {
+    id: "mini-rocket-propulsion",
+    title: "Design, Fabrication, and Testing of a Miniaturised Rocket Propulsion System",
+    summary: "Design, manufacturing, and testing of a 10 N class thruster.",
+    responsibilities: [
+      "Conducted research on rocket principles, micro-thrust generation, and propellants.",
+      "Manufactured the thruster using traditional workshop machines and prepared test procedures.",
+    ],
+    results: [
+      "Completed multiple successful tests confirming full functionality of the design.",
+    ],
+    presentations: [
+      "UAEU-MUBADALA Aerospace Student Research, 2022.",
+    ],
+    tags: ["Propulsion", "Research", "Space"],
+  },
+
 ];
 
 export default PROJECTS;

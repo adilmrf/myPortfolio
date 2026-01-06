@@ -7,12 +7,11 @@ export const TAGS = [
   "Propulsion",
   "UAVs",
   "AIT",
-  "Systems",
+  "Systems Engineering",
   "Research",
   "GNC",
-  "Structures",
   "3D Printing",
-  "Controls",
+  "Control",
   "Sustainability",
   "Space"
 ] as const;
@@ -27,27 +26,17 @@ export interface LinkItem {
 }
 
 /**
- * Project content shape. `description` may include longer markdown/plain text.
+ * Project content shape.
  */
 export interface Project {
   id: ID;
   title: string;
   summary: string;
-  description?: string;
+  responsibilities: string[];
+  results: string[];
+  presentations: string[];
   tags: Tag[];
   links?: LinkItem[];
-  featured?: boolean;
-  media?: {
-    type: "image" | "video";
-    src: string;
-    alt?: string;
-    caption?: string;
-  }[]; // media objects (images or videos) served from /public
-  // Optional lightweight thumbnail for list views
-  thumbnail?: {
-    src: string;
-    alt?: string;
-  };
 }
 
 /**
