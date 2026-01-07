@@ -74,6 +74,9 @@ export interface Profile {
   headline: string;
   location?: string;
   summary?: string;
+  skills?: string[];
+  hobbies?: string[];
+  languages?: string[];
   links?: {
     github?: string;
     linkedin?: string;

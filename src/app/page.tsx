@@ -80,9 +80,9 @@ export default function Home() {
 
       <div className="mb-8">
         <h2 className="text-[28px] font-semibold">Experience</h2>
-        <div className="mt-4 border-l pl-4 text-[18px]">
+        <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
           {EXPERIENCE.slice(0, 4).map((e) => (
-            <div key={e.id} className="mb-3 flex items-start gap-3">
+            <div key={e.id} className="flex items-start gap-3">
               {e.logo && (
                 <Image
                   src={withBasePath(e.logo)}
