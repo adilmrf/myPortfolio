@@ -6,7 +6,7 @@ import { EXPERIENCE } from "../content/experience";
 import { EDUCATION } from "../content/education";
 import RECOMMENDATIONS from "../content/recommendations";
 import RecommendationsCarousel from "../components/RecommendationsCarousel";
-import { withBasePath } from "../lib/assetPath";
+import { withBasePath, withBasePathAndSlash } from "../lib/assetPath";
 
 export const metadata: Metadata = {
   title: "Home - Adil Mahroof",
@@ -93,7 +93,7 @@ export default function Home() {
                 />
               )}
               <div>
-                <Link href="/experience" className="text-[18px] font-medium hover:underline">
+                <Link href={withBasePathAndSlash("/experience")} className="text-[18px] font-medium hover:underline">
                   {e.role} {"\u2014"} {e.organization}
                 </Link>
                 <div className="text-[12px] text-zinc-600">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
@@ -101,7 +101,7 @@ export default function Home() {
             </div>
           ))}
           <div className="mt-2">
-            <Link href="/experience" className="text-blue-600 text-[14px]">See full experience</Link>
+            <Link href={withBasePathAndSlash("/experience")} className="text-blue-600 text-[14px]">See full experience</Link>
           </div>
         </div>
       </div>
