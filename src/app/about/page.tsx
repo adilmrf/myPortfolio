@@ -17,10 +17,10 @@ export default function AboutPage() {
     <section className="py-8">
       <h1 className="text-2xl font-semibold">About</h1>
       <div className="mt-4">
-        <h2 className="text-xl font-medium">{PROFILE.name}</h2>
-        <p className="text-zinc-700 mt-2">{PROFILE.headline}</p>
+        {/*<h2 className="text-xl font-medium">{PROFILE.name}</h2>*/}
+        {/*<p className="text-zinc-700 mt-2">{PROFILE.headline}</p>*/}
         <p className="mt-4 text-sm text-zinc-700">{PROFILE.summary}</p>
-        <p className="mt-4 text-sm text-zinc-600">Location: {PROFILE.location}</p>
+        {/* <p className="mt-4 text-sm text-zinc-600">Location: {PROFILE.location}</p> */}
       </div>
     </section>
   );

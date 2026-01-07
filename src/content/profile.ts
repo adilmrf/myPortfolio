@@ -5,11 +5,14 @@ export const PROFILE: Profile = {
     headline: "Aerospace Engineer",
     location: "Dubai, United Arab Emirates",
     summary:
-        "A multidisciplinary aerospace engineer building flight-proven systems \u2014 propulsion subsystems, guidance and control algorithms, and embedded avionics. I focus on practical experimentation, data-driven design, and clear engineering documentation.",
+        "Adil Mahroof is an aerospace engineering graduate with hands-on experience in engineering design, analysis, and assembly, integration, and testing (AIT)." +
+        " Exposure across rocket propulsion, aerodynamics, satellite systems, and system design through academic projects, multidisciplinary teamwork, and internships within the Aerospace and Defense sector." +
+        " Known for adaptability and a strong learning mindset, with a practical interest in applying theory to real engineering challenges." +
+        " Actively seeking opportunities to contribute to technically driven teams and cutting-edge aerospace programs.",
     links: {
-        github: "https://github.com/your-username",
+        github: "https://github.com/adilmrf",
         linkedin: "https://linkedin.com/in/adil-mahroof",
-        email: "mailto:you@example.com",
+        email: "mailto:adilmrf@outlook.com",
     },
     highlights: [
         { label: "Research", value: "3+ years", detail: "Rocket Propulsion, UAVs, Space Systems" },
