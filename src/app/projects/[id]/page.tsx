@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllProjects, getProjectById } from "../../../lib/projects";
-import { withBasePathAndSlash } from "../../../lib/assetPath";
 
 type Params = { id: string };
 
@@ -44,7 +43,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   return (
     <article className="py-8">
       <nav className="text-sm text-zinc-600 mb-4">
-        <Link href={withBasePathAndSlash("/projects")} className="hover:underline">&larr; Projects</Link>
+        <Link href="/projects" className="hover:underline">&larr; Projects</Link>
       </nav>
 
       <header className="mb-6">
@@ -105,7 +104,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         <div className="flex flex-1 justify-start">
           {prev && (
             <Link
-              href={withBasePathAndSlash(`/projects/${prev.id}`)}
+              href={`/projects/${prev.id}`}
               className="inline-flex h-7 w-48 items-center justify-center rounded border border-zinc-200 px-2 text-[11px] text-zinc-600 hover:border-zinc-300 hover:text-zinc-800"
             >
               &larr; {prev.title}
@@ -115,7 +114,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         <div className="flex flex-1 justify-end">
           {next && (
             <Link
-              href={withBasePathAndSlash(`/projects/${next.id}`)}
+              href={`/projects/${next.id}`}
               className="inline-flex h-7 w-48 items-center justify-center rounded border border-zinc-200 px-2 text-[11px] text-zinc-600 hover:border-zinc-300 hover:text-zinc-800"
             >
               {next.title} &rarr;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import HeaderNav from "../components/HeaderNav";
 import "./globals.css";
 import { PROFILE } from "../content/profile";
-import { withBasePath, withBasePathAndSlash } from "../lib/assetPath";
+import { withBasePath } from "../lib/assetPath";
 
 const siteName = PROFILE.name + " — Adil Mahroof";
 const description = PROFILE.summary ?? "A concise portfolio highlighting projects and experience in aerospace engineering.";
@@ -43,7 +43,7 @@ export default function RootLayout({
         <header className="fixed top-0 left-0 right-0 z-50 hover:bg-white/90 transition-colors duration-200 backdrop-blur-sm">
           <div className="mx-auto max-w-5xl px-6">
             <div className="flex items-center justify-between py-6">
-              <Link href={withBasePathAndSlash("/")} className="flex items-center gap-2 text-xl font-semibold">
+              <Link href="/" className="flex items-center gap-2 text-xl font-semibold">
                 <span className="h-7 w-7 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center">
                   <Image
                     src={withBasePath("/media/am.png")}

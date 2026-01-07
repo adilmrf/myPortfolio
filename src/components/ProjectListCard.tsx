@@ -3,12 +3,11 @@ import Link from "next/link";
 import React from "react";
 import type { Project } from "../lib/types";
 import MediaThumb from "./MediaThumb";
-import { withBasePathAndSlash } from "../lib/assetPath";
 
 export default function ProjectListCard({ project }: { project: Project }) {
   return (
     <Link
-      href={withBasePathAndSlash(`/projects/${project.id}`)}
+      href={`/projects/${project.id}`}
       className="group block rounded-md border bg-white/90 overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-300 transition-transform transform hover:-translate-y-1 hover:shadow-lg"
     >
       <div className="sm:flex">

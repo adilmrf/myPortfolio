@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { withBasePathAndSlash } from "../lib/assetPath";
 
 export default function HeaderNav() {
   const [open, setOpen] = React.useState(false);
@@ -72,11 +71,11 @@ export default function HeaderNav() {
   return (
     <div className="relative" ref={menuRef}>
       <nav className="hidden md:flex gap-4 text-sm">
-        <Link href={withBasePathAndSlash("/")} className={linkClass("/")}>Home</Link>
-        <Link href={withBasePathAndSlash("/experience")} className={linkClass("/experience")}>Experience</Link>
-        <Link href={withBasePathAndSlash("/projects")} className={linkClass("/projects")}>Projects</Link>
-        <Link href={withBasePathAndSlash("/about")} className={linkClass("/about")}>About</Link>
-        <Link href={withBasePathAndSlash("/#contact")} className={linkClass("/#contact")} onClick={handleContactClick}>Contact</Link>
+        <Link href="/" className={linkClass("/")}>Home</Link>
+        <Link href="/experience" className={linkClass("/experience")}>Experience</Link>
+        <Link href="/projects" className={linkClass("/projects")}>Projects</Link>
+        <Link href="/about" className={linkClass("/about")}>About</Link>
+        <Link href="/#contact" className={linkClass("/#contact")} onClick={handleContactClick}>Contact</Link>
       </nav>
 
       <div className="md:hidden">
@@ -92,11 +91,11 @@ export default function HeaderNav() {
         {open && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md border shadow-lg z-50">
             <ul className="flex flex-col">
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href={withBasePathAndSlash("/")} onClick={handleNavSelect}>Home</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href={withBasePathAndSlash("/experience")} onClick={handleNavSelect}>Experience</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href={withBasePathAndSlash("/projects")} onClick={handleNavSelect}>Projects</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href={withBasePathAndSlash("/about")} onClick={handleNavSelect}>About</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href={withBasePathAndSlash("/#contact")} onClick={(e) => { handleContactClick(e); handleNavSelect(); }}>Contact</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/" onClick={handleNavSelect}>Home</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/experience" onClick={handleNavSelect}>Experience</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/projects" onClick={handleNavSelect}>Projects</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/about" onClick={handleNavSelect}>About</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/#contact" onClick={(e) => { handleContactClick(e); handleNavSelect(); }}>Contact</Link></li>
             </ul>
           </div>
         )}

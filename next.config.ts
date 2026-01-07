@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const repo = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
 const isPages = process.env.GITHUB_PAGES === "true";
+const basePath = isPages && repo ? `/${repo}` : "";
 
 const nextConfig: NextConfig = {
   output: "export",
@@ -9,10 +10,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: isPages ? `/${repo}` : "",
-  assetPrefix: isPages ? `/${repo}/` : "",
+  basePath,
+  assetPrefix: basePath ? `${basePath}/` : "",
   env: {
-    NEXT_PUBLIC_BASE_PATH: isPages ? `/${repo}` : "",
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
 };
 
