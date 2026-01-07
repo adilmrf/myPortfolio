@@ -147,13 +147,13 @@ export default function RecommendationsCarousel({ recommendations, comingSoon = 
                             <article
                                 key={key}
                                 data-reco-index={dataIndex}
-                                className="snap-start rounded-md border p-4 bg-white shadow-sm"
+                                className="snap-start rounded-md border p-4 bg-white/90 shadow-sm dark:bg-zinc-900 dark:border-zinc-800"
                                 style={{ flex: "0 0 calc(100% - 64px)", maxWidth: 520 }}
                             >
                                 <div className="text-lg font-semibold">{r.name}</div>
-                                <div className="text-sm text-zinc-600">{r.title}</div>
-                                <div className="text-sm text-zinc-600 mt-2">{r.affiliation}</div>
-                                <div className="text-sm text-blue-600 mt-3">{r.email}</div>
+                                <div className="text-sm text-zinc-600 dark:text-zinc-400">{r.title}</div>
+                                <div className="text-sm text-zinc-600 dark:text-zinc-400 mt-2">{r.affiliation}</div>
+                                <div className="text-sm text-blue-600 dark:text-blue-400 mt-3">{r.email}</div>
                             </article>
                         );
                     })}

@@ -28,13 +28,13 @@ export default function TagDropdown({ allTags, label = "Tags" }: Props) {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((s) => !s)}
-        className="inline-flex items-center gap-2 px-3 py-1 rounded-md border bg-white/90 text-sm hover:shadow-sm"
+        className="inline-flex items-center gap-2 px-3 py-1 rounded-md border bg-white/90 text-sm hover:shadow-sm dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
       >
         {label} ▾
       </button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-64 sm:w-72 bg-white rounded-md border p-3 shadow-lg">
+        <div className="absolute right-0 z-20 mt-2 w-64 sm:w-72 bg-white rounded-md border p-3 shadow-lg dark:bg-zinc-900 dark:border-zinc-700">
           <TagFilter allTags={allTags} />
         </div>
       )}

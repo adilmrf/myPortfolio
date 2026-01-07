@@ -20,8 +20,8 @@ export const PROFILE: Profile = {
     highlights: [
         { label: "Research", value: "3+ years", detail: "Rocket Propulsion, UAVs, Space Systems" },
         { label: "SMSP", value: "Sheikh Mohamed Bin Zayed Scholar 2023" },
-        { label: "Sustainability", value: "Future Sustainability Leader 2024" },
-        { label: "Excellence", value: "UAE Golden Visa", detail: "For exceptional university graduates" },
+        { label: "Sustainability", value: "Future Sustainability Leader 2024", detail: "Y4S Masdar" },
+        { label: "Excellence", value: "UAE Golden Visa", detail: "Exceptional University Graduates" },
     ],
 };
 

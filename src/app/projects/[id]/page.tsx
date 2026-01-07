@@ -42,16 +42,16 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
 
   return (
     <article className="py-8">
-      <nav className="text-sm text-zinc-600 mb-4">
+      <nav className="text-sm text-zinc-600 mb-4 dark:text-zinc-300">
         <Link href="/projects" className="hover:underline">&larr; Projects</Link>
       </nav>
 
       <header className="mb-6">
         <h1 className="text-3xl font-semibold">{project.title}</h1>
-        <p className="mt-2 text-zinc-700">{project.summary}</p>
+        <p className="mt-2 text-zinc-700 dark:text-zinc-300">{project.summary}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {project.tags.map((t) => (
-            <span key={t} className="rounded bg-zinc-100 px-2 py-1 text-xs">{t}</span>
+            <span key={t} className="rounded bg-zinc-100 px-2 py-1 text-xs dark:bg-zinc-800">{t}</span>
           ))}
         </div>
       </header>
@@ -59,14 +59,14 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
       <section className="grid gap-6 md:grid-cols-3">
         <div className="md:col-span-2 space-y-4">
           <h2 className="text-xl font-medium">Responsibilities</h2>
-          <ul className="list-disc pl-5 text-sm text-zinc-700">
+          <ul className="list-disc pl-5 text-sm text-zinc-700 dark:text-zinc-200">
             {project.responsibilities.map((item, i) => (
               <li key={i}>{item}</li>
             ))}
           </ul>
 
           <h3 className="text-lg font-medium">Results</h3>
-          <ul className="list-disc pl-5 text-sm text-zinc-700">
+          <ul className="list-disc pl-5 text-sm text-zinc-700 dark:text-zinc-200">
             {project.results.map((item, i) => (
               <li key={i}>{item}</li>
             ))}
@@ -75,9 +75,9 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
 
         <aside className="md:col-span-1 space-y-4">
           {project.presentations.length > 0 && (
-            <div className="rounded-md border p-4">
+            <div className="rounded-md border p-4 bg-white/90 dark:bg-zinc-900 dark:border-zinc-800">
               <h4 className="font-medium">Presentations</h4>
-              <ul className="mt-2 list-disc pl-5 text-sm text-zinc-700">
+              <ul className="mt-2 list-disc pl-5 text-sm text-zinc-700 dark:text-zinc-200">
                 {project.presentations.map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
@@ -86,12 +86,12 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           )}
 
           {project.links && project.links.length > 0 && (
-            <div className="rounded-md border p-4">
+            <div className="rounded-md border p-4 bg-white/90 dark:bg-zinc-900 dark:border-zinc-800">
               <h4 className="font-medium">Links</h4>
               <ul className="mt-2 list-disc pl-5 text-sm">
                 {project.links.map((l, i) => (
                   <li key={i}>
-                    <a href={l.url} target="_blank" rel="noreferrer" className="text-blue-600">{l.label}</a>
+                    <a href={l.url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-blue-400">{l.label}</a>
                   </li>
                 ))}
               </ul>
@@ -105,7 +105,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           {prev && (
             <Link
               href={`/projects/${prev.id}`}
-              className="inline-flex h-7 w-48 items-center justify-center rounded border border-zinc-200 px-2 text-[11px] text-zinc-600 hover:border-zinc-300 hover:text-zinc-800"
+              className="inline-flex h-7 w-48 items-center justify-center rounded border border-zinc-200 px-2 text-[11px] text-zinc-600 hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200"
             >
               &larr; {prev.title}
             </Link>
@@ -115,7 +115,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
           {next && (
             <Link
               href={`/projects/${next.id}`}
-              className="inline-flex h-7 w-48 items-center justify-center rounded border border-zinc-200 px-2 text-[11px] text-zinc-600 hover:border-zinc-300 hover:text-zinc-800"
+              className="inline-flex h-7 w-48 items-center justify-center rounded border border-zinc-200 px-2 text-[11px] text-zinc-600 hover:border-zinc-300 hover:text-zinc-800 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-200"
             >
               {next.title} &rarr;
             </Link>

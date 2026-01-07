@@ -32,7 +32,7 @@ export default function Home() {
         />
         <div className="text-center md:text-left md:flex-1">
           <h1 className="text-[48px] md:text-[60px] font-extrabold tracking-tight leading-tight">{PROFILE.name}</h1>
-          <p className="text-[30px] text-zinc-700 mt-2">{PROFILE.headline}</p>
+          <p className="text-[30px] text-zinc-700 mt-2 dark:text-zinc-300">{PROFILE.headline}</p>
         </div>
       </div>
 
@@ -40,10 +40,10 @@ export default function Home() {
         <h2 className="text-[28px] font-semibold">Highlights</h2>
         <div className="mt-4 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {PROFILE.highlights?.map((h) => (
-            <div key={h.label} className="rounded-md border p-3 bg-white/90">
-              <div className="text-[12px] text-zinc-500">{h.label}</div>
+            <div key={h.label} className="rounded-md border p-3 bg-white/90 dark:bg-zinc-900 dark:border-zinc-800">
+              <div className="text-[12px] text-zinc-500 dark:text-zinc-400">{h.label}</div>
               <div className="text-[18px] font-semibold">{h.value}</div>
-              {h.detail && <div className="text-[18px] text-zinc-600">{h.detail}</div>}
+              {h.detail && <div className="text-[18px] text-zinc-600 dark:text-zinc-300">{h.detail}</div>}
             </div>
           ))}
         </div>
@@ -51,7 +51,7 @@ export default function Home() {
 
       <div className="mb-8">
         <h2 className="text-[28px] font-semibold">Education</h2>
-        <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
+        <div className="mt-4 space-y-3 text-[18px] text-zinc-700 dark:text-zinc-200">
           {EDUCATION.map((e) => (
             <div key={e.id} className="flex items-start gap-3">
               {e.logo && (
@@ -60,18 +60,18 @@ export default function Home() {
                   alt={`${e.institution} logo`}
                   width={40}
                   height={40}
-                  className="h-10 w-10 rounded-md object-contain bg-white/90"
+                  className="h-10 w-10 rounded-md object-contain bg-white/90 dark:bg-zinc-900"
                 />
               )}
               <div>
                 <div className="font-medium">{e.degree}</div>
-                <div className="text-zinc-600 text-[18px]">
+                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">
                   {e.institution}
                 </div>
-                <div className="text-zinc-600 text-[18px]">
+                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">
                   {e.startDate} {"\u2014"} {e.endDate ?? "Present"}
                 </div>
-                {e.notes && <div className="text-zinc-600 text-[16px]">{e.notes}</div>}
+                {e.notes && <div className="text-zinc-600 text-[16px] dark:text-zinc-400">{e.notes}</div>}
               </div>
             </div>
           ))}
@@ -80,7 +80,7 @@ export default function Home() {
 
       <div className="mb-8">
         <h2 className="text-[28px] font-semibold">Experience</h2>
-        <div className="mt-4 space-y-3 text-[18px] text-zinc-700">
+        <div className="mt-4 space-y-3 text-[18px] text-zinc-700 dark:text-zinc-200">
           {EXPERIENCE.slice(0, 4).map((e) => (
             <div key={e.id} className="flex items-start gap-3">
               {e.logo && (
@@ -89,19 +89,20 @@ export default function Home() {
                   alt={`${e.organization} logo`}
                   width={40}
                   height={40}
-                  className="h-10 w-10 rounded-md object-contain bg-white/90"
+                  className="h-10 w-10 rounded-md object-contain bg-white/90 dark:bg-zinc-900"
                 />
               )}
-              <div>
+              <div className="min-w-0">
                 <Link href="/experience" className="text-[18px] font-medium hover:underline">
-                  {e.role} {"\u2014"} {e.organization}
+                  {e.role}
                 </Link>
-                <div className="text-[12px] text-zinc-600">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
+                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">{e.organization}</div>
+                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
               </div>
             </div>
           ))}
           <div className="mt-2">
-            <Link href="/experience" className="text-blue-600 text-[14px]">See full experience</Link>
+            <Link href="/experience" className="text-blue-600 text-[14px] dark:text-blue-400">See full experience</Link>
           </div>
         </div>
       </div>

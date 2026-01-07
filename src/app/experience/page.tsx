@@ -23,7 +23,7 @@ export default function ExperiencePage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-start justify-between">
           <h1 className="text-2xl font-semibold">Experience</h1>
-          <div className="text-sm text-zinc-600 text-right">
+          <div className="text-sm text-zinc-600 text-right dark:text-zinc-300">
             <div>Showing {EXPERIENCE.length} roles</div>
             <div className="mt-2">
               <TagDropdown allTags={TAG_LIST} />
@@ -31,7 +31,7 @@ export default function ExperiencePage() {
           </div>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-6 md:-mx-6">
           <React.Suspense fallback={<div className="text-sm text-zinc-500">Loading experiences...</div>}>
             <ExperienceList experiences={EXPERIENCE} />
           </React.Suspense>

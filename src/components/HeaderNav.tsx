@@ -22,8 +22,8 @@ export default function HeaderNav() {
   const linkClass = (href: string) =>
     `rounded-full transition-colors ${
       isActive(href)
-        ? "bg-zinc-900 text-white px-2 py-0.5 -mx-2 -my-0.5"
-        : "text-zinc-700 hover:text-zinc-900"
+        ? "bg-zinc-900 text-white px-2 py-0.5 -mx-2 -my-0.5 dark:bg-zinc-100 dark:text-zinc-900"
+        : "text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
     }`;
 
   const handleContactClick = (e: React.MouseEvent) => {
@@ -83,19 +83,19 @@ export default function HeaderNav() {
           aria-expanded={open}
           aria-label="Open menu"
           onClick={() => setOpen((s) => !s)}
-          className="inline-flex items-center justify-center px-3 py-1 rounded-md border bg-white/90 text-sm"
+          className="inline-flex items-center justify-center px-3 py-1 rounded-md border bg-white/90 text-sm dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
         >
           ☰
         </button>
 
         {open && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md border shadow-lg z-50">
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md border shadow-lg z-50 dark:bg-zinc-900 dark:border-zinc-700">
             <ul className="flex flex-col">
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/" onClick={handleNavSelect}>Home</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/experience" onClick={handleNavSelect}>Experience</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/projects" onClick={handleNavSelect}>Projects</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/about" onClick={handleNavSelect}>About</Link></li>
-              <li className="px-4 py-2 hover:bg-zinc-50"><Link href="/#contact" onClick={(e) => { handleContactClick(e); handleNavSelect(); }}>Contact</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800"><Link href="/" onClick={handleNavSelect}>Home</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800"><Link href="/experience" onClick={handleNavSelect}>Experience</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800"><Link href="/projects" onClick={handleNavSelect}>Projects</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800"><Link href="/about" onClick={handleNavSelect}>About</Link></li>
+              <li className="px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800"><Link href="/#contact" onClick={(e) => { handleContactClick(e); handleNavSelect(); }}>Contact</Link></li>
             </ul>
           </div>
         )}

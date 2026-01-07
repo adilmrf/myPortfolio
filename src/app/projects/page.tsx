@@ -22,7 +22,7 @@ export default function ProjectsPage() {
             <div className="flex flex-col gap-6">
                 <div className="flex items-start justify-between">
                     <h1 className="text-2xl font-semibold">Projects</h1>
-                    <div className="text-sm text-zinc-600 text-right">
+                    <div className="text-sm text-zinc-600 text-right dark:text-zinc-300">
                         <div>Showing {PROJECTS.length} projects</div>
                         <div className="mt-2">
                             <TagDropdown allTags={TAG_LIST} />

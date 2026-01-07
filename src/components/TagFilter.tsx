@@ -49,7 +49,7 @@ export default function TagFilter({ allTags, selectedTags, onChange, label = "Fi
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium">{label}</h3>
         {selected.length > 0 && (
-          <button onClick={handleClear} className="text-sm text-blue-600">Clear</button>
+          <button onClick={handleClear} className="text-sm text-blue-600 dark:text-blue-400">Clear</button>
         )}
       </div>
 
@@ -65,7 +65,7 @@ export default function TagFilter({ allTags, selectedTags, onChange, label = "Fi
       </div>
 
       {selected.length > 0 && (
-        <div className="mt-2 text-sm text-zinc-600">
+        <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
           <strong className="mr-1">Filtered by:</strong>
           <span className="inline-block max-w-full truncate">{selected.join(", ")}</span>
         </div>
