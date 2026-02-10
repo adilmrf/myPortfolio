@@ -13,7 +13,8 @@ export const TAGS = [
   "3D Printing",
   "Control",
   "Sustainability",
-  "Space"
+  "Space",
+  "AI"
 ] as const;
 
 export type Tag = typeof TAGS[number];

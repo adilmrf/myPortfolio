@@ -2,7 +2,20 @@ import type { ExperienceItem } from "../lib/types";
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
-    id: "exp-1",
+    id: "exp-5",
+    role: "AI Tutor",
+    organization: "xAI",
+    logo: "/media/logos/xai.png",
+    startDate: "01.2026",
+    endDate: "Present",
+    bullets: [
+      "Trained Grok in gulf Arabic",
+      "Completed more than 1000 tasks, including L1 reviews",
+    ],
+    tags: ["AI"],
+  },
+  {
+    id: "exp-4",
     role: "CubeSat Development Instructor",
     organization: "SpacePoint (Space.)",
     logo: "/media/logos/spacepoint.jpg",
@@ -15,7 +28,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     tags: ["Space", "AIT"],
   },
   {
-    id: "exp-2",
+    id: "exp-3",
     role: "Satellite AIT Intern",
     organization: "Orbitworks",
     logo: "/media/logos/orbitworks.jfif",
@@ -30,7 +43,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     tags: ["Space", "AIT"],
   },
   {
-    id: "exp-3",
+    id: "exp-2",
     role: "Future Sustainability Leader",
     organization: " Youth4Sustainability Masdar",
     logo: "/media/logos/y4s.png",
@@ -44,7 +57,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     tags: ["Sustainability", "Research"],
   },
   {
-    id: "exp-4",
+    id: "exp-1",
     role: "Rocket Propulsion Intern",
     organization: "HALCON, EDGE Group",
     logo: "/media/logos/halcon.png",

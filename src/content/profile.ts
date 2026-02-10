@@ -2,7 +2,7 @@ import type { Profile } from "../lib/types";
 
 export const PROFILE: Profile = {
     name: "Adil Mahroof",
-    headline: "Aerospace Engineer",
+    headline: "Curious. Multidisciplinary. Adaptable.",
     location: "Dubai, United Arab Emirates",
     summary:
         "Adil Mahroof is an aerospace engineering graduate with hands-on experience in engineering design, analysis, and assembly, integration, and testing (AIT)." +
