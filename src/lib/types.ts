@@ -64,6 +64,7 @@ export interface EducationItem {
   logo?: string; // /public path for institution logo
   startDate: string; // ISO-ish (YYYY) or human readable
   endDate?: string; // empty for present
+  grade?: string; // GPA or grade
   notes?: string;
 }
 

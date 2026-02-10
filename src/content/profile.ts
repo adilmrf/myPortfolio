@@ -1,7 +1,7 @@
 import type { Profile } from "../lib/types";
 
 export const PROFILE: Profile = {
-    name: "Adil Mahroof",
+    name: "ADIL MAHROOF",
     headline: "Curious. Multidisciplinary. Adaptable.",
     location: "Dubai, United Arab Emirates",
     summary:

@@ -9,7 +9,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     startDate: "01.2026",
     endDate: "Present",
     bullets: [
-      "Trained Grok in gulf Arabic",
+      "Trained Grok in Gulf Arabic",
       "Completed more than 1000 tasks, including L1 reviews",
     ],
     tags: ["AI"],

@@ -8,6 +8,7 @@ export const EDUCATION: EducationItem[] = [
     logo: "/media/logos/uaeu.png",
     startDate: "08.2020",
     endDate: "12.2024",
+    grade: "GPA: 3.95/4.0",
   },
   {
     id: "edu-2",
@@ -16,6 +17,7 @@ export const EDUCATION: EducationItem[] = [
     logo: "/media/logos/nyuad.png",
     startDate: "08.2022",
     endDate: "05.2023",
+    grade: "GPA 3.93/4.0",
   },
   {
     id: "edu-3",
@@ -24,6 +26,7 @@ export const EDUCATION: EducationItem[] = [
     logo: "/media/logos/nwps.jfif",
     startDate: "09.2018",
     endDate: "06.2020",
+    grade: "Grade: 97.65%",
   },
 ];
 

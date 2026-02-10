@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
 import { PROFILE } from "../content/profile";
 import { EXPERIENCE } from "../content/experience";
 import { EDUCATION } from "../content/education";
 import RECOMMENDATIONS from "../content/recommendations";
 import RecommendationsCarousel from "../components/RecommendationsCarousel";
+import HistoricalTimeline from "../components/HistoricalTimeline";
 import { withBasePath } from "../lib/assetPath";
 
 export const metadata: Metadata = {
@@ -49,63 +49,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mb-8">
-        <h2 className="text-[28px] font-semibold">Education</h2>
-        <div className="mt-4 space-y-3 text-[18px] text-zinc-700 dark:text-zinc-200">
-          {EDUCATION.map((e) => (
-            <div key={e.id} className="flex items-start gap-3">
-              {e.logo && (
-                <Image
-                  src={withBasePath(e.logo)}
-                  alt={`${e.institution} logo`}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-md object-contain bg-white/90 dark:bg-zinc-900"
-                />
-              )}
-              <div>
-                <div className="font-medium">{e.degree}</div>
-                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">
-                  {e.institution}
-                </div>
-                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">
-                  {e.startDate} {"\u2014"} {e.endDate ?? "Present"}
-                </div>
-                {e.notes && <div className="text-zinc-600 text-[16px] dark:text-zinc-400">{e.notes}</div>}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-[28px] font-semibold">Experience</h2>
-        <div className="mt-4 space-y-3 text-[18px] text-zinc-700 dark:text-zinc-200">
-          {EXPERIENCE.slice(0, 4).map((e) => (
-            <div key={e.id} className="flex items-start gap-3">
-              {e.logo && (
-                <Image
-                  src={withBasePath(e.logo)}
-                  alt={`${e.organization} logo`}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-md object-contain bg-white/90 dark:bg-zinc-900"
-                />
-              )}
-              <div className="min-w-0">
-                <Link href="/experience" className="text-[18px] font-medium hover:underline">
-                  {e.role}
-                </Link>
-                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">{e.organization}</div>
-                <div className="text-zinc-600 text-[18px] dark:text-zinc-400">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</div>
-              </div>
-            </div>
-          ))}
-          <div className="mt-2">
-            <Link href="/experience" className="text-blue-600 text-[14px] dark:text-blue-400">See full experience</Link>
-          </div>
-        </div>
-      </div>
+      <HistoricalTimeline education={EDUCATION} experience={EXPERIENCE} />
 
       <div className="mb-8">
         <h2 className="text-[28px] font-semibold">Recommendations</h2>
