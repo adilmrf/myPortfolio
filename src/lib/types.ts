@@ -14,7 +14,10 @@ export const TAGS = [
   "Control",
   "Sustainability",
   "Space",
-  "AI"
+  "AI",
+  "Robotics",
+  "Laser-cutting",
+  "Programming"
 ] as const;
 
 export type Tag = typeof TAGS[number];

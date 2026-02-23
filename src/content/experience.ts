@@ -2,6 +2,19 @@ import type { ExperienceItem } from "../lib/types";
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
+    id: "exp-6",
+    role: "Robotics Intern",
+    organization: "Besomi Electronics",
+    logo: "/media/logos/besomi_logo.jfif",
+    startDate: "02.2026",
+    endDate: "Present",
+    bullets: [
+      "Designed a Sumo Robot for student competition workshops",
+      "Used Raspberry Pi/Arduino Uno Q for AI integrated Robots",
+    ],
+    tags: ["Robotics", "AI", "3D Printing", "Laser-cutting", "Programming"],
+  },
+  {
     id: "exp-5",
     role: "AI Tutor",
     organization: "xAI",
