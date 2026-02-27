@@ -9,8 +9,9 @@ export const EXPERIENCE: ExperienceItem[] = [
     startDate: "02.2026",
     endDate: "Present",
     bullets: [
-      "Designed a Sumo Robot for student competition workshops",
-      "Used Raspberry Pi/Arduino Uno Q for AI integrated Robots",
+      "Led Sumo Robot workshops for university students to demonstrate practical robotics applications.",
+      "Designed and fabricated a modular Sumo Robot kit for student competitions, focusing on mechanical durability and ease of assembly.",
+      "Developed control logic and autonomous navigation using Arduino UNO Q and Raspberry Pi for sensor-integrated robots."
     ],
     tags: ["Robotics", "AI", "3D Printing", "Laser-cutting", "Programming"],
   },
@@ -22,8 +23,9 @@ export const EXPERIENCE: ExperienceItem[] = [
     startDate: "01.2026",
     endDate: "Present",
     bullets: [
-      "Trained Grok in Gulf Arabic",
-      "Completed more than 1000 tasks, including L1 reviews",
+      "Fine-tuned the Grok LLM for high-fidelity Gulf Arabic dialectal recognition and cultural nuance.",
+      "Completed more than 1000 tasks, including L1 reviews.",
+      "Conducted systematic audits of model outputs to verify linguistic precision and safety benchmarks."
     ],
     tags: ["AI"],
   },
@@ -35,8 +37,8 @@ export const EXPERIENCE: ExperienceItem[] = [
     startDate: "04.2025",
     endDate: "Present",
     bullets: [
-      "Led 10+ lectures on Introduction to Space, satellites, and space technology",
-      "Led 10+ workshops on hands-on CubeSat assembly, integration and testing with 100+ students.",
+      "Led 10+ lectures on Introduction to Space, satellites, and space technology.",
+      "Facilitated 10+ hands-on workshops for 100+ students on the assembly, integration, and testing (AIT) of proprietary educational SatKits.",
     ],
     tags: ["Space", "AIT"],
   },
