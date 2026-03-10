@@ -1,6 +1,7 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import type { EducationItem, ExperienceItem } from "../lib/types";
 import { withBasePath } from "../lib/assetPath";
 
@@ -20,22 +21,70 @@ function TimelineSection({
   const itemWidth = compact ? 400 : 520;
   const minWidth = compact ? "min-w-[280px]" : "min-w-[380px]";
   const maxWidth = compact ? "max-w-[360px]" : "max-w-[520px]";
+  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollContentRef = React.useRef<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(true);
+  const [isHovering, setIsHovering] = React.useState(false);
+
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  React.useEffect(() => {
+    const timer = setTimeout(checkScroll, 100);
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [items]);
+
+  const handleScroll = (direction: "left" | "right") => {
+    const scrollAmount = 400;
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+    if (scrollContentRef.current) {
+      scrollContentRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+    setTimeout(checkScroll, 300);
+  };
+
   return (
-    <section className="mt-6">
+    <section className="mt-6 group">
       <div className="flex items-center justify-between gap-4">
         <h3 className="text-[24px] font-semibold">{title}</h3>
         {footer}
       </div>
-      <div className="relative mt-2 h-[400px] overflow-hidden">
+      <div
+        className="relative mt-2 h-[400px] overflow-hidden"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-zinc-200 dark:bg-zinc-800 z-0" />
-        <div className="absolute inset-0 overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar">
+        <div
+          className="absolute inset-0 overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar"
+          ref={scrollContainerRef}
+          onScroll={checkScroll}
+        >
           <div className="flex gap-4 h-full" style={{ width: `${items.length * itemWidth}px` }}>
             {items.map((item, index) => (
               <div key={item.id} className={`${minWidth} ${maxWidth} flex-shrink-0 snap-start`} />
             ))}
           </div>
         </div>
-        <div className="absolute inset-0 pointer-events-none overflow-x-auto overflow-y-hidden hide-scrollbar">
+        <div className="absolute inset-0 pointer-events-none overflow-x-auto overflow-y-hidden hide-scrollbar" ref={scrollContentRef}>
           <div className="flex gap-4 h-full" style={{ width: `${items.length * itemWidth}px` }}>
             {items.map((item, index) => (
               <TimelineCard
@@ -51,6 +100,28 @@ function TimelineSection({
             ))}
           </div>
         </div>
+
+        {/* Left arrow */}
+        {canScrollLeft && (
+          <button
+            aria-label="Scroll left"
+            onClick={() => handleScroll("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-white border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto dark:bg-zinc-900 dark:border-zinc-800"
+          >
+            ‹
+          </button>
+        )}
+
+        {/* Right arrow */}
+        {canScrollRight && (
+          <button
+            aria-label="Scroll right"
+            onClick={() => handleScroll("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-white border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto dark:bg-zinc-900 dark:border-zinc-800"
+          >
+            ›
+          </button>
+        )}
       </div>
     </section>
   );
