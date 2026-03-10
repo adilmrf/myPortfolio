@@ -22,8 +22,8 @@ export const PROJECTS: Project[] = [
     ],
     tags: ["Research", "Sustainability", "3D Printing"],
     links: [
-      { label: "Report (PDF)", url: "#" },
-      { label: "Test Video", url: "#" },
+      // { label: "Report (PDF)", url: "#" },
+      // { label: "Test Video", url: "#" },
     ],
   },
   {
@@ -44,8 +44,8 @@ export const PROJECTS: Project[] = [
     ],
     tags: ["Research", "UAVs", "Systems Engineering", "3D Printing", "Control", "AIT"],
     links: [
-      { label: "Report (PDF)", url: "#" },
-      { label: "Test Video", url: "#" },
+      // { label: "Report (PDF)", url: "#" },
+      // { label: "Test Video", url: "#" },
     ],
   },
   {
