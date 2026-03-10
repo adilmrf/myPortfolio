@@ -50,10 +50,10 @@ export const EXPERIENCE: ExperienceItem[] = [
     startDate: "08.2025",
     endDate: "11.2025",
     bullets: [
-      "Designed and manufactured a mechanical ground support equipment (MGSE) to store 40 solar array modules",
+      "Designed and manufactured a mechanical ground support equipment (MGSE) to store 40 solar array modules.",
       "Created work and build procedures for MGSEs and Satellite AIT steps.",
       "Assisted with AIT processes and builds in the clean room.",
-      "Worked on 10 Longbow satellites including storage, functional tests, solar array deployment, and propulsion module removal"
+      "Worked on 10 Longbow satellites including storage, functional tests, solar array deployment, and propulsion module removal."
     ],
     tags: ["Space", "AIT"],
   },
