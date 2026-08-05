@@ -5,7 +5,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-6",
     role: "Robotics Intern",
     organization: "Besomi Electronics",
-    logo: "/media/logos/besomi_logo.jfif",
+    logo: "/media/logos/besomi_logo.jpg",
     startDate: "02.2026",
     endDate: "Present",
     bullets: [
@@ -46,7 +46,7 @@ export const EXPERIENCE: ExperienceItem[] = [
     id: "exp-3",
     role: "Satellite AIT Intern",
     organization: "Orbitworks",
-    logo: "/media/logos/orbitworks.jfif",
+    logo: "/media/logos/orbitworks.jpg",
     startDate: "08.2025",
     endDate: "11.2025",
     bullets: [
@@ -60,7 +60,7 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     id: "exp-2",
     role: "Future Sustainability Leader",
-    organization: " Youth4Sustainability Masdar",
+    organization: "Youth4Sustainability Masdar",
     logo: "/media/logos/y4s.png",
     startDate: "01.2024",
     endDate: "01.2025",

@@ -23,7 +23,7 @@ export const EDUCATION: EducationItem[] = [
     id: "edu-3",
     degree: "High School Diploma",
     institution: "New World Private School (NWPS)",
-    logo: "/media/logos/nwps.jfif",
+    logo: "/media/logos/nwps.jpg",
     startDate: "09.2018",
     endDate: "06.2020",
     grade: "Grade: 97.65%",
