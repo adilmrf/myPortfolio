@@ -1,10 +1,10 @@
 "use client";
+
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { parseTagsFromSearchParams } from "../lib/tagQuery";
 import type { ExperienceItem as Experience } from "../lib/types";
-import Image from "next/image";
-import { withBasePath } from "../lib/assetPath";
+import Timeline, { type TimelineItem } from "./Timeline";
 
 export default function ExperienceList({ experiences }: { experiences: Experience[] }) {
   const searchParams = useSearchParams();
@@ -14,33 +14,23 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     ? experiences.filter((e) => (e.tags ?? []).some((t) => selected.includes(t)))
     : experiences;
 
-  return (
-    <div className="grid gap-4">
-      {filtered.map((e) => (
-        <article key={e.id} className="rounded-md border p-4 bg-white/90 hover:shadow-md transition-shadow dark:bg-zinc-900 dark:border-zinc-800">
-          <div className="flex items-start gap-3">
-            {e.logo && (
-              <Image
-                src={withBasePath(e.logo)}
-                alt={`${e.organization} logo`}
-                width={40}
-                height={40}
-                className="h-10 w-10 rounded-md object-contain bg-white/90 dark:bg-zinc-900"
-              />
-            )}
-            <div className="min-w-0">
-              <h2 className="font-medium text-[18px] break-words">{e.role}</h2>
-              <p className="text-[18px] text-zinc-600 dark:text-zinc-400 break-words">{e.organization}</p>
-              <p className="text-[18px] text-zinc-600 dark:text-zinc-400 whitespace-nowrap">{e.startDate} {"\u2014"} {e.endDate ?? "Present"}</p>
-            </div>
-          </div>
-          <ul className="mt-2 list-disc pl-5 text-sm text-zinc-700 dark:text-zinc-200 break-words">
-            {e.bullets.map((b, i) => (
-              <li key={i}>{b}</li>
-            ))}
-          </ul>
-        </article>
-      ))}
-    </div>
-  );
+  if (filtered.length === 0) {
+    return (
+      <p className="text-small text-ink-muted">
+        No roles match those tags. Clear a filter to see everything.
+      </p>
+    );
+  }
+
+  const items: TimelineItem[] = filtered.map((e) => ({
+    id: e.id,
+    title: e.role,
+    subtitle: e.organization,
+    logo: e.logo,
+    startDate: e.startDate,
+    endDate: e.endDate,
+    bullets: e.bullets,
+  }));
+
+  return <Timeline items={items} />;
 }

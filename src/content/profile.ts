@@ -1,7 +1,9 @@
 import type { Profile } from "../lib/types";
 
 export const PROFILE: Profile = {
-    name: "ADIL MAHROOF",
+    name: "Adil Mahroof",
+    role: "Aerospace Engineer",
+    focus: "Rocket Propulsion · UAVs · Satellite AIT",
     headline: "Curious. Multidisciplinary. Adaptable.",
     location: "Dubai, United Arab Emirates",
     summary:
@@ -9,13 +11,16 @@ export const PROFILE: Profile = {
         " Exposure across rocket propulsion, aerodynamics, satellite systems, and system design through academic projects, multidisciplinary teamwork, and internships within the Aerospace and Defense sector." +
         " Known for adaptability and a strong learning mindset, with a practical interest in applying theory to real engineering challenges." +
         " Actively seeking opportunities to contribute to technically driven teams and cutting-edge aerospace programs.",
-    skills: ["Leadership", "Teamwork", "Problem Solving", "Innovation", "Adaptability", "Inquisitive Curiousity"],
+    skills: ["Leadership", "Teamwork", "Problem Solving", "Innovation", "Adaptability", "Inquisitive Curiosity"],
     hobbies: ["3D Printing", "Astronomy", "Football", "Reading"],
     languages: ["English: IELTS 8.5", "Arabic", "Malayalam"],
     links: {
         github: "https://github.com/adilmrf",
         linkedin: "https://linkedin.com/in/adil-mahroof",
         email: "mailto:adilmrf@outlook.com",
+        // Drop a PDF at public/adil-mahroof-cv.pdf and uncomment to show the
+        // "Download CV" button in the hero.
+        // resume: "/adil-mahroof-cv.pdf",
     },
     highlights: [
         { label: "Research", value: "3+ years", detail: "Rocket Propulsion, UAVs, Space Systems" },

@@ -1,6 +1,8 @@
 "use client";
+
 import React from "react";
 import TagFilter from "./TagFilter";
+import { ChevronDownIcon } from "./icons";
 
 type Props = {
   allTags: readonly string[];
@@ -10,31 +12,57 @@ type Props = {
 export default function TagDropdown({ allTags, label = "Tags" }: Props) {
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement | null>(null);
+  const triggerRef = React.useRef<HTMLButtonElement | null>(null);
 
+  // Listeners are attached only while open, and Escape closes and restores
+  // focus to the trigger.
   React.useEffect(() => {
-    function onDoc(e: MouseEvent) {
+    if (!open) return;
+
+    function onPointerDown(e: MouseEvent) {
       if (!ref.current) return;
       if (e.target instanceof Node && !ref.current.contains(e.target)) {
         setOpen(false);
       }
     }
-    document.addEventListener("click", onDoc);
-    return () => document.removeEventListener("click", onDoc);
-  }, []);
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   return (
     <div className="relative inline-block text-left" ref={ref}>
       <button
+        ref={triggerRef}
         type="button"
         aria-expanded={open}
+        aria-controls="tag-filter-panel"
         onClick={() => setOpen((s) => !s)}
-        className="inline-flex items-center gap-2 px-3 py-1 rounded-md border bg-white/90 text-sm hover:shadow-sm dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
+        className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-raised px-3 py-1.5 text-small text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
       >
-        {label} ▾
+        {label}
+        <ChevronDownIcon
+          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
       </button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-64 sm:w-72 bg-white rounded-md border p-3 shadow-lg dark:bg-zinc-900 dark:border-zinc-700">
+        <div
+          id="tag-filter-panel"
+          className="absolute right-0 z-30 mt-2 w-64 rounded-lg border border-line bg-surface-raised p-4 shadow-xl shadow-black/10 sm:w-72"
+        >
           <TagFilter allTags={allTags} />
         </div>
       )}

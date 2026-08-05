@@ -10,7 +10,3 @@ export function getProjectById(id?: string): Project | undefined {
   const normalizedId = id.replace(/\/$/, "");
   return PROJECTS.find((p) => p.id === normalizedId);
 }
-
-export function getFeaturedProjects(): Project[] {
-  return PROJECTS;
-}

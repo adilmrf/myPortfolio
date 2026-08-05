@@ -23,34 +23,40 @@ export function serializeTagsToQuery(tags: Iterable<string> | undefined): string
   return encodeURIComponent(list.join(","));
 }
 
+/** Minimal shape of the `get`-style search params returned by `useSearchParams()`. */
+interface SearchParamsLike {
+  get(name: string): string | null;
+}
+
+/** Server-component `searchParams` prop shape. */
+type SearchParamsObject = Record<string, string | string[] | undefined>;
+
+function isSearchParamsLike(value: object): value is SearchParamsLike {
+  return typeof (value as SearchParamsLike).get === "function";
+}
+
 /**
- * Accepts either a SearchParams-like object or a raw string and returns array of tags.
- * - If `searchParams` is an object with a `tags` key, it supports string or string[].
+ * Reads the `tags` query parameter and returns it as a normalised array.
+ *
+ * Accepts either the `ReadonlyURLSearchParams` returned by `useSearchParams()`
+ * or the plain object a server component receives as its `searchParams` prop.
  */
-export function parseTagsFromSearchParams(searchParams: any): string[] {
+export function parseTagsFromSearchParams(
+  searchParams: SearchParamsLike | SearchParamsObject | null | undefined,
+): string[] {
   if (!searchParams) return [];
 
-  // Guard against a Promise-like value (some Next internals may present a thenable)
-  if (typeof searchParams.then === "function") return [];
-
-  // If SearchParams instance (browser URLSearchParams or similar)
-  try {
-    if (typeof searchParams.get === "function") {
-      const raw = searchParams.get("tags");
-      if (!raw) return [];
-      return normalizeTags(raw.split(","));
-    }
-  } catch (e) {
-    // ignore and continue to object handling
+  if (isSearchParamsLike(searchParams)) {
+    const raw = searchParams.get("tags");
+    return raw ? normalizeTags(raw.split(",")) : [];
   }
 
-  // If plain object ({ tags?: string | string[] })
-  const raw = searchParams.tags ?? searchParams.get?.("tags");
+  const raw = searchParams.tags;
   if (!raw) return [];
   if (Array.isArray(raw)) {
-    return normalizeTags(raw.flatMap((r) => String(r).split(",")));
+    return normalizeTags(raw.flatMap((r) => r.split(",")));
   }
-  return normalizeTags(String(raw).split(","));
+  return normalizeTags(raw.split(","));
 }
 
 export function toggleTag(list: string[] | undefined, tag: string): string[] {

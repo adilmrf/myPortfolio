@@ -1,49 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Adil Mahroof
 
-## Getting Started
+Personal portfolio site for Adil Mahroof, aerospace engineer (rocket propulsion, UAVs, satellite AIT).
 
-First, run the development server:
+**Live:** https://adilmrf.github.io/myPortfolio/
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router) with `output: "export"` — fully static, no server
+- React 19, TypeScript (strict)
+- Tailwind CSS v4 (CSS-first config; there is no `tailwind.config` file — theme tokens live in `src/app/globals.css`)
+- No other runtime dependencies
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run lint
+npm run build    # static export into ./out
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To reproduce the production build exactly, with the GitHub Pages base path applied:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+GITHUB_PAGES=true GITHUB_REPOSITORY=adilmrf/myPortfolio npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing content
 
-## Learn More
+All site copy lives in plain TypeScript files under `src/content/` — no CMS, no markdown.
 
-To learn more about Next.js, take a look at the following resources:
+| File | Contains |
+| --- | --- |
+| `profile.ts` | Name, headline, summary, skills, hobbies, languages, links, homepage highlights |
+| `experience.ts` | Roles, with organisation, logo, dates, bullets and tags |
+| `education.ts` | Degrees and programmes |
+| `projects.ts` | Projects, with responsibilities, results, presentations, tags and links |
+| `recommendations.ts` | Referees. **Never put email addresses here** — this file is bundled into the public JS payload and the repository is public. |
+| `tags.ts` | Re-exports the canonical tag list from `src/lib/types.ts` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tag names are typed. To add a tag, add it to `TAGS` in `src/lib/types.ts` first, or the build will fail.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Images
 
-## Deploy on Vercel
+`output: "export"` requires `images.unoptimized: true`, so **`next/image` performs no resizing or format conversion** — every byte committed is a byte shipped to visitors. Resize before committing:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Photos
+magick input.jpg -resize 1600x -quality 80 -strip public/media/projects/<id>/hero.jpg
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Logos
+magick input.png -resize 128x -strip public/media/logos/<name>.png
 
-## GitHub Pages (static export)
+# Video (keep under ~8 MB; anything larger belongs on YouTube)
+ffmpeg -i input.mov -vf scale=1280:-2 -c:v libx264 -crf 24 -preset slow -an output.mp4
+ffmpeg -i output.mp4 -vframes 1 -q:v 3 poster.jpg
+```
 
-To deploy this site to GitHub Pages (project site at /<repo>), this project is configured to produce a fully static export compatible with Pages.
+Rough budgets: project hero ≤ 250 KB, gallery image ≤ 150 KB, card thumbnail ≤ 60 KB, logo ≤ 20 KB.
 
-- Local dev: `npm run dev`
-- Local build & export: `npm run build` (this generates the static `out` folder)
-- GitHub Pages deploy: automatic on push to `main` via GitHub Actions (workflow: `.github/workflows/deploy.yml`)
-- Expected live URL: `https://<username>.github.io/<repo>/`
+## Social share card
 
-Notes:
-- The Next.js config in `next.config.ts` sets `output: "export"`, `trailingSlash: true`, and `images.unoptimized: true`.
-- In CI the workflow sets `GITHUB_PAGES=true` so `basePath` and `assetPrefix` are applied automatically.
+`src/app/opengraph-image.png` and `src/app/twitter-image.png` are committed static files, picked up automatically by Next.js's metadata file convention.
+
+They are deliberately *not* generated at build time: under `output: "export"` Next.js's `ImageResponse` route emits an **extensionless** file, which static hosts serve as `application/octet-stream` and social scrapers reject. The source that produced the card is kept at `scripts/og-image.source.tsx`, with regeneration instructions in its header comment.
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which lints, builds the static export, and publishes it with the official GitHub Pages actions.
+
+`next.config.ts` reads `GITHUB_REPOSITORY` in CI to set `basePath` and `assetPrefix` to `/myPortfolio`. Anything referencing a file in `public/` must go through `withBasePath()` from `src/lib/assetPath.ts`, or it will 404 in production while working fine locally.

@@ -12,10 +12,10 @@ export default function TagChip({ selected = false, label, className = "", ...re
       {...rest}
       type="button"
       aria-pressed={selected}
-      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-small transition-colors ${
         selected
-          ? "bg-blue-600 text-white shadow-sm"
-          : "border border-zinc-200 bg-white text-zinc-700 hover:shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
+          ? "bg-accent text-accent-contrast"
+          : "border border-line bg-surface-raised text-ink-muted hover:border-line-strong hover:text-ink"
       } ${className}`}
     >
       {label}

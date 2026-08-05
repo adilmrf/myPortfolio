@@ -13,6 +13,14 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
     ? projects.filter((p) => (p.tags ?? []).some((t) => selected.includes(t)))
     : projects;
 
+  if (filtered.length === 0) {
+    return (
+      <p className="text-small text-ink-muted">
+        No projects match those tags. Clear a filter to see everything.
+      </p>
+    );
+  }
+
   return (
     <div className="grid gap-4">
       {filtered.map((p) => (

@@ -30,7 +30,7 @@ export const PROJECTS: Project[] = [
     id: "vtol-uav",
     title: "Design and Control for Vertical Take-off and Landing (VTOL) UAV",
     summary:
-      " A tri-motor vertical take-off and landing UAV with two tilt motors was designed, additively manufactured and flight tested.",
+      "A tri-motor vertical take-off and landing UAV with two tilt motors was designed, additively manufactured and flight tested.",
     responsibilities: [
       "Conducted preliminary research on UAVs and VTOL technology.",
       "Performed aerodynamic analysis using XFLR5 and CAD modeling of the UAV structure and VTOL tilt mechanisms.",
@@ -41,6 +41,7 @@ export const PROJECTS: Project[] = [
     ],
     presentations: [
       "IDEX 2025, Abu Dhabi, UAE.",
+      "IMAC 2025, Al Ain, UAE."
     ],
     tags: ["Research", "UAVs", "Systems Engineering", "3D Printing", "Control", "AIT"],
     links: [
@@ -72,7 +73,7 @@ export const PROJECTS: Project[] = [
       "A feasibility study on using Hydrogen Peroxide as a green propellant in chemical and electric microthrust generation.",
     responsibilities: [
       "Led a team of four undergraduate students and managed schedules and proposals.",
-      "Designed a 100 mN class thruster using NACA CEA, RPA, and CATIA V5.",
+      "Designed a 100 mN class thruster using NASA CEA, RPA, and CATIA V5.",
     ],
     results: [
       "Manufactured and tested a micro-thruster for chemical propulsion.",

@@ -1,33 +1,82 @@
 import type { Metadata } from "next";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import HeaderNav from "../components/HeaderNav";
+import ThemeToggle from "../components/ThemeToggle";
+import Container from "../components/ui/Container";
+import { GitHubIcon, LinkedInIcon, MailIcon } from "../components/icons";
 import "./globals.css";
 import { PROFILE } from "../content/profile";
 import { withBasePath } from "../lib/assetPath";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN, SITE_URL } from "../lib/site";
 
-const siteName = PROFILE.name + " — Adil Mahroof";
-const description = PROFILE.summary ?? "A concise portfolio highlighting projects and experience in aerospace engineering.";
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
+  // Origin only. Next.js prepends `basePath` itself when resolving the
+  // file-convention images (opengraph-image.png / twitter-image.png), so a
+  // metadataBase that already contains the basePath would duplicate it.
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: siteName,
-    template: "%s | " + siteName,
+    default: SITE_NAME,
+    template: "%s · Adil Mahroof",
   },
-  description,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: siteName,
-    description,
-    siteName,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    locale: "en_US",
     type: "website",
-    images: [new URL("./opengraph-image.svg", import.meta.url).toString()],
   },
   twitter: {
     card: "summary_large_image",
-    title: siteName,
-    description,
-    images: [new URL("./twitter-image.svg", import.meta.url).toString()],
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
   },
+};
+
+/**
+ * Applies the stored (or system) theme before first paint. Runs blocking and
+ * ahead of the body so there is no flash of the wrong theme.
+ */
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})();`;
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Adil Mahroof",
+  jobTitle: "Aerospace Engineer",
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Dubai",
+    addressCountry: "AE",
+  },
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "United Arab Emirates University" },
+    { "@type": "CollegeOrUniversity", name: "New York University Abu Dhabi" },
+  ],
+  knowsAbout: [
+    "Rocket propulsion",
+    "Unmanned aerial vehicles",
+    "Satellite assembly, integration and testing",
+    "Systems engineering",
+  ],
+  sameAs: [PROFILE.links?.linkedin, PROFILE.links?.github].filter(Boolean),
 };
 
 export default function RootLayout({
@@ -38,75 +87,103 @@ export default function RootLayout({
   const year = new Date().getFullYear();
 
   return (
-    <html lang="en">
-      <body className="antialiased min-h-screen bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
-        <header className="fixed top-0 left-0 right-0 z-50 hover:bg-white/90 transition-colors duration-200 backdrop-blur-sm">
-          <div className="mx-auto max-w-5xl px-6">
-            <div className="flex items-center justify-between py-6">
-              <Link href="/" className="flex items-center gap-2 text-xl font-semibold">
-                <span className="h-7 w-7 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
+      </head>
+      <body className="min-h-screen bg-paper text-ink">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-small focus:font-medium focus:text-accent-contrast"
+        >
+          Skip to content
+        </a>
+
+        <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
+          <Container width="wide">
+            <div className="flex items-center justify-between py-3.5">
+              <Link
+                href="/"
+                className="flex items-center gap-2.5 font-display text-[0.95rem] font-bold tracking-tight"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full">
                   <Image
                     src={withBasePath("/media/am.png")}
-                    alt="Adil Mahroof"
-                    width={28}
-                    height={28}
-                    className="h-full w-full object-cover object-center scale-125"
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="h-full w-full scale-125 object-cover object-center"
                   />
                 </span>
                 <span>Adil Mahroof</span>
               </Link>
-              <HeaderNav />
+              <div className="flex items-center gap-1">
+                <HeaderNav />
+                <ThemeToggle />
+              </div>
             </div>
-          </div>
+          </Container>
         </header>
 
-        <div className="mx-auto max-w-5xl px-6">
-          <main className="min-h-[60vh] pb-12 pt-24">
-            <div className="mx-4 sm:mx-6 md:mx-[100px]">{children}</div>
+        <Container>
+          <main id="main" className="min-h-[60vh] pt-24 pb-16">
+            {children}
           </main>
 
-          <footer className="border-t pt-6 text-sm text-zinc-600 pb-10 dark:text-zinc-400 dark:border-zinc-800">
-            <div id="contact" className="pt-4 pb-4">
-              <h3 className="text-lg font-semibold">Contact</h3>
-              <div className="mt-3 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <footer className="border-t border-line pb-12 pt-10 text-small text-ink-muted">
+            <div id="contact" className="scroll-mt-24">
+              <h2 className="font-display text-h3 font-semibold text-ink">Contact</h2>
+              <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
                 {PROFILE.links?.linkedin && (
-                  <a href={PROFILE.links.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-zinc-700 hover:text-blue-600 dark:text-zinc-200 dark:hover:text-blue-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-zinc-700 dark:text-zinc-300">
-                      <path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-2-2h-0a2 2 0 0 0-2 2v6h-4v-12h4v2" strokeLinecap="round" strokeLinejoin="round" />
-                      <rect x="2" y="8" width="4" height="12" rx="1" strokeLinecap="round" strokeLinejoin="round" />
-                      <circle cx="4" cy="4" r="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                  <a
+                    href={PROFILE.links.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-ink-muted transition-colors hover:text-accent"
+                  >
+                    <LinkedInIcon />
                     LinkedIn
                   </a>
                 )}
 
                 {PROFILE.links?.email && (
-                  <a href={PROFILE.links.email} className="inline-flex items-center gap-2 text-zinc-700 hover:text-blue-600 dark:text-zinc-200 dark:hover:text-blue-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M4 6h16v12H4z" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M22 6l-10 7L2 6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                  <a
+                    href={PROFILE.links.email}
+                    className="inline-flex items-center gap-2 text-ink-muted transition-colors hover:text-accent"
+                  >
+                    <MailIcon />
                     Email
                   </a>
                 )}
 
                 {PROFILE.links?.github && (
-                  <a href={PROFILE.links.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-zinc-700 hover:text-blue-600 dark:text-zinc-200 dark:hover:text-blue-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M12 2C8.1 2 5 5.1 5 9c0 3.9 2.6 7.2 6.2 8.1.5.1.7-.2.7-.5v-1.8c-2.5.5-3-1.1-3-1.1-.4-1-1-1.3-1-1.3-.8-.6.1-.6.1-.6.9.1 1.4.9 1.4.9.8 1.4 2.1 1 2.6.8.1-.6.3-1 .5-1.2-2-.2-4.1-1-4.1-4.4 0-1 .4-1.9 1-2.5-.1-.3-.5-1.2.1-2.6 0 0 .8-.3 2.6 1 .8-.2 1.7-.3 2.6-.3s1.8.1 2.6.3c1.8-1.3 2.6-1 2.6-1 .6 1.4.2 2.3.1 2.6.6.6 1 1.5 1 2.5 0 3.4-2.1 4.2-4.1 4.4.3.3.5.8.5 1.6v2.3c0 .3.2.6.7.5C16.4 16.2 19 12.9 19 9c0-3.9-3.1-7-7-7z" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    Website
+                  <a
+                    href={PROFILE.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-ink-muted transition-colors hover:text-accent"
+                  >
+                    <GitHubIcon />
+                    GitHub
                   </a>
                 )}
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between">
-              <div className="text-zinc-600 dark:text-zinc-400">{PROFILE.location ?? ""}</div>
-              <div className="text-right">© {year} Adil Mahroof</div>
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-2 text-ink-subtle">
+              <span>{PROFILE.location ?? ""}</span>
+              <span>&copy; {year} Adil Mahroof</span>
             </div>
           </footer>
-        </div>
+        </Container>
       </body>
     </html>
   );
