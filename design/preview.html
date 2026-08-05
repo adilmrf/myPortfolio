@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flight Deck — design system preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== TOKENS (mirrors design/tokens.css) ========== */
+:root{
+  --paper:#08090b; --surface:#0f1114; --surface-raised:#15181c;
+  --line:#1e2227; --line-strong:#2c3238;
+  --ink:#e6e9ed; --ink-muted:#98a1ab; --ink-subtle:#7a848e;
+  --accent:#ff9e1b; --accent-hover:#ffb84d; --accent-contrast:#0f1114;
+  --accent-wash:rgb(255 158 27 / .10);
+  --status-active:#3dd68c; --status-active-wash:rgb(61 214 140 / .12);
+  --status-idle:#7a848e;
+  --grid-wash:rgb(230 233 237 / .045);
+  color-scheme:dark;
+}
+.light{
+  --paper:#fff; --surface:#f7f8f9; --surface-raised:#fff;
+  --line:#e3e6e9; --line-strong:#c8cdd3;
+  --ink:#0f1114; --ink-muted:#4a535c; --ink-subtle:#6b747d;
+  --accent:#b45309; --accent-hover:#92400e; --accent-contrast:#fff;
+  --accent-wash:rgb(180 83 9 / .08);
+  --status-active:#047857; --status-active-wash:rgb(4 120 87 / .10);
+  --status-idle:#6b747d;
+  --grid-wash:rgb(15 17 20 / .05);
+  color-scheme:light;
+}
+:root{
+  --font-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --font-sans:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+  --text-callsign:clamp(2.25rem,1.1rem + 5.2vw,3.75rem);
+  --text-h1:clamp(1.75rem,1.3rem + 2vw,2.5rem);
+  --text-h2:clamp(1.25rem,1.1rem + .8vw,1.5rem);
+  --text-h3:1.0625rem;
+  --text-readout:clamp(1.5rem,1.2rem + 1.4vw,2rem);
+  --text-lede:clamp(1rem,.95rem + .35vw,1.125rem);
+  --text-small:.875rem; --text-label:.6875rem; --text-micro:.625rem;
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --space-20:5rem;--space-24:6rem;
+  --measure:1120px; --measure-prose:62ch; --radius:2px;
+  --motion-fast:100ms linear; --motion-base:160ms cubic-bezier(.2,0,0,1);
+}
+
+/* ========== BASE ========== */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--font-sans);font-size:1rem;line-height:1.6;
+  -webkit-font-smoothing:antialiased;transition:background var(--motion-fast),color var(--motion-fast)}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+a{color:inherit;text-decoration:none}
+:where(a,button):focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--radius)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--measure);margin-inline:auto;padding-inline:var(--space-5)}
+@media(min-width:640px){.wrap{padding-inline:var(--space-8)}}
+.prose{max-width:var(--measure-prose)}
+
+/* ========== SHARED PRIMITIVES ========== */
+.label{font-family:var(--font-mono);font-variant-numeric:tabular-nums;
+  font-size:var(--text-label);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-subtle);font-weight:500}
+.micro{font-family:var(--font-mono);font-variant-numeric:tabular-nums;
+  font-size:var(--text-micro);letter-spacing:.14em;text-transform:uppercase}
+
+/* Panel */
+.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-raised)}
+.panel__head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);
+  padding:var(--space-2) var(--space-4);background:var(--surface);border-bottom:1px solid var(--line)}
+.panel__body{padding:var(--space-5)}
+.panel--interactive{transition:border-color var(--motion-fast)}
+.panel--interactive:hover{border-color:var(--line-strong)}
+.panel--interactive:hover .panel__head .label{color:var(--accent)}
+
+/* Corner registration marks */
+.framed{position:relative}
+.framed::before,.framed::after{content:"";position:absolute;width:8px;height:8px;pointer-events:none}
+.framed::before{top:-1px;left:-1px;border-top:1px solid var(--accent);border-left:1px solid var(--accent)}
+.framed::after{bottom:-1px;right:-1px;border-bottom:1px solid var(--accent);border-right:1px solid var(--accent)}
+.framed>.framed-tr,.framed>.framed-bl{position:absolute;width:8px;height:8px;pointer-events:none}
+.framed>.framed-tr{top:-1px;right:-1px;border-top:1px solid var(--accent);border-right:1px solid var(--accent)}
+.framed>.framed-bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--accent);border-left:1px solid var(--accent)}
+
+/* Status */
+.status{display:inline-flex;align-items:center;gap:var(--space-2);
+  font-family:var(--font-mono);font-size:var(--text-micro);letter-spacing:.14em;
+  text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:var(--radius)}
+.status i{width:6px;height:6px;border-radius:1px;background:currentColor;flex:none}
+.status--active{color:var(--status-active);background:var(--status-active-wash)}
+.status--complete{color:var(--status-idle)}
+@media(prefers-reduced-motion:no-preference){
+  .status--pulse i{animation:pulse 2s ease-in-out infinite}
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+
+/* Readout */
+.readouts{display:grid;grid-template-columns:repeat(2,1fr);border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--surface-raised);overflow:hidden}
+@media(min-width:640px){.readouts{grid-template-columns:repeat(4,1fr)}}
+.readout{padding:var(--space-5) var(--space-4);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+@media(min-width:640px){.readout{border-bottom:0}.readout:last-child{border-right:0}}
+@media(max-width:639px){.readout:nth-child(2n){border-right:0}.readout:nth-last-child(-n+2){border-bottom:0}}
+.readout__v{font-family:var(--font-mono);font-variant-numeric:tabular-nums;
+  font-size:var(--text-readout);line-height:1;letter-spacing:-.02em;font-weight:700;color:var(--ink)}
+.readout__u{font-size:var(--text-label);letter-spacing:.06em;color:var(--ink-subtle);margin-left:2px}
+.readout__l{margin-top:var(--space-3)}
+.readout__c{display:block;margin-top:2px;color:var(--ink-subtle);
+  font-family:var(--font-mono);font-size:var(--text-micro);letter-spacing:.1em;text-transform:uppercase}
+.readout--accent .readout__v{color:var(--accent)}
+
+/* DataRow */
+.datarows{display:flex;flex-direction:column;gap:var(--space-3)}
+.datarow{display:flex;align-items:baseline;gap:var(--space-3)}
+.datarow dt{flex:none}
+.datarow .lead{flex:1 1 auto;min-width:var(--space-6);border-bottom:1px dotted var(--line-strong);transform:translateY(-4px)}
+.datarow dd{flex:none;margin:0;color:var(--ink);font-size:var(--text-small)}
+.datarow dd.mono{font-size:var(--text-small)}
+
+/* Rule */
+.rule{display:flex;align-items:center;margin:var(--space-16) 0 var(--space-8)}
+.rule::before,.rule::after{content:"";height:3px;width:3px;background:var(--line-strong);flex:none}
+.rule span{flex:1;height:1px;background:var(--line-strong)}
+
+/* Tag */
+.tag{display:inline-block;font-family:var(--font-mono);font-size:var(--text-micro);
+  letter-spacing:.14em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--line);
+  border-radius:var(--radius);color:var(--ink-subtle);transition:all var(--motion-fast)}
+.tag:hover{border-color:var(--line-strong);color:var(--ink-muted)}
+.tag--on{border-color:var(--accent);background:var(--accent-wash);color:var(--accent)}
+.tags{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  min-height:44px;padding:0 var(--space-5);border-radius:var(--radius);
+  font-family:var(--font-mono);font-size:var(--text-label);letter-spacing:.12em;
+  text-transform:uppercase;font-weight:500;border:1px solid transparent;cursor:pointer;
+  transition:background var(--motion-fast),border-color var(--motion-fast),color var(--motion-fast)}
+.btn--primary{background:var(--accent);color:var(--accent-contrast)}
+.btn--primary:hover{background:var(--accent-hover)}
+.btn--ghost{border-color:var(--line-strong);color:var(--ink);background:transparent}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* IndexList */
+.ilist{border-top:1px solid var(--line)}
+.ilist li{border-bottom:1px solid var(--line)}
+.ilist a{display:grid;grid-template-columns:auto 1fr;gap:var(--space-4);
+  padding:var(--space-4) var(--space-3);min-height:56px;transition:background var(--motion-fast)}
+@media(min-width:768px){.ilist a{grid-template-columns:auto 1fr auto;align-items:start}}
+.ilist a:hover{background:var(--surface)}
+.ilist a:hover .ix{color:var(--accent-hover)}
+.ix{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:var(--text-label);
+  letter-spacing:.08em;color:var(--accent);font-weight:500;padding-top:3px;transition:color var(--motion-fast)}
+.ilist h4{font-family:var(--font-display);font-size:var(--text-h3);font-weight:600;
+  letter-spacing:-.005em;line-height:1.35;text-wrap:balance}
+.ilist p{color:var(--ink-muted);font-size:var(--text-small);margin-top:var(--space-1)}
+.ilist .meta{display:flex;align-items:center;gap:var(--space-3);padding-top:3px;
+  grid-column:1/-1;margin-top:var(--space-2)}
+@media(min-width:768px){.ilist .meta{grid-column:auto;margin-top:0;justify-content:flex-end}}
+
+/* Log */
+.log{border-top:1px solid var(--line)}
+.log li{border-bottom:1px solid var(--line);padding:var(--space-5) 0;display:grid;gap:var(--space-2)}
+@media(min-width:640px){.log li{grid-template-columns:8ch 1fr;gap:var(--space-6)}}
+.log__t{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:var(--text-label);
+  letter-spacing:.08em;color:var(--ink-subtle);line-height:1.5}
+.log__t b{display:block;color:var(--ink-muted);font-weight:500}
+.log__h{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3)}
+.log__logo{width:32px;height:32px;border:1px solid var(--line);border-radius:var(--radius);
+  display:grid;place-items:center;background:var(--surface);flex:none;
+  font-family:var(--font-mono);font-size:var(--text-micro);color:var(--ink-subtle)}
+.log h4{font-family:var(--font-display);font-size:var(--text-h3);font-weight:600;
+  text-transform:uppercase;letter-spacing:.02em}
+.log .org{color:var(--ink-muted);font-size:var(--text-small)}
+.log ul.b{margin-top:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2)}
+.log ul.b li{border:0;padding:0;display:block;position:relative;padding-left:var(--space-4);
+  color:var(--ink-muted);font-size:var(--text-small)}
+.log ul.b li::before{content:"";position:absolute;left:0;top:.65em;width:5px;height:1px;background:var(--line-strong)}
+
+/* Headings */
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600}
+.h2{font-size:var(--text-h2);letter-spacing:-.01em;display:flex;align-items:center;gap:var(--space-3)}
+.h2::before{content:">";font-family:var(--font-mono);color:var(--accent);font-size:var(--text-label);font-weight:700}
+
+/* ========== PREVIEW CHROME (not part of the system) ========== */
+.pv-head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.pv-head .wrap{height:56px;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.pv-note{border-left:2px solid var(--accent);background:var(--accent-wash);
+  padding:var(--space-4) var(--space-5);border-radius:0 var(--radius) var(--radius) 0;
+  font-size:var(--text-small);color:var(--ink-muted)}
+.pv-note strong{color:var(--ink)}
+.pv-sec{padding-block:var(--space-16)}
+.pv-sec>.wrap>header{margin-bottom:var(--space-8)}
+.pv-kicker{font-family:var(--font-mono);font-size:var(--text-label);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);font-weight:500}
+.pv-sec h2{font-size:var(--text-h1);letter-spacing:-.02em;margin-top:var(--space-2)}
+.pv-sub{color:var(--ink-muted);margin-top:var(--space-3);max-width:var(--measure-prose)}
+.pv-demo{border:1px dashed var(--line-strong);border-radius:var(--radius);padding:var(--space-6);
+  margin-top:var(--space-4);background:var(--surface)}
+.pv-grid{display:grid;gap:var(--space-8)}
+@media(min-width:900px){.pv-grid--2{grid-template-columns:1fr 1fr}}
+.pv-item{margin-bottom:var(--space-10)}
+.pv-item>h3{font-size:var(--text-h3);margin-bottom:var(--space-1)}
+.pv-item>p{color:var(--ink-muted);font-size:var(--text-small);max-width:var(--measure-prose)}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--space-3)}
+.sw div{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.sw .chip{height:52px}
+.sw .cap{padding:var(--space-2) var(--space-3);background:var(--surface-raised)}
+.sw code{font-family:var(--font-mono);font-size:var(--text-micro);color:var(--ink);display:block}
+.sw small{font-family:var(--font-mono);font-size:var(--text-micro);color:var(--ink-subtle)}
+.scale div{padding:var(--space-3) 0;border-bottom:1px solid var(--line);display:flex;
+  align-items:baseline;gap:var(--space-5);flex-wrap:wrap}
+.scale code{font-family:var(--font-mono);font-size:var(--text-micro);color:var(--ink-subtle);
+  letter-spacing:.1em;text-transform:uppercase;flex:none;width:11ch}
+.sp{display:flex;flex-direction:column;gap:var(--space-2)}
+.sp div{display:flex;align-items:center;gap:var(--space-4)}
+.sp b{background:var(--accent);height:10px;border-radius:1px;display:block}
+.sp code{font-family:var(--font-mono);font-size:var(--text-micro);color:var(--ink-subtle);width:12ch}
+/* Preview-only annotation. Mono, but NOT uppercase — these are sentences. */
+.pv-flag{font-family:var(--font-mono);font-size:.75rem;line-height:1.6;color:var(--ink-subtle);
+  margin-top:var(--space-3);max-width:var(--measure-prose)}
+.pv-flag b{color:var(--accent);font-weight:500}
+
+/* Home mockup hero */
+.hero{position:relative;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface-raised);overflow:hidden}
+.hero__grid{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(to right,var(--grid-wash) 1px,transparent 1px),
+                   linear-gradient(to bottom,var(--grid-wash) 1px,transparent 1px);
+  background-size:32px 32px;
+  -webkit-mask-image:radial-gradient(120% 100% at 15% 0%,#000 0%,transparent 75%);
+  mask-image:radial-gradient(120% 100% at 15% 0%,#000 0%,transparent 75%)}
+.hero__in{position:relative;padding:var(--space-10) var(--space-6) var(--space-8)}
+@media(min-width:768px){.hero__in{padding:var(--space-16) var(--space-12) var(--space-12)}}
+.callsign{font-size:var(--text-callsign);line-height:.95;letter-spacing:-.02em;
+  text-transform:uppercase;font-weight:700;margin-top:var(--space-4)}
+.hero .role{font-family:var(--font-display);font-size:var(--text-h2);color:var(--accent);
+  margin-top:var(--space-3);letter-spacing:-.01em}
+.hero .focus{margin-top:var(--space-2)}
+.hero .lede{color:var(--ink-muted);font-size:var(--text-lede);margin-top:var(--space-6);max-width:56ch}
+.hero .cta{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-8)}
+.hero .top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap}
+
+/* Reference grid */
+.refs{display:grid;gap:var(--space-4);grid-template-columns:1fr}
+@media(min-width:640px){.refs{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.refs{grid-template-columns:repeat(3,1fr)}}
+.ref h4{font-size:var(--text-h3);font-weight:600}
+.ref .t{color:var(--ink-muted);font-size:var(--text-small);margin-top:2px}
+.ref .a{margin-top:var(--space-3)}
+.ref .ln{margin-top:var(--space-4);color:var(--accent);font-family:var(--font-mono);
+  font-size:var(--text-micro);letter-spacing:.14em;text-transform:uppercase}
+
+/* Project detail mockup */
+.figph{aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);display:grid;place-items:center;position:relative}
+.figph span{font-family:var(--font-mono);font-size:var(--text-micro);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-subtle)}
+.blocks{display:flex;flex-direction:column;gap:var(--space-4)}
+</style>
+</head>
+<body>
+
+<header class="pv-head">
+  <div class="wrap">
+    <span class="mono" style="font-size:var(--text-label);letter-spacing:.14em;text-transform:uppercase;font-weight:500">
+      Flight&nbsp;Deck <span style="color:var(--ink-subtle)">/ design system</span>
+    </span>
+    <button class="btn btn--ghost" style="min-height:34px;padding:0 var(--space-4)" onclick="document.documentElement.classList.toggle('light')">
+      Toggle theme
+    </button>
+  </div>
+</header>
+
+<!-- ===================== 00 ORIENTATION ===================== -->
+<section class="pv-sec" style="padding-top:var(--space-12)">
+  <div class="wrap">
+    <p class="pv-kicker">00 — Orientation</p>
+    <h2>Flight&nbsp;Deck</h2>
+    <p class="pv-sub">A proposed design system for Adil Mahroof's portfolio. The organising idea is an
+      <strong style="color:var(--ink)">instrument panel reading out an engineering career</strong> — dense, precise,
+      tabular, with one amber signal colour used only where something is worth signalling.</p>
+    <p class="pv-sub">The rule that carries the identity: <strong style="color:var(--ink)">data is monospace, prose is
+      sans, never the reverse.</strong> Dates, metrics, statuses, tags and indices are mono and tabular. Sentences are
+      Inter. Almost everything else follows.</p>
+
+    <div class="pv-note" style="margin-top:var(--space-6)">
+      <strong>Every word, number and date below comes from the existing content files.</strong> Nothing has been
+      rewritten or invented. Three things are <em>derived</em> from content rather than copied verbatim, and each is
+      flagged in place: project years (read off the presentation venues), project status, and the four hero readouts.
+      See <code style="font-family:var(--font-mono);font-size:.8em">SPEC.md §8</code>.
+    </div>
+
+    <div class="pv-note" style="margin-top:var(--space-4);border-left-color:var(--line-strong);background:var(--surface)">
+      <strong>Dark is the primary theme.</strong> Light is designed as a real counterpart — printed telemetry on paper —
+      not a derived inversion. Toggle it top-right and check both; the accent hue deliberately changes between them,
+      because <code style="font-family:var(--font-mono);font-size:.8em">#ff9e1b</code> on white is roughly 1.9:1 and
+      unusable.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 01 FOUNDATIONS ===================== -->
+<section class="pv-sec" style="background:var(--surface);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <header>
+      <p class="pv-kicker">01 — Foundations</p>
+      <h2>Colour, type, space</h2>
+    </header>
+
+    <div class="pv-item">
+      <h3>Colour</h3>
+      <p>Structure comes from hairlines, not shadows. Every foreground clears 4.5:1 in both themes — including the 11px
+        labels, which is the tightest case.</p>
+      <div class="sw" style="margin-top:var(--space-4)">
+        <div><div class="chip" style="background:var(--paper)"></div><div class="cap"><code>--paper</code><small>page</small></div></div>
+        <div><div class="chip" style="background:var(--surface)"></div><div class="cap"><code>--surface</code><small>recessed</small></div></div>
+        <div><div class="chip" style="background:var(--surface-raised)"></div><div class="cap"><code>--surface-raised</code><small>panels</small></div></div>
+        <div><div class="chip" style="background:var(--line)"></div><div class="cap"><code>--line</code><small>hairline</small></div></div>
+        <div><div class="chip" style="background:var(--line-strong)"></div><div class="cap"><code>--line-strong</code><small>divider</small></div></div>
+        <div><div class="chip" style="background:var(--ink)"></div><div class="cap"><code>--ink</code><small>16.1:1</small></div></div>
+        <div><div class="chip" style="background:var(--ink-muted)"></div><div class="cap"><code>--ink-muted</code><small>7.4:1</small></div></div>
+        <div><div class="chip" style="background:var(--ink-subtle)"></div><div class="cap"><code>--ink-subtle</code><small>4.9:1 · floor</small></div></div>
+        <div><div class="chip" style="background:var(--accent)"></div><div class="cap"><code>--accent</code><small>the one signal</small></div></div>
+        <div><div class="chip" style="background:var(--status-active)"></div><div class="cap"><code>--status-active</code><small>ongoing only</small></div></div>
+        <div><div class="chip" style="background:var(--status-idle)"></div><div class="cap"><code>--status-idle</code><small>complete</small></div></div>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>Type scale</h3>
+      <p>No new webfonts — Space Grotesk, Inter and JetBrains Mono are already self-hosted. This system only reassigns
+        which one is used where, so the font payload change is zero bytes.</p>
+      <div class="scale" style="margin-top:var(--space-4)">
+        <div><code>callsign</code><span style="font-family:var(--font-display);font-size:var(--text-callsign);line-height:1;letter-spacing:-.02em;text-transform:uppercase;font-weight:700">Adil Mahroof</span></div>
+        <div><code>h1</code><span style="font-family:var(--font-display);font-size:var(--text-h1);letter-spacing:-.02em;font-weight:600">Rocket propulsion</span></div>
+        <div><code>h2</code><span style="font-family:var(--font-display);font-size:var(--text-h2);font-weight:600">Selected work</span></div>
+        <div><code>readout</code><span class="mono" style="font-size:var(--text-readout);font-weight:700;letter-spacing:-.02em">10.5 N</span></div>
+        <div><code>h3</code><span style="font-family:var(--font-display);font-size:var(--text-h3);font-weight:600">Satellite AIT Intern</span></div>
+        <div><code>lede</code><span style="font-size:var(--text-lede);color:var(--ink-muted)">A 10 N class thruster, designed and fired.</span></div>
+        <div><code>body</code><span>Assembly, integration and testing.</span></div>
+        <div><code>small</code><span style="font-size:var(--text-small);color:var(--ink-muted)">Completed 10+ tests confirming feasibility.</span></div>
+        <div><code>label</code><span class="label">Hot-fire tests</span></div>
+        <div><code>micro</code><span class="micro" style="color:var(--ink-subtle)">Complete</span></div>
+      </div>
+    </div>
+
+    <div class="pv-grid pv-grid--2">
+      <div class="pv-item">
+        <h3>Space</h3>
+        <p>4px base unit. Every gap, pad and margin is one of these.</p>
+        <div class="sp" style="margin-top:var(--space-4)">
+          <div><code>--space-1</code><b style="width:4px"></b></div>
+          <div><code>--space-2</code><b style="width:8px"></b></div>
+          <div><code>--space-3</code><b style="width:12px"></b></div>
+          <div><code>--space-4</code><b style="width:16px"></b></div>
+          <div><code>--space-6</code><b style="width:24px"></b></div>
+          <div><code>--space-8</code><b style="width:32px"></b></div>
+          <div><code>--space-12</code><b style="width:48px"></b></div>
+          <div><code>--space-16</code><b style="width:64px"></b></div>
+          <div><code>--space-24</code><b style="width:96px"></b></div>
+        </div>
+      </div>
+      <div class="pv-item">
+        <h3>Structure &amp; motion</h3>
+        <p>Near-rectilinear: 2px radius everywhere and <strong style="color:var(--ink)">no pills anywhere</strong>,
+          including tags and status. Dropping <code style="font-family:var(--font-mono);font-size:.85em">rounded-full</code>
+          is the single change that stops the panels reading as generic cards.</p>
+        <div class="datarows" style="margin-top:var(--space-4)">
+          <div class="datarow"><dt class="label">Radius</dt><span class="lead"></span><dd class="mono">2px</dd></div>
+          <div class="datarow"><dt class="label">Border</dt><span class="lead"></span><dd class="mono">1px</dd></div>
+          <div class="datarow"><dt class="label">Page width</dt><span class="lead"></span><dd class="mono">1120px</dd></div>
+          <div class="datarow"><dt class="label">Prose cap</dt><span class="lead"></span><dd class="mono">62ch</dd></div>
+          <div class="datarow"><dt class="label">Motion fast</dt><span class="lead"></span><dd class="mono">100ms linear</dd></div>
+          <div class="datarow"><dt class="label">Max travel</dt><span class="lead"></span><dd class="mono">4px</dd></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 COMPONENTS ===================== -->
+<section class="pv-sec">
+  <div class="wrap">
+    <header>
+      <p class="pv-kicker">02 — Components</p>
+      <h2>Nine pieces</h2>
+      <p class="pv-sub">These carry the whole system. Everything on the page mockups below is assembled from exactly
+        these.</p>
+    </header>
+
+    <div class="pv-grid pv-grid--2">
+      <div class="pv-item">
+        <h3>Panel</h3>
+        <p>The base container. Optional header bar with a mono label and right-aligned meta.</p>
+        <div class="pv-demo">
+          <div class="panel panel--interactive">
+            <div class="panel__head"><span class="label">Context</span><span class="label">01 / 03</span></div>
+            <div class="panel__body" style="color:var(--ink-muted);font-size:var(--text-small)">
+              Hover me. The border strengthens and the label goes amber — no lift, no scale, no shadow.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pv-item">
+        <h3>Status</h3>
+        <p>Semantic only. Green means ongoing, grey means complete. The word carries the meaning; the square is
+          <code style="font-family:var(--font-mono);font-size:.85em">aria-hidden</code>.</p>
+        <div class="pv-demo" style="display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center">
+          <span class="status status--active status--pulse"><i></i>Active</span>
+          <span class="status status--complete"><i></i>Complete</span>
+          <span class="micro" style="color:var(--ink-subtle)">← one pulse per page, hero only</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>Readout</h3>
+      <p>The signature component. Mono, tabular, separated by hairlines rather than gaps. At most one may take the
+        accent variant — usually none.</p>
+      <div class="pv-demo">
+        <div class="readouts">
+          <div class="readout"><div class="readout__v">10<span class="readout__u">+</span></div><div class="readout__l label">Hot-fire tests</div><span class="readout__c">H₂O₂ thruster</span></div>
+          <div class="readout"><div class="readout__v">×2</div><div class="readout__l label">IAC papers</div><span class="readout__c">Baku · Milan</span></div>
+          <div class="readout"><div class="readout__v">3.95</div><div class="readout__l label">GPA</div><span class="readout__c">UAEU · 4.0 scale</span></div>
+          <div class="readout readout--accent"><div class="readout__v">100<span class="readout__u">+</span></div><div class="readout__l label">Students taught</div><span class="readout__c">CubeSat AIT</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-grid pv-grid--2">
+      <div class="pv-item">
+        <h3>DataRow</h3>
+        <p>Label, dot leader, value. Marked up as <code style="font-family:var(--font-mono);font-size:.85em">&lt;dl&gt;</code>,
+          not a table.</p>
+        <div class="pv-demo">
+          <dl class="datarows">
+            <div class="datarow"><dt class="label">Role</dt><span class="lead"></span><dd>Satellite AIT Intern</dd></div>
+            <div class="datarow"><dt class="label">Organisation</dt><span class="lead"></span><dd>Orbitworks</dd></div>
+            <div class="datarow"><dt class="label">Period</dt><span class="lead"></span><dd class="mono">2025.08 — 2025.11</dd></div>
+            <div class="datarow"><dt class="label">Status</dt><span class="lead"></span><dd><span class="status status--complete"><i></i>Complete</span></dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="pv-item">
+        <h3>Tag, Button, Rule</h3>
+        <p>Bracketed tags, two button variants, and the end-capped section divider.</p>
+        <div class="pv-demo">
+          <div class="tags">
+            <span class="tag tag--on">Propulsion</span>
+            <span class="tag">Research</span>
+            <span class="tag">Space</span>
+            <span class="tag">UAVs</span>
+            <span class="tag">AIT</span>
+          </div>
+          <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;margin-top:var(--space-5)">
+            <a class="btn btn--primary" href="#">View projects</a>
+            <a class="btn btn--ghost" href="#">Download CV</a>
+          </div>
+          <div class="rule" style="margin:var(--space-6) 0 0"><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>CornerMarks</h3>
+      <p>Four 8px L-brackets. Hero panel and media figures only — three or four instances per page, maximum. Pure
+        <code style="font-family:var(--font-mono);font-size:.85em">::before</code>/<code style="font-family:var(--font-mono);font-size:.85em">::after</code>, no extra DOM.</p>
+      <div class="pv-demo">
+        <div class="figph framed" style="max-width:420px"><span class="framed-tr"></span><span class="framed-bl"></span><span>Figure — awaiting media</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 PAGES ===================== -->
+<section class="pv-sec" style="background:var(--surface);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <header>
+      <p class="pv-kicker">03 — Pages</p>
+      <h2>Applied</h2>
+      <p class="pv-sub">Real content, in the system. Scroll to <strong style="color:var(--ink)">Home</strong> and
+        <strong style="color:var(--ink)">Project detail</strong>.</p>
+    </header>
+  </div>
+
+  <!-- ---------- HOME ---------- -->
+  <div class="wrap" style="margin-top:var(--space-8)">
+    <p class="label" style="margin-bottom:var(--space-4)">Page — Home</p>
+
+    <div class="hero framed">
+      <span class="framed-tr"></span><span class="framed-bl"></span>
+      <div class="hero__grid"></div>
+      <div class="hero__in">
+        <div class="top">
+          <span class="label">Portfolio</span>
+          <span class="status status--active status--pulse"><i></i>Open to opportunities</span>
+        </div>
+        <h1 class="callsign">Adil Mahroof</h1>
+        <p class="role">Aerospace Engineer</p>
+        <p class="focus label" style="color:var(--ink-muted)">Rocket Propulsion · UAVs · Satellite AIT</p>
+        <p class="lede">Hands-on experience in engineering design, analysis, and assembly, integration and testing across
+          rocket propulsion, aerodynamics, satellite systems and system design.</p>
+        <div class="cta">
+          <a class="btn btn--primary" href="#">Selected work</a>
+          <a class="btn btn--ghost" href="#">Download CV</a>
+        </div>
+        <dl class="datarows" style="margin-top:var(--space-8);max-width:420px">
+          <div class="datarow"><dt class="label">Location</dt><span class="lead"></span><dd class="mono">Dubai, UAE</dd></div>
+          <div class="datarow"><dt class="label">Discipline</dt><span class="lead"></span><dd class="mono">Aerospace</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--space-6)">
+      <div class="readouts">
+        <div class="readout"><div class="readout__v">10<span class="readout__u">+</span></div><div class="readout__l label">Hot-fire tests</div><span class="readout__c">H₂O₂ micro-thruster</span></div>
+        <div class="readout"><div class="readout__v">×2</div><div class="readout__l label">IAC papers</div><span class="readout__c">Baku 2023 · Milan 2024</span></div>
+        <div class="readout"><div class="readout__v">3.95</div><div class="readout__l label">GPA</div><span class="readout__c">UAEU · 4.0 scale</span></div>
+        <div class="readout"><div class="readout__v">100<span class="readout__u">+</span></div><div class="readout__l label">Students taught</div><span class="readout__c">CubeSat AIT</span></div>
+      </div>
+      <p class="pv-flag">
+        <b>⚠ Derived from content — see SPEC §8.</b> "3+ yrs research" was deliberately left out: it is on your
+        content-accuracy list and shouldn't sit in the largest type on the page.
+      </p>
+    </div>
+
+    <div class="rule"><span></span></div>
+    <h2 class="h2">Selected work</h2>
+    <ol class="ilist" style="margin-top:var(--space-5)">
+      <li><a href="#">
+        <span class="ix">[01]</span>
+        <div>
+          <h4>Design, Fabrication, and Testing of a Miniaturised Rocket Propulsion System</h4>
+          <p>Design, manufacturing, and testing of a 10 N class thruster.</p>
+          <div class="tags" style="margin-top:var(--space-3)"><span class="tag">Propulsion</span><span class="tag">Research</span><span class="tag">Space</span></div>
+        </div>
+        <div class="meta"><span class="mono label">2022</span><span class="status status--complete"><i></i>Complete</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="ix">[02]</span>
+        <div>
+          <h4>Green Propellant Space Propulsion for Mode Changeable Micro Thrust Generation</h4>
+          <p>A feasibility study on using Hydrogen Peroxide as a green propellant in chemical and electric microthrust generation.</p>
+          <div class="tags" style="margin-top:var(--space-3)"><span class="tag">Propulsion</span><span class="tag">Research</span><span class="tag">Space</span><span class="tag">Sustainability</span></div>
+        </div>
+        <div class="meta"><span class="mono label">2023</span><span class="status status--complete"><i></i>Complete</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="ix">[03]</span>
+        <div>
+          <h4>Performance Improvement of Chemical Space Propulsion with Thermal Decomposition of Propellant</h4>
+          <p>An experimental study on improving the performance of micro-thrusters using Hydrogen Peroxide (H2O2) as propellant by introducing thermal decomposition.</p>
+          <div class="tags" style="margin-top:var(--space-3)"><span class="tag">Propulsion</span><span class="tag">Research</span><span class="tag">Space</span></div>
+        </div>
+        <div class="meta"><span class="mono label">2024</span><span class="status status--complete"><i></i>Complete</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="ix">[04]</span>
+        <div>
+          <h4>Design and Control for Vertical Take-off and Landing (VTOL) UAV</h4>
+          <p>A tri-motor vertical take-off and landing UAV with two tilt motors was designed, additively manufactured and flight tested.</p>
+          <div class="tags" style="margin-top:var(--space-3)"><span class="tag">Research</span><span class="tag">UAVs</span><span class="tag">Systems Engineering</span><span class="tag">3D Printing</span><span class="tag">Control</span><span class="tag">AIT</span></div>
+        </div>
+        <div class="meta"><span class="mono label">2025</span><span class="status status--complete"><i></i>Complete</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="ix">[05]</span>
+        <div>
+          <h4>Design of a Novel Water Desalination Spacer Using Biomimicry Techniques to Reduce Biofouling</h4>
+          <p>A novel water desalination spacer inspired by the lotus leaf was designed and 3D printed to reduce biofouling in reverse osmosis membranes.</p>
+          <div class="tags" style="margin-top:var(--space-3)"><span class="tag">Research</span><span class="tag">Sustainability</span><span class="tag">3D Printing</span></div>
+        </div>
+        <div class="meta"><span class="mono label">2025</span><span class="status status--complete"><i></i>Complete</span></div>
+      </a></li>
+    </ol>
+    <p class="pv-flag">
+      <b>⚠ Years read off the presentation venues</b> (IAC 2024 Milan, IDEX 2025, ADSW 2025, UAEU-MUBADALA 2022).
+      Not stored as a field — see SPEC §8.
+    </p>
+
+    <div class="rule"><span></span></div>
+    <h2 class="h2">Log</h2>
+    <ol class="log" style="margin-top:var(--space-5)">
+      <li>
+        <div class="log__t">2026.02<b>Present</b></div>
+        <div>
+          <div class="log__h">
+            <span class="log__logo">BE</span>
+            <div><h4>Robotics Intern</h4><p class="org">Besomi Electronics</p></div>
+            <span class="status status--active" style="margin-left:auto"><i></i>Active</span>
+          </div>
+          <ul class="b">
+            <li>Led Sumo Robot workshops for university students to demonstrate practical robotics applications.</li>
+            <li>Designed and fabricated a modular Sumo Robot kit for student competitions.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="log__t">2026.01<b>Present</b></div>
+        <div>
+          <div class="log__h">
+            <span class="log__logo">xA</span>
+            <div><h4>AI Tutor</h4><p class="org">xAI</p></div>
+            <span class="status status--active" style="margin-left:auto"><i></i>Active</span>
+          </div>
+          <ul class="b">
+            <li>Fine-tuned the Grok LLM for high-fidelity Gulf Arabic dialectal recognition and cultural nuance.</li>
+            <li>Completed more than 1000 tasks, including L1 reviews.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="log__t">2025.04<b>Present</b></div>
+        <div>
+          <div class="log__h">
+            <span class="log__logo">SP</span>
+            <div><h4>CubeSat Development Instructor</h4><p class="org">SpacePoint (Space.)</p></div>
+            <span class="status status--active" style="margin-left:auto"><i></i>Active</span>
+          </div>
+          <ul class="b">
+            <li>Led 10+ lectures on Introduction to Space, satellites, and space technology.</li>
+            <li>Facilitated 10+ hands-on workshops for 100+ students on the AIT of proprietary educational SatKits.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="log__t">2025.08<b>2025.11</b></div>
+        <div>
+          <div class="log__h">
+            <span class="log__logo">OW</span>
+            <div><h4>Satellite AIT Intern</h4><p class="org">Orbitworks</p></div>
+            <span class="status status--complete" style="margin-left:auto"><i></i>Complete</span>
+          </div>
+          <ul class="b">
+            <li>Designed and manufactured a mechanical ground support equipment (MGSE) to store 40 solar array modules.</li>
+            <li>Worked on 10 Longbow satellites including storage, functional tests, solar array deployment, and propulsion module removal.</li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+
+    <div class="rule"><span></span></div>
+    <h2 class="h2">Education</h2>
+    <ol class="log" style="margin-top:var(--space-5)">
+      <li>
+        <div class="log__t">2020.08<b>2024.12</b></div>
+        <div>
+          <div class="log__h"><span class="log__logo">UA</span><div><h4>B.Sc. Aerospace Engineering</h4><p class="org">United Arab Emirates University</p></div>
+          <span class="mono label" style="margin-left:auto;color:var(--accent)">GPA 3.95 / 4.0</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="log__t">2022.08<b>2023.05</b></div>
+        <div>
+          <div class="log__h"><span class="log__logo">NY</span><div><h4>Sheikh Mohamed Bin Zayed Scholars Program</h4><p class="org">New York University Abu Dhabi</p></div>
+          <span class="mono label" style="margin-left:auto;color:var(--accent)">GPA 3.93 / 4.0</span></div>
+        </div>
+      </li>
+      <li>
+        <div class="log__t">2018.09<b>2020.06</b></div>
+        <div>
+          <div class="log__h"><span class="log__logo">NW</span><div><h4>High School Diploma</h4><p class="org">New World Private School</p></div>
+          <span class="mono label" style="margin-left:auto;color:var(--ink-subtle)">97.65%</span></div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="rule"><span></span></div>
+    <h2 class="h2">References</h2>
+    <ul class="refs" style="margin-top:var(--space-5)">
+      <li class="panel ref"><div class="panel__body">
+        <h4>Dr. Jeongmoo Huh</h4><p class="t">Assistant Professor</p>
+        <p class="a label">United Arab Emirates University</p><p class="ln">LinkedIn →</p></div></li>
+      <li class="panel ref"><div class="panel__body">
+        <h4>Dr. Tarek Dief</h4><p class="t">Associate Professor</p>
+        <p class="a label">United Arab Emirates University</p><p class="ln">LinkedIn →</p></div></li>
+      <li class="panel ref"><div class="panel__body">
+        <h4>Eng. Mohamed Alkarbi</h4><p class="t">AIT Director</p>
+        <p class="a label">Orbitworks</p><p class="ln">LinkedIn →</p></div></li>
+      <li class="panel ref"><div class="panel__body">
+        <h4>Dr. Mohammed Al Azizi</h4><p class="t">Rocket Propulsion Manager</p>
+        <p class="a label">HALCON</p><p class="ln">LinkedIn →</p></div></li>
+      <li class="panel ref"><div class="panel__body">
+        <h4>Dr. Aysha Aljaberi</h4><p class="t">Assistant Vice Provost</p>
+        <p class="a label">NYU Abu Dhabi</p><p class="ln">LinkedIn →</p></div></li>
+    </ul>
+  </div>
+
+  <!-- ---------- PROJECT DETAIL ---------- -->
+  <div class="wrap" style="margin-top:var(--space-24)">
+    <div class="rule" style="margin-top:0"><span></span></div>
+    <p class="label" style="margin-bottom:var(--space-5)">Page — Project detail</p>
+
+    <p class="micro" style="color:var(--ink-subtle)">← All work</p>
+    <div style="display:flex;align-items:baseline;gap:var(--space-4);margin-top:var(--space-4)">
+      <span class="ix" style="font-size:var(--text-label)">[02]</span>
+      <h1 style="font-size:var(--text-h1);letter-spacing:-.02em;text-wrap:balance">Green Propellant Space Propulsion for Mode Changeable Micro Thrust Generation</h1>
+    </div>
+    <p class="prose" style="font-size:var(--text-lede);color:var(--ink-muted);margin-top:var(--space-5)">
+      A feasibility study on using Hydrogen Peroxide as a green propellant in chemical and electric microthrust generation.
+    </p>
+
+    <div class="pv-grid" style="grid-template-columns:1fr;margin-top:var(--space-8);gap:var(--space-6)">
+      <dl class="datarows" style="max-width:520px">
+        <div class="datarow"><dt class="label">Role</dt><span class="lead"></span><dd>Team lead — four undergraduates</dd></div>
+        <div class="datarow"><dt class="label">Presented</dt><span class="lead"></span><dd class="mono">IAC 2023 · Baku, Azerbaijan</dd></div>
+        <div class="datarow"><dt class="label">Tools</dt><span class="lead"></span><dd class="mono">NASA CEA · RPA · CATIA V5</dd></div>
+        <div class="datarow"><dt class="label">Status</dt><span class="lead"></span><dd><span class="status status--complete"><i></i>Complete</span></dd></div>
+      </dl>
+
+      <div class="readouts" style="max-width:520px">
+        <div class="readout"><div class="readout__v">100<span class="readout__u">mN</span></div><div class="readout__l label">Thrust class</div></div>
+        <div class="readout"><div class="readout__v">4</div><div class="readout__l label">Team size</div></div>
+      </div>
+      <p class="pv-flag" style="margin-top:calc(var(--space-3) * -1)">
+        <b>⚠ Per-project readouts need a `metrics` array in projects.ts.</b>
+        The field exists but is empty — this is the one place the system asks for new content.
+      </p>
+
+      <div class="figph framed" style="margin-top:var(--space-2)"><span class="framed-tr"></span><span class="framed-bl"></span><span>Hero figure — awaiting media</span></div>
+
+      <div class="blocks">
+        <div class="panel">
+          <div class="panel__head"><span class="label">Approach</span></div>
+          <div class="panel__body">
+            <ul class="log" style="border:0"><div class="b" style="display:flex;flex-direction:column;gap:var(--space-3)">
+              <li style="border:0;padding:0;position:relative;padding-left:var(--space-4);color:var(--ink-muted);font-size:var(--text-small)">
+                <span style="position:absolute;left:0;top:.65em;width:5px;height:1px;background:var(--line-strong);display:block"></span>
+                Led a team of four undergraduate students and managed schedules and proposals.</li>
+              <li style="border:0;padding:0;position:relative;padding-left:var(--space-4);color:var(--ink-muted);font-size:var(--text-small)">
+                <span style="position:absolute;left:0;top:.65em;width:5px;height:1px;background:var(--line-strong);display:block"></span>
+                Designed a 100 mN class thruster using NASA CEA, RPA, and CATIA V5.</li>
+            </div></ul>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel__head"><span class="label">Results</span></div>
+          <div class="panel__body">
+            <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+              <p style="position:relative;padding-left:var(--space-4);color:var(--ink-muted);font-size:var(--text-small)">
+                <span style="position:absolute;left:0;top:.65em;width:5px;height:1px;background:var(--line-strong);display:block"></span>
+                Manufactured and tested a micro-thruster for chemical propulsion.</p>
+              <p style="position:relative;padding-left:var(--space-4);color:var(--ink-muted);font-size:var(--text-small)">
+                <span style="position:absolute;left:0;top:.65em;width:5px;height:1px;background:var(--line-strong);display:block"></span>
+                Validated performance across different initial conditions and H2O2 concentrations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ol class="ilist" style="margin-top:var(--space-6)">
+        <li><a href="#"><span class="ix">[01]</span><div><p class="micro" style="color:var(--ink-subtle)">← Previous</p>
+          <h4 style="margin-top:var(--space-1)">Design, Fabrication, and Testing of a Miniaturised Rocket Propulsion System</h4></div></a></li>
+        <li><a href="#"><span class="ix">[03]</span><div><p class="micro" style="color:var(--ink-subtle)">Next →</p>
+          <h4 style="margin-top:var(--space-1)">Performance Improvement of Chemical Space Propulsion with Thermal Decomposition of Propellant</h4></div></a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--line);padding-block:var(--space-12)">
+  <div class="wrap">
+    <p class="label">Flight Deck — proposed, not applied</p>
+    <p class="pv-sub" style="margin-top:var(--space-3)">Branch <span class="mono">design-system</span>. Full
+      specification in <span class="mono">design/SPEC.md</span>; tokens in <span class="mono">design/tokens.css</span>.
+      No content file has been modified.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+/* =========================================================================
+   FLIGHT DECK — design tokens
+   Portfolio of Adil Mahroof · adilmrf.github.io/myPortfolio
+   -------------------------------------------------------------------------
+   Drop-in replacement for the `:root` / `.dark` blocks in src/app/globals.css.
+   Token NAMES are unchanged from the current site wherever possible, so the
+   existing Tailwind `@theme inline` mapping and every `bg-surface` /
+   `text-ink-muted` utility already in the codebase keeps working. Only the
+   VALUES change, plus a handful of genuinely new tokens at the bottom.
+
+   Dark is the primary theme. Light is a real, designed counterpart — printed
+   telemetry on paper — not an afterthought.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. COLOR
+   ---------------------------------------------------------------------- */
+
+:root {
+  /* --- surfaces: near-black with a cold cast, so the amber reads warm --- */
+  --paper: #08090b; /* page background          */
+  --surface: #0f1114; /* recessed / inset panels  */
+  --surface-raised: #15181c; /* cards, raised panels     */
+
+  /* --- structure: hairlines do the work that shadows do elsewhere --- */
+  --line: #1e2227; /* default 1px hairline     */
+  --line-strong: #2c3238; /* emphasised divider      */
+
+  /* --- text --- */
+  --ink: #e6e9ed; /* 16.1:1 on --paper       */
+  --ink-muted: #98a1ab; /*  7.4:1 on --paper       */
+  --ink-subtle: #7a848e; /*  4.9:1 on --paper — the floor for 11px labels */
+
+  /* --- accent: one signal colour, amber --- */
+  --accent: #ff9e1b;
+  --accent-hover: #ffb84d;
+  --accent-contrast: #0f1114; /* text ON accent fills */
+  --accent-wash: rgb(255 158 27 / 0.1);
+
+  /* --- status: SEMANTIC ONLY. Never decorative. --- */
+  --status-active: #3dd68c; /* an ongoing role, a live thing */
+  --status-active-wash: rgb(61 214 140 / 0.12);
+  --status-idle: #7a848e; /* completed, archived, past     */
+
+  /* --- the grid wash used on the hero panel only --- */
+  --grid-wash: rgb(230 233 237 / 0.045);
+
+  color-scheme: dark;
+}
+
+/* Light theme. Same structure, same accent role, no glow.
+   Applied by the existing `.dark`-class toggle inverted: the site defaults to
+   dark, so `.light` is the opt-out. See SPEC.md §9 for the migration note. */
+.light {
+  --paper: #ffffff;
+  --surface: #f7f8f9;
+  --surface-raised: #ffffff;
+
+  --line: #e3e6e9;
+  --line-strong: #c8cdd3;
+
+  --ink: #0f1114;
+  --ink-muted: #4a535c; /*  8.6:1 on white */
+  --ink-subtle: #6b747d; /*  4.6:1 on white */
+
+  --accent: #b45309; /*  4.9:1 on white — #ff9e1b fails badly here */
+  --accent-hover: #92400e;
+  --accent-contrast: #ffffff;
+  --accent-wash: rgb(180 83 9 / 0.08);
+
+  --status-active: #047857; /*  5.4:1 on white */
+  --status-active-wash: rgb(4 120 87 / 0.1);
+  --status-idle: #6b747d;
+
+  --grid-wash: rgb(15 17 20 / 0.05);
+
+  color-scheme: light;
+}
+
+/* -------------------------------------------------------------------------
+   2. TYPE
+   -------------------------------------------------------------------------
+   No new webfonts. The three families already loaded via next/font are exactly
+   what this system needs — the change is which one gets used where. Mono is
+   promoted from "captions" to a first-class role: every piece of DATA is mono,
+   every piece of PROSE is sans. That single rule carries most of the identity.
+   ---------------------------------------------------------------------- */
+
+:root {
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Consolas, monospace;
+
+  /* Callsign — the name, and nothing else. Set in uppercase via CSS so the
+     content file keeps storing "Adil Mahroof" and <title> stays sentence case. */
+  --text-callsign: clamp(2.25rem, 1.1rem + 5.2vw, 3.75rem);
+  --text-callsign--line-height: 0.95;
+  --text-callsign--letter-spacing: -0.02em;
+
+  --text-h1: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.02em;
+
+  --text-h2: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.01em;
+
+  --text-h3: 1.0625rem;
+  --text-h3--line-height: 1.35;
+
+  /* Readout — the big mono number in a stat block. Always tabular. */
+  --text-readout: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+  --text-readout--line-height: 1;
+  --text-readout--letter-spacing: -0.02em;
+
+  --text-lede: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
+  --text-lede--line-height: 1.6;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.55;
+
+  /* Label — panel headers, column heads, tags. Mono, uppercase, tracked. */
+  --text-label: 0.6875rem; /* 11px */
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.12em;
+
+  /* Micro — index numbers, status text. The smallest type on the site. */
+  --text-micro: 0.625rem; /* 10px */
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.14em;
+}
+
+/* -------------------------------------------------------------------------
+   3. SPACE, STRUCTURE, MOTION
+   ---------------------------------------------------------------------- */
+
+:root {
+  /* 4px base unit. Every gap, pad and margin is one of these. */
+  --space-1: 0.25rem; /*  4 */
+  --space-2: 0.5rem; /*  8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.25rem; /* 20 */
+  --space-6: 1.5rem; /* 24 */
+  --space-8: 2rem; /* 32 */
+  --space-10: 2.5rem; /* 40 */
+  --space-12: 3rem; /* 48 */
+  --space-16: 4rem; /* 64 */
+  --space-20: 5rem; /* 80 */
+  --space-24: 6rem; /* 96 */
+
+  /* Layout */
+  --measure: 1120px; /* page max width — wider than the current 896px,
+                                    because this system is column-and-table led */
+  --measure-prose: 62ch; /* hard cap on any running paragraph */
+  --gutter: var(--space-6);
+  --pad-page: var(--space-5); /* 20px at mobile */
+  --pad-page-lg: var(--space-8); /* 32px from sm up  */
+
+  /* Radius. Near-rectilinear on purpose: no pills anywhere, including status
+     indicators and tags. This is the single biggest visual break from the
+     current design and it is what stops the panels reading as generic cards. */
+  --radius: 2px;
+  --radius-lg: 3px;
+
+  --border: 1px;
+  --corner-mark: 8px; /* length of the L-bracket registration marks */
+
+  /* Motion. Linear and short — instruments settle, they don't bounce. */
+  --motion-fast: 100ms linear;
+  --motion-base: 160ms cubic-bezier(0.2, 0, 0, 1);
+}
