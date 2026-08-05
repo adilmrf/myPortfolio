@@ -14,6 +14,12 @@ export type TimelineItem = {
   endDate?: string;
   /** GPA / grade, shown as a mono chip on the right. */
   meta?: string;
+  /**
+   * Replaces the word in the status pill while the entry is ongoing, e.g.
+   * "Part-time". The indicator stays green because the role IS still running —
+   * only the label changes.
+   */
+  statusLabel?: string;
   bullets?: string[];
 };
 
@@ -84,7 +90,13 @@ export default function Timeline({ items, limit, compact = false }: Props) {
                   {item.meta ? (
                     <span className="label text-accent">{item.meta}</span>
                   ) : (
-                    <Status variant={ongoing ? "active" : "complete"} />
+                    <Status
+                      // A role that carries a commitment word is ongoing but
+                      // not a standard full engagement, so it gets the amber
+                      // `partial` treatment rather than the green `active` one.
+                      variant={ongoing ? (item.statusLabel ? "partial" : "active") : "complete"}
+                      label={ongoing ? item.statusLabel : undefined}
+                    />
                   )}
                 </span>
               </div>

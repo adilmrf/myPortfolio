@@ -1,13 +1,47 @@
 import type { ExperienceItem } from "../lib/types";
 
+/**
+ * Roles, most recent first.
+ *
+ * The site sorts these itself (ongoing first, then by end date descending), so
+ * array order is presentational only — but keeping the file in the same order
+ * the site renders makes it much easier to check. `id` values are stable keys
+ * and deliberately do not track position.
+ */
 export const EXPERIENCE: ExperienceItem[] = [
+  {
+    id: "exp-7",
+    role: "Aerospace Engineer",
+    organization: "RND",
+    // Placeholder: a solid black square. Replace with the real mark when you
+    // have it — it is invisible against the dark theme as-is.
+    logo: "/media/logos/rnd.png",
+    startDate: "06.2026",
+    endDate: "Present",
+    bullets: [],
+    tags: [],
+  },
+  {
+    id: "exp-4",
+    role: "CubeSat Development Instructor",
+    organization: "SpacePoint (Space.)",
+    logo: "/media/logos/spacepoint.jpg",
+    startDate: "04.2025",
+    endDate: "Present",
+    commitment: "Part-time",
+    bullets: [
+      "Led 10+ lectures on Introduction to Space, satellites, and space technology.",
+      "Facilitated 10+ hands-on workshops for 100+ students on the assembly, integration, and testing (AIT) of proprietary educational SatKits.",
+    ],
+    tags: ["Space", "AIT"],
+  },
   {
     id: "exp-6",
     role: "Robotics Intern",
     organization: "Besomi Electronics",
     logo: "/media/logos/besomi_logo.jpg",
     startDate: "02.2026",
-    endDate: "Present",
+    endDate: "05.2026",
     bullets: [
       "Led Sumo Robot workshops for university students to demonstrate practical robotics applications.",
       "Designed and fabricated a modular Sumo Robot kit for student competitions, focusing on mechanical durability and ease of assembly.",
@@ -21,26 +55,13 @@ export const EXPERIENCE: ExperienceItem[] = [
     organization: "xAI",
     logo: "/media/logos/xai.png",
     startDate: "01.2026",
-    endDate: "Present",
+    endDate: "03.2026",
     bullets: [
       "Fine-tuned the Grok LLM for high-fidelity Gulf Arabic dialectal recognition and cultural nuance.",
       "Completed more than 1000 tasks, including L1 reviews.",
       "Conducted systematic audits of model outputs to verify linguistic precision and safety benchmarks."
     ],
     tags: ["AI"],
-  },
-  {
-    id: "exp-4",
-    role: "CubeSat Development Instructor",
-    organization: "SpacePoint (Space.)",
-    logo: "/media/logos/spacepoint.jpg",
-    startDate: "04.2025",
-    endDate: "Present",
-    bullets: [
-      "Led 10+ lectures on Introduction to Space, satellites, and space technology.",
-      "Facilitated 10+ hands-on workshops for 100+ students on the assembly, integration, and testing (AIT) of proprietary educational SatKits.",
-    ],
-    tags: ["Space", "AIT"],
   },
   {
     id: "exp-3",

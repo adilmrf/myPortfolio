@@ -1,6 +1,13 @@
+type Variant = "active" | "partial" | "complete";
+
 type Props = {
-  /** `active` = ongoing. `complete` = finished or past. Semantic, never decorative. */
-  variant: "active" | "complete";
+  /**
+   * Semantic, never decorative:
+   *   `active`   — ongoing, full commitment (green)
+   *   `partial`  — ongoing, but part-time / contract / volunteer (amber)
+   *   `complete` — finished or past (grey)
+   */
+  variant: Variant;
   /** Overrides the default word. Keep it to one or two words. */
   label?: string;
   /**
@@ -11,6 +18,18 @@ type Props = {
   className?: string;
 };
 
+const STYLES: Record<Variant, string> = {
+  active: "bg-status-active-wash text-status-active",
+  partial: "bg-status-partial-wash text-status-partial",
+  complete: "text-status-idle",
+};
+
+const DEFAULT_LABEL: Record<Variant, string> = {
+  active: "Active",
+  partial: "Part-time",
+  complete: "Complete",
+};
+
 /**
  * A status indicator: a 6px square (not a circle — there are no pills in this
  * system) plus a word.
@@ -19,14 +38,11 @@ type Props = {
  * and aria-hidden, and the word does the work for assistive tech.
  */
 export default function Status({ variant, label, pulse = false, className = "" }: Props) {
-  const isActive = variant === "active";
-  const text = label ?? (isActive ? "Active" : "Complete");
-
   return (
     <span
       className={[
         "micro inline-flex items-center gap-2 rounded-[2px] px-1.5 py-0.5 font-medium",
-        isActive ? "bg-status-active-wash text-status-active" : "text-status-idle",
+        STYLES[variant],
         className,
       ]
         .filter(Boolean)
@@ -36,7 +52,7 @@ export default function Status({ variant, label, pulse = false, className = "" }
         aria-hidden="true"
         className={`h-1.5 w-1.5 shrink-0 rounded-[1px] bg-current ${pulse ? "status-pulse" : ""}`}
       />
-      {text}
+      {label ?? DEFAULT_LABEL[variant]}
     </span>
   );
 }

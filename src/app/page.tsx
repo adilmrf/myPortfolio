@@ -37,6 +37,7 @@ const EXPERIENCE_ITEMS: TimelineItem[] = EXPERIENCE.map((e) => ({
   logo: e.logo,
   startDate: e.startDate,
   endDate: e.endDate,
+  statusLabel: e.commitment,
   bullets: e.bullets,
 }));
 

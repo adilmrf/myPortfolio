@@ -125,6 +125,13 @@ export interface ExperienceItem {
   logo?: string; // /public path for organization logo
   startDate: string; // ISO-ish (YYYY-MM) or human readable
   endDate?: string; // empty for present
+  /**
+   * Overrides the status word on an ongoing role, e.g. "Part-time",
+   * "Contract", "Volunteer". Keep it to one or two words — it renders in the
+   * 10px status pill. Ignored once the role has an end date, since a finished
+   * role always reads "Complete".
+   */
+  commitment?: string;
   bullets: string[];
   tags?: Tag[];
 }

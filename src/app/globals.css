@@ -40,10 +40,16 @@
   --accent-contrast: #ffffff;
   --accent-wash: rgb(180 83 9 / 0.08);
 
-  /* Status is SEMANTIC ONLY: green = ongoing, grey = complete. Never used to
-     make something look interesting. */
+  /* Status is SEMANTIC ONLY: green = ongoing, amber = ongoing but partial
+     (part-time, contract, volunteer), grey = complete. Never used to make
+     something look interesting.
+
+     --status-partial holds the accent amber rather than referencing --accent,
+     so the two can be tuned apart later without touching every call site. */
   --status-active: #047857;
   --status-active-wash: rgb(4 120 87 / 0.1);
+  --status-partial: #b45309;
+  --status-partial-wash: rgb(180 83 9 / 0.1);
   --status-idle: #6b747d;
 
   --grid-wash: rgb(15 17 20 / 0.05);
@@ -69,6 +75,8 @@
 
   --status-active: #3dd68c;
   --status-active-wash: rgb(61 214 140 / 0.12);
+  --status-partial: #ff9e1b;
+  --status-partial-wash: rgb(255 158 27 / 0.12);
   --status-idle: #7a848e;
 
   --grid-wash: rgb(230 233 237 / 0.045);
@@ -97,6 +105,8 @@
 
   --color-status-active: var(--status-active);
   --color-status-active-wash: var(--status-active-wash);
+  --color-status-partial: var(--status-partial);
+  --color-status-partial-wash: var(--status-partial-wash);
   --color-status-idle: var(--status-idle);
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;

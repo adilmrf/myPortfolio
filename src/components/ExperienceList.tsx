@@ -29,6 +29,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
     logo: e.logo,
     startDate: e.startDate,
     endDate: e.endDate,
+    statusLabel: e.commitment,
     bullets: e.bullets,
   }));
 
