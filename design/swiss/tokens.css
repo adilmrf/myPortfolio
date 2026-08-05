@@ -1,0 +1,166 @@
+/* =========================================================================
+   GRID — design tokens
+   Portfolio of Adil Mahroof · adilmrf.github.io/myPortfolio
+   -------------------------------------------------------------------------
+   The Swiss / International Typographic Style option. Sibling to
+   design/flight-deck/tokens.css — pick one, not both.
+
+   Drop-in replacement for the `:root` / `.dark` blocks in src/app/globals.css.
+   Token NAMES match the current site wherever possible so the existing
+   Tailwind `@theme inline` mapping keeps working; only values change.
+
+   Light is the primary theme here. This system descends from print, and it
+   wants paper. (Flight Deck is the opposite: dark-first.)
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. COLOR
+   -------------------------------------------------------------------------
+   Almost monochrome. Structure comes from alignment and whitespace, so there
+   is very little for colour to do: ink, paper, one red. The red appears two
+   or three times per page at most.
+   ---------------------------------------------------------------------- */
+
+:root {
+  --paper: #ffffff;
+  --surface: #f4f4f2; /* warm off-white — the only fill in the system */
+  --surface-raised: #ffffff;
+
+  /* Rules are INK, not grey. A Swiss rule is a drawn line, not a divider
+     that apologises for existing. --line-strong is the hairline you actually
+     use; --line is reserved for the rare secondary rule. */
+  --line: #d8d8d5;
+  --line-strong: #101010;
+
+  --ink: #101010;
+  --ink-muted: #4a4a48; /*  8.4:1 on paper */
+  --ink-subtle: #6e6e6b; /*  4.9:1 on paper — the floor */
+
+  --accent: #d62828; /*  5.0:1 on paper */
+  --accent-hover: #a81f1f;
+  --accent-contrast: #ffffff;
+  --accent-wash: rgb(214 40 40 / 0.07);
+
+  color-scheme: light;
+}
+
+/* Secondary theme. Inverted paper, same restraint. */
+.dark {
+  --paper: #0a0a0a;
+  --surface: #141414;
+  --surface-raised: #141414;
+
+  --line: #2a2a2a;
+  --line-strong: #f2f2f0;
+
+  --ink: #f2f2f0;
+  --ink-muted: #a3a3a0; /*  9.0:1 on paper */
+  --ink-subtle: #7d7d7a; /*  4.9:1 on paper */
+
+  --accent: #ff4d4d; /*  6.0:1 on paper */
+  --accent-hover: #ff7a7a;
+  --accent-contrast: #0a0a0a;
+  --accent-wash: rgb(255 77 77 / 0.1);
+
+  color-scheme: dark;
+}
+
+/* -------------------------------------------------------------------------
+   2. TYPE
+   -------------------------------------------------------------------------
+   ONE family, many weights. This is the defining constraint of the style and
+   the sharpest break from Flight Deck, which runs three families and assigns
+   meaning to the switch between them.
+
+   Practically: Space Grotesk and JetBrains Mono get DROPPED from the build.
+   That removes two webfont families — this system is a net payload *saving*.
+
+   Inter is a neo-grotesque in the Helvetica line, which is the right family
+   for this. Inter Tight or Neue Haas Grotesk would be more authentic still,
+   but Inter is already self-hosted and the difference is small at these sizes.
+   ---------------------------------------------------------------------- */
+
+:root {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Scale contrast is the drama. Display runs to 120px where Flight Deck's
+     callsign stops at 60 — and body stays small underneath it. The jump is
+     the whole effect; do not compress it to be safe. */
+  --text-display: clamp(3rem, 1.5rem + 9vw, 7.5rem);
+  --text-display--line-height: 0.88;
+  --text-display--letter-spacing: -0.045em;
+
+  --text-h1: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.03em;
+
+  --text-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.35;
+  --text-h3--letter-spacing: -0.01em;
+
+  /* Big margin numerals — section indices and work numbers. Always tabular. */
+  --text-numeral: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --text-numeral--line-height: 0.9;
+  --text-numeral--letter-spacing: -0.03em;
+
+  /* The lede is genuinely large here — it is the second-biggest thing on the
+     page, not a caption. */
+  --text-lede: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  --text-lede--line-height: 1.45;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+
+  /* Label — uppercase and tracked, but in Inter. No monospace anywhere. */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.1em;
+}
+
+/* -------------------------------------------------------------------------
+   3. SPACE, STRUCTURE, MOTION
+   ---------------------------------------------------------------------- */
+
+:root {
+  /* Same 4px-multiple names as the current site, but this system lives at the
+     large end of the scale. Whitespace is the primary structural device, so
+     under-spacing breaks it in a way it does not break Flight Deck. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-48: 12rem;
+
+  /* Layout */
+  --measure: 1280px; /* wider than Flight Deck's 1120 — this is a poster grid */
+  --measure-prose: 60ch;
+  --columns: 12;
+  --gutter: var(--space-8); /* 32px */
+  --pad-page: var(--space-6); /* 24px  */
+  --pad-page-lg: var(--space-12); /* 48px  */
+
+  /* ZERO radius. Not 2px, not 1px. Every corner in the system is square, and
+     there are almost no corners anyway because there are almost no boxes. */
+  --radius: 0px;
+
+  --border: 1px;
+
+  /* Motion is close to absent. Links change colour and shift their underline;
+     nothing moves, nothing fades in on scroll. */
+  --motion-fast: 120ms linear;
+}

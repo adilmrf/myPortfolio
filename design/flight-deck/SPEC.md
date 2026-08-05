@@ -2,9 +2,10 @@
 
 Portfolio of Adil Mahroof · `adilmrf.github.io/myPortfolio`
 Status: **proposed**, not applied. Branch `design-system`.
+Sibling option: [`../swiss/SPEC.md`](../swiss/SPEC.md). Pick one.
 
-Open `design/preview.html` in a browser to see everything below rendered with
-real content.
+Open `design/flight-deck/preview.html` in a browser to see everything below
+rendered with real content.
 
 ---
 

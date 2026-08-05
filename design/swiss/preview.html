@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid — design system preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ========== TOKENS (mirrors design/swiss/tokens.css) ========== */
+:root{
+  --paper:#fff; --surface:#f4f4f2; --surface-raised:#fff;
+  --line:#d8d8d5; --line-strong:#101010;
+  --ink:#101010; --ink-muted:#4a4a48; --ink-subtle:#6e6e6b;
+  --accent:#d62828; --accent-hover:#a81f1f; --accent-contrast:#fff;
+  --accent-wash:rgb(214 40 40 / .07);
+  color-scheme:light;
+}
+.dark{
+  --paper:#0a0a0a; --surface:#141414; --surface-raised:#141414;
+  --line:#2a2a2a; --line-strong:#f2f2f0;
+  --ink:#f2f2f0; --ink-muted:#a3a3a0; --ink-subtle:#7d7d7a;
+  --accent:#ff4d4d; --accent-hover:#ff7a7a; --accent-contrast:#0a0a0a;
+  --accent-wash:rgb(255 77 77 / .10);
+  color-scheme:dark;
+}
+:root{
+  --font-sans:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --text-display:clamp(3rem,1.5rem + 9vw,7.5rem);
+  --text-h1:clamp(2rem,1.4rem + 3vw,3.5rem);
+  --text-h2:clamp(1.5rem,1.2rem + 1.4vw,2.25rem);
+  --text-h3:1.125rem;
+  --text-numeral:clamp(2rem,1.4rem + 3vw,3.5rem);
+  --text-lede:clamp(1.125rem,1rem + .6vw,1.5rem);
+  --text-small:.875rem; --text-label:.75rem;
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;
+  --space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--space-32:8rem;--space-48:12rem;
+  --measure:1280px; --measure-prose:60ch; --gutter:var(--space-8);
+  --radius:0px; --motion-fast:120ms linear;
+}
+
+/* ========== BASE ========== */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--font-sans);font-size:1rem;line-height:1.6;
+  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
+  transition:background var(--motion-fast),color var(--motion-fast)}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+a{color:inherit;text-decoration:none}
+:where(a,button):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:var(--measure);margin-inline:auto;padding-inline:var(--space-6)}
+@media(min-width:640px){.wrap{padding-inline:var(--space-12)}}
+
+/* ---- THE GRID ---- */
+.g{display:grid;grid-template-columns:1fr;gap:var(--space-8)}
+@media(min-width:900px){.g{grid-template-columns:repeat(12,1fr);gap:var(--gutter)}
+  .c1-7{grid-column:1/8}.c1-9{grid-column:1/10}.c3-9{grid-column:3/10}
+  .c9-12{grid-column:9/-1}.c10-12{grid-column:10/-1}.c1-2{grid-column:1/3}
+  .c1-12{grid-column:1/-1}.c3-12{grid-column:3/-1}}
+
+/* ---- TYPE ---- */
+.display{font-size:var(--text-display);line-height:.88;letter-spacing:-.045em;font-weight:800;text-wrap:balance}
+.h1{font-size:var(--text-h1);line-height:1;letter-spacing:-.03em;font-weight:700;text-wrap:balance}
+.h2{font-size:var(--text-h2);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+.h3{font-size:var(--text-h3);line-height:1.35;letter-spacing:-.01em;font-weight:600}
+.numeral{font-size:var(--text-numeral);line-height:.9;letter-spacing:-.03em;font-weight:700}
+.lede{font-size:var(--text-lede);line-height:1.45;max-width:var(--measure-prose)}
+.small{font-size:var(--text-small);line-height:1.5}
+.label{font-size:var(--text-label);letter-spacing:.1em;text-transform:uppercase;
+  font-weight:500;color:var(--ink-subtle);line-height:1.4}
+.muted{color:var(--ink-muted)}
+.prose{max-width:var(--measure-prose)}
+.red{color:var(--accent)}
+
+/* ---- RULE: the only drawn element ---- */
+.rule{height:1px;background:var(--line-strong);border:0;width:100%}
+
+/* ---- WORK ENTRY ---- */
+.work{border-top:1px solid var(--line-strong)}
+.work li{border-bottom:1px solid var(--line-strong)}
+.work a{display:grid;grid-template-columns:1fr;gap:var(--space-2);
+  padding:var(--space-6) 0;min-height:72px;align-items:start}
+@media(min-width:900px){.work a{grid-template-columns:repeat(12,1fr);gap:var(--gutter)}
+  .work .yr{grid-column:1/3}.work .ti{grid-column:3/10}.work .tg{grid-column:10/-1}}
+.work .yr{color:var(--ink-subtle)}
+.work .ti{transition:color var(--motion-fast)}
+.work a:hover .ti{color:var(--accent)}
+.work .tg{display:flex;flex-direction:column;gap:2px}
+@media(max-width:899px){.work .tg{flex-direction:row;flex-wrap:wrap;gap:var(--space-3)}}
+.work .sum{color:var(--ink-muted);margin-top:var(--space-2);max-width:52ch}
+
+/* ---- META LIST ---- */
+.meta{display:grid;gap:var(--space-6);grid-template-columns:1fr}
+@media(min-width:640px){.meta--3{grid-template-columns:repeat(3,1fr)}
+  .meta--2{grid-template-columns:repeat(2,1fr)}}
+.meta dt{margin-bottom:var(--space-2)}
+.meta dd{margin:0}
+
+/* ---- EXPERIENCE ROWS ---- */
+.exp{border-top:1px solid var(--line-strong)}
+.exp li{border-bottom:1px solid var(--line-strong);padding:var(--space-8) 0}
+.exp .yr{color:var(--ink-subtle);white-space:nowrap}
+.exp ul{margin-top:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2);max-width:60ch}
+.exp ul li{border:0;padding:0;color:var(--ink-muted);font-size:var(--text-small)}
+
+/* ---- LINKS ---- */
+.link{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;
+  transition:color var(--motion-fast),text-underline-offset var(--motion-fast)}
+.link:hover{color:var(--accent);text-underline-offset:.12em}
+.act{display:inline-block;border-bottom:1px solid var(--line-strong);padding-bottom:var(--space-2);
+  font-weight:500;transition:color var(--motion-fast),border-color var(--motion-fast)}
+.act:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ---- SECTION INDEX ---- */
+.sec{padding-block:var(--space-32)}
+@media(min-width:900px){.sec{padding-block:var(--space-48)}}
+.sec__i{color:var(--accent)}
+
+/* ---- IMAGE PLACEHOLDER ---- */
+.imgph{aspect-ratio:16/9;background:var(--surface);display:grid;place-items:center}
+.imgph span{color:var(--ink-subtle);font-size:var(--text-label);letter-spacing:.1em;text-transform:uppercase}
+
+/* ========== PREVIEW CHROME (not part of the system) ========== */
+.pv-head{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line-strong)}
+.pv-head .wrap{height:60px;display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.pv-sec{padding-block:var(--space-24)}
+.pv-note{border-left:2px solid var(--accent);padding:var(--space-4) var(--space-6);
+  font-size:var(--text-small);color:var(--ink-muted);max-width:70ch}
+.pv-note strong{color:var(--ink)}
+.pv-flag{font-size:var(--text-small);color:var(--ink-subtle);margin-top:var(--space-4);max-width:var(--measure-prose)}
+.pv-flag b{color:var(--accent);font-weight:600}
+.pv-item{margin-bottom:var(--space-16)}
+.pv-item>h3{font-size:var(--text-h3);font-weight:600;margin-bottom:var(--space-2)}
+.pv-item>p{color:var(--ink-muted);font-size:var(--text-small);max-width:var(--measure-prose)}
+.pv-demo{margin-top:var(--space-6);padding:var(--space-8) 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.pv-kicker{color:var(--accent);font-size:var(--text-label);letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:var(--space-4)}
+.sw .chip{height:64px;border:1px solid var(--line)}
+.sw code{font-size:var(--text-label);display:block;margin-top:var(--space-2)}
+.sw small{font-size:var(--text-label);color:var(--ink-subtle)}
+.scale div{padding:var(--space-4) 0;border-bottom:1px solid var(--line);display:flex;
+  align-items:baseline;gap:var(--space-8);flex-wrap:wrap}
+.scale code{font-size:var(--text-label);color:var(--ink-subtle);letter-spacing:.1em;
+  text-transform:uppercase;flex:none;width:9ch}
+.gridviz{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gutter);height:120px}
+.gridviz i{background:var(--accent-wash);border-top:2px solid var(--accent)}
+.gridviz i:nth-child(8){background:transparent;border-top-color:var(--line)}
+</style>
+</head>
+<body>
+
+<header class="pv-head">
+  <div class="wrap">
+    <span class="label" style="color:var(--ink)">Grid <span style="color:var(--ink-subtle)">/ design system</span></span>
+    <button class="act" style="background:none;border-top:0;border-left:0;border-right:0;
+      font-family:inherit;font-size:var(--text-label);letter-spacing:.1em;text-transform:uppercase;
+      cursor:pointer;color:inherit;border-bottom:1px solid var(--line-strong)"
+      onclick="document.documentElement.classList.toggle('dark')">Toggle theme</button>
+  </div>
+</header>
+
+<!-- ===================== 00 ORIENTATION ===================== -->
+<section class="pv-sec">
+  <div class="wrap">
+    <div class="g">
+      <div class="c1-7">
+        <p class="pv-kicker">00 — Orientation</p>
+        <h1 class="display" style="margin-top:var(--space-6)">Grid</h1>
+        <p class="lede muted" style="margin-top:var(--space-8)">The Swiss option. International Typographic Style applied
+          straight: one typeface, a strict 12-column grid, dramatic scale contrast, and structure carried entirely by
+          alignment and whitespace rather than by boxes.</p>
+      </div>
+      <div class="c9-12">
+        <dl class="meta">
+          <div><dt class="label">Reference</dt><dd class="small">Müller-Brockmann · Neue Grafik</dd></div>
+          <div><dt class="label">Primary theme</dt><dd class="small">Light</dd></div>
+          <div><dt class="label">Typefaces</dt><dd class="small">Inter only</dd></div>
+          <div><dt class="label">Sibling option</dt><dd class="small"><a class="link" href="../flight-deck/preview.html">Flight Deck →</a></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <hr class="rule" style="margin-block:var(--space-16)">
+
+    <div class="g">
+      <div class="c1-7">
+        <p>Where <strong>Flight Deck</strong> says <em>"this person measures things,"</em> Grid says <em>"this person has
+          judgement."</em> It is quieter, more confident, and it ages better — the reference work is seventy years old and
+          has not dated. It is also less immediately identifiable as an <em>aerospace</em> portfolio.</p>
+        <p style="margin-top:var(--space-4)">Three rules carry it: <strong>one typeface</strong>, <strong>no boxes</strong>,
+          and <strong>alignment is meaning</strong>. Nothing is centred, there are no cards or panels or rounded corners,
+          and the only drawn element in the whole system is a horizontal rule.</p>
+      </div>
+      <div class="c9-12">
+        <div class="pv-note" style="border-left-color:var(--accent)">
+          <strong>Every word and number below comes from the existing content files.</strong> Only project years are
+          derived, read off the presentation venues. This option needs <em>less</em> derived content than Flight Deck —
+          there is no readout bar, so the disputed "3+ yrs research" figure never has to appear at all.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 01 FOUNDATIONS ===================== -->
+<section class="pv-sec" style="border-top:1px solid var(--line-strong)">
+  <div class="wrap">
+    <div class="g" style="margin-bottom:var(--space-16)">
+      <div class="c1-2"><span class="numeral sec__i">01</span></div>
+      <div class="c3-9"><h2 class="h1">Foundations</h2></div>
+    </div>
+
+    <div class="pv-item">
+      <h3>The grid</h3>
+      <p>12 columns, 32px gutter, 1280px max. The standard split is content in columns 1–7 and meta in 9–12, with
+        <strong>column 8 left empty</strong>. That gap is doing real work — it is what makes the layout read as
+        deliberate rather than merely wide. Below 900px everything collapses to one column.</p>
+      <div class="pv-demo">
+        <div class="gridviz"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="label" style="margin-top:var(--space-4)">Column 8 — intentionally empty</p>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>Colour</h3>
+      <p>Near-monochrome. When structure comes from alignment there is very little for colour to do: ink, paper, one red.
+        The red appears two or three times per <em>page</em> — not per section.</p>
+      <div class="pv-demo">
+        <div class="sw">
+          <div><div class="chip" style="background:var(--paper)"></div><code>--paper</code><small>page</small></div>
+          <div><div class="chip" style="background:var(--surface)"></div><code>--surface</code><small>only fill</small></div>
+          <div><div class="chip" style="background:var(--ink)"></div><code>--ink</code><small>text and rules</small></div>
+          <div><div class="chip" style="background:var(--ink-muted)"></div><code>--ink-muted</code><small>8.4:1</small></div>
+          <div><div class="chip" style="background:var(--ink-subtle)"></div><code>--ink-subtle</code><small>4.9:1 · floor</small></div>
+          <div><div class="chip" style="background:var(--accent)"></div><code>--accent</code><small>2–3 per page</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>Type — one family</h3>
+      <p>Inter at 400/500/600/700/800. <strong>No monospace anywhere</strong> and no second family for headings; all
+        differentiation comes from size, weight and position. Space Grotesk and JetBrains Mono get dropped from the
+        build, so adopting this is a net payload <em>saving</em>.</p>
+      <p style="margin-top:var(--space-3)">The 7.5× jump from display to body is the drama. Do not compress it.</p>
+      <div class="pv-demo scale">
+        <div><code>display</code><span class="display">Adil Mahroof</span></div>
+        <div><code>numeral</code><span class="numeral">2023</span></div>
+        <div><code>h1</code><span class="h1">Selected work</span></div>
+        <div><code>h2</code><span class="h2">Experience</span></div>
+        <div><code>lede</code><span class="lede">Rocket propulsion, UAVs and satellite AIT.</span></div>
+        <div><code>h3</code><span class="h3">Satellite AIT Intern</span></div>
+        <div><code>body</code><span>Assembly, integration and testing.</span></div>
+        <div><code>small</code><span class="small muted">Completed 10+ tests confirming feasibility.</span></div>
+        <div><code>label</code><span class="label">Hot-fire tests</span></div>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>Space</h3>
+      <p>128px between sections at mobile, 192px at desktop — roughly double Flight Deck. Whitespace is the primary
+        structural device here, so under-spacing breaks this system in a way it does not break the other one. If the
+        gaps feel excessive they are probably correct.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 COMPONENTS ===================== -->
+<section class="pv-sec" style="border-top:1px solid var(--line-strong)">
+  <div class="wrap">
+    <div class="g" style="margin-bottom:var(--space-16)">
+      <div class="c1-2"><span class="numeral sec__i">02</span></div>
+      <div class="c3-9"><h2 class="h1">Components</h2>
+        <p class="muted" style="margin-top:var(--space-4);max-width:var(--measure-prose)">Six, against Flight Deck's
+          nine. The reduction is the point — most of what that system solves with a component, this one solves with the
+          grid.</p></div>
+    </div>
+
+    <div class="pv-item">
+      <h3>WorkEntry</h3>
+      <p>Year in columns 1–2, title in 3–9, tags stacked in 10–12. Rule beneath. Hover turns the title red and
+        <strong>nothing moves</strong>. Tags are stacked text — there is no chip in this system.</p>
+      <div class="pv-demo" style="border-bottom:0;padding-bottom:0">
+        <ol class="work">
+          <li><a href="#">
+            <span class="yr label">2023</span>
+            <div class="ti"><span class="h3">Green Propellant Space Propulsion for Mode Changeable Micro Thrust Generation</span></div>
+            <div class="tg"><span class="label">Propulsion</span><span class="label">Research</span><span class="label">Space</span></div>
+          </a></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>MetaList</h3>
+      <p>Label above value, aligned to grid columns. Replaces Flight Deck's dot-leader rows, which would be far too
+        fussy here.</p>
+      <div class="pv-demo">
+        <dl class="meta meta--3">
+          <div><dt class="label">Location</dt><dd>Dubai, United Arab Emirates</dd></div>
+          <div><dt class="label">Role</dt><dd>Satellite AIT Intern</dd></div>
+          <div><dt class="label">Period</dt><dd>Aug 2025 — Nov 2025</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="pv-item">
+      <h3>Rule, Link, Action</h3>
+      <p>The rule is the only drawn element in the system. There are <strong>no filled buttons</strong> — a solid
+        rectangle would be the loudest object on the page. Actions are text with a 1px underline that goes red.</p>
+      <div class="pv-demo">
+        <hr class="rule">
+        <p style="margin-top:var(--space-6)">A body link looks <a class="link" href="#">like this</a>, and the underline
+          tightens on hover.</p>
+        <div style="display:flex;gap:var(--space-8);margin-top:var(--space-6);flex-wrap:wrap">
+          <a class="act" href="#">Selected work</a>
+          <a class="act" href="#">Download CV</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 PAGES ===================== -->
+<section class="pv-sec" style="border-top:1px solid var(--line-strong)">
+  <div class="wrap">
+    <div class="g" style="margin-bottom:var(--space-16)">
+      <div class="c1-2"><span class="numeral sec__i">03</span></div>
+      <div class="c3-9"><h2 class="h1">Applied</h2>
+        <p class="muted" style="margin-top:var(--space-4)">Real content, in the system.</p></div>
+    </div>
+  </div>
+
+  <!-- ---------- HOME ---------- -->
+  <div class="wrap">
+    <p class="label" style="margin-bottom:var(--space-8)">Page — Home</p>
+
+    <div class="g">
+      <div class="c1-7">
+        <h1 class="display">Adil<br>Mahroof</h1>
+      </div>
+      <div class="c9-12">
+        <dl class="meta">
+          <div><dt class="label">Role</dt><dd>Aerospace Engineer</dd></div>
+          <div><dt class="label">Focus</dt><dd>Rocket propulsion<br>UAVs<br>Satellite AIT</dd></div>
+          <div><dt class="label">Location</dt><dd>Dubai<br>United Arab Emirates</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <hr class="rule" style="margin-block:var(--space-16)">
+
+    <div class="g">
+      <div class="c1-7">
+        <p class="lede">Hands-on experience in engineering design, analysis, and assembly, integration and testing across
+          rocket propulsion, aerodynamics, satellite systems and system design.</p>
+        <div style="display:flex;gap:var(--space-8);margin-top:var(--space-12);flex-wrap:wrap">
+          <a class="act" href="#">Selected work</a>
+          <a class="act" href="#">Download CV</a>
+        </div>
+      </div>
+      <div class="c9-12">
+        <dl class="meta">
+          <div><dt class="label">Education</dt><dd class="small">B.Sc. Aerospace Engineering<br>UAEU · GPA 3.95 / 4.0</dd></div>
+          <div><dt class="label">Recognition</dt><dd class="small">UAE Golden Visa<br>MBZ Scholar 2023</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- SELECTED WORK -->
+    <div class="g" style="margin-top:var(--space-48)">
+      <div class="c1-2"><span class="numeral sec__i">01</span></div>
+      <div class="c3-9"><h2 class="h1">Selected work</h2></div>
+    </div>
+
+    <ol class="work" style="margin-top:var(--space-12)">
+      <li><a href="#">
+        <span class="yr label">2022</span>
+        <div class="ti"><span class="h3">Design, Fabrication, and Testing of a Miniaturised Rocket Propulsion System</span>
+          <p class="sum small">Design, manufacturing, and testing of a 10 N class thruster.</p></div>
+        <div class="tg"><span class="label">Propulsion</span><span class="label">Research</span><span class="label">Space</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="yr label">2023</span>
+        <div class="ti"><span class="h3">Green Propellant Space Propulsion for Mode Changeable Micro Thrust Generation</span>
+          <p class="sum small">A feasibility study on using Hydrogen Peroxide as a green propellant in chemical and electric microthrust generation.</p></div>
+        <div class="tg"><span class="label">Propulsion</span><span class="label">Research</span><span class="label">Space</span><span class="label">Sustainability</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="yr label">2024</span>
+        <div class="ti"><span class="h3">Performance Improvement of Chemical Space Propulsion with Thermal Decomposition of Propellant</span>
+          <p class="sum small">An experimental study on improving the performance of micro-thrusters using Hydrogen Peroxide (H2O2) as propellant.</p></div>
+        <div class="tg"><span class="label">Propulsion</span><span class="label">Research</span><span class="label">Space</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="yr label">2025</span>
+        <div class="ti"><span class="h3">Design and Control for Vertical Take-off and Landing (VTOL) UAV</span>
+          <p class="sum small">A tri-motor VTOL UAV with two tilt motors was designed, additively manufactured and flight tested.</p></div>
+        <div class="tg"><span class="label">UAVs</span><span class="label">Research</span><span class="label">Control</span><span class="label">AIT</span></div>
+      </a></li>
+      <li><a href="#">
+        <span class="yr label">2025</span>
+        <div class="ti"><span class="h3">Design of a Novel Water Desalination Spacer Using Biomimicry Techniques to Reduce Biofouling</span>
+          <p class="sum small">A spacer inspired by the lotus leaf, designed and 3D printed to reduce biofouling in reverse osmosis membranes.</p></div>
+        <div class="tg"><span class="label">Research</span><span class="label">Sustainability</span><span class="label">3D Printing</span></div>
+      </a></li>
+    </ol>
+    <p class="pv-flag"><b>⚠ Years derived from the presentation venues</b> (IAC 2024 Milan, IDEX 2025, ADSW 2025,
+      UAEU-MUBADALA 2022). Not stored as a field — see SPEC §7.</p>
+
+    <!-- EXPERIENCE -->
+    <div class="g" style="margin-top:var(--space-48)">
+      <div class="c1-2"><span class="numeral sec__i">02</span></div>
+      <div class="c3-9"><h2 class="h1">Experience</h2></div>
+    </div>
+
+    <ol class="exp" style="margin-top:var(--space-12)">
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2026 —<br>Present</span></div>
+        <div class="c3-9"><h3 class="h3">Robotics Intern</h3><p class="muted small">Besomi Electronics</p>
+          <ul><li>Led Sumo Robot workshops for university students to demonstrate practical robotics applications.</li>
+              <li>Designed and fabricated a modular Sumo Robot kit for student competitions.</li></ul></div>
+        <div class="c10-12"><span class="label red">Current</span></div>
+      </div></li>
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2026 —<br>Present</span></div>
+        <div class="c3-9"><h3 class="h3">AI Tutor</h3><p class="muted small">xAI</p>
+          <ul><li>Fine-tuned the Grok LLM for high-fidelity Gulf Arabic dialectal recognition and cultural nuance.</li>
+              <li>Completed more than 1000 tasks, including L1 reviews.</li></ul></div>
+        <div class="c10-12"><span class="label red">Current</span></div>
+      </div></li>
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2025 —<br>Present</span></div>
+        <div class="c3-9"><h3 class="h3">CubeSat Development Instructor</h3><p class="muted small">SpacePoint (Space.)</p>
+          <ul><li>Led 10+ lectures on Introduction to Space, satellites, and space technology.</li>
+              <li>Facilitated 10+ hands-on workshops for 100+ students on the AIT of educational SatKits.</li></ul></div>
+        <div class="c10-12"><span class="label red">Current</span></div>
+      </div></li>
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2025</span></div>
+        <div class="c3-9"><h3 class="h3">Satellite AIT Intern</h3><p class="muted small">Orbitworks</p>
+          <ul><li>Designed and manufactured a mechanical ground support equipment (MGSE) to store 40 solar array modules.</li>
+              <li>Worked on 10 Longbow satellites including storage, functional tests, solar array deployment, and propulsion module removal.</li></ul></div>
+        <div class="c10-12"><span class="label">Aug — Nov</span></div>
+      </div></li>
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2024</span></div>
+        <div class="c3-9"><h3 class="h3">Rocket Propulsion Intern</h3><p class="muted small">HALCON, EDGE Group</p>
+          <ul><li>Led the design of a liquid rocket engine using NASA CEA, RPA and PTC Creo, manufactured by SLM 3D printing.</li>
+              <li>Participated in test campaigns for rocket motor qualifications.</li></ul></div>
+        <div class="c10-12"><span class="label">May — Dec</span></div>
+      </div></li>
+    </ol>
+
+    <!-- EDUCATION -->
+    <div class="g" style="margin-top:var(--space-48)">
+      <div class="c1-2"><span class="numeral sec__i">03</span></div>
+      <div class="c3-9"><h2 class="h1">Education</h2></div>
+    </div>
+
+    <ol class="exp" style="margin-top:var(--space-12)">
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2020 — 2024</span></div>
+        <div class="c3-9"><h3 class="h3">B.Sc. Aerospace Engineering</h3><p class="muted small">United Arab Emirates University</p></div>
+        <div class="c10-12"><span class="label">GPA 3.95 / 4.0</span></div>
+      </div></li>
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2022 — 2023</span></div>
+        <div class="c3-9"><h3 class="h3">Sheikh Mohamed Bin Zayed Scholars Program</h3><p class="muted small">New York University Abu Dhabi</p></div>
+        <div class="c10-12"><span class="label">GPA 3.93 / 4.0</span></div>
+      </div></li>
+      <li><div class="g">
+        <div class="c1-2"><span class="yr label">2018 — 2020</span></div>
+        <div class="c3-9"><h3 class="h3">High School Diploma</h3><p class="muted small">New World Private School</p></div>
+        <div class="c10-12"><span class="label">97.65%</span></div>
+      </div></li>
+    </ol>
+
+    <!-- REFERENCES -->
+    <div class="g" style="margin-top:var(--space-48)">
+      <div class="c1-2"><span class="numeral sec__i">04</span></div>
+      <div class="c3-9"><h2 class="h1">References</h2></div>
+    </div>
+
+    <div class="g" style="margin-top:var(--space-12);row-gap:var(--space-12)">
+      <div class="c1-7" style="grid-column:span 4"><h3 class="h3">Dr. Jeongmoo Huh</h3>
+        <p class="muted small">Assistant Professor</p><p class="label" style="margin-top:var(--space-3)">United Arab Emirates University</p></div>
+      <div style="grid-column:span 4"><h3 class="h3">Dr. Tarek Dief</h3>
+        <p class="muted small">Associate Professor</p><p class="label" style="margin-top:var(--space-3)">United Arab Emirates University</p></div>
+      <div style="grid-column:span 4"><h3 class="h3">Eng. Mohamed Alkarbi</h3>
+        <p class="muted small">AIT Director</p><p class="label" style="margin-top:var(--space-3)">Orbitworks</p></div>
+      <div style="grid-column:span 4"><h3 class="h3">Dr. Mohammed Al Azizi</h3>
+        <p class="muted small">Rocket Propulsion Manager</p><p class="label" style="margin-top:var(--space-3)">HALCON</p></div>
+      <div style="grid-column:span 4"><h3 class="h3">Dr. Aysha Aljaberi</h3>
+        <p class="muted small">Assistant Vice Provost</p><p class="label" style="margin-top:var(--space-3)">NYU Abu Dhabi</p></div>
+    </div>
+  </div>
+
+  <!-- ---------- PROJECT DETAIL ---------- -->
+  <div class="wrap" style="margin-top:var(--space-48)">
+    <hr class="rule">
+    <p class="label" style="margin-block:var(--space-12) var(--space-8)">Page — Project detail</p>
+
+    <div class="g">
+      <div class="c1-2"><span class="numeral sec__i">2023</span></div>
+      <div class="c3-12"><h1 class="h1">Green Propellant Space Propulsion for Mode Changeable Micro Thrust Generation</h1></div>
+    </div>
+
+    <div class="g" style="margin-top:var(--space-16)">
+      <div class="c1-7"><p class="lede">A feasibility study on using Hydrogen Peroxide as a green propellant in chemical
+        and electric microthrust generation.</p></div>
+    </div>
+
+    <dl class="meta meta--3" style="margin-top:var(--space-16)">
+      <div><dt class="label">Role</dt><dd>Team lead — four undergraduates</dd></div>
+      <div><dt class="label">Presented</dt><dd>IAC 2023 · Baku, Azerbaijan</dd></div>
+      <div><dt class="label">Tools</dt><dd>NASA CEA · RPA · CATIA V5</dd></div>
+    </dl>
+
+    <div class="imgph" style="margin-top:var(--space-16)"><span>Hero image — awaiting media</span></div>
+    <p class="label" style="margin-top:var(--space-4)">Fig. 01 — caption sits flush left beneath the image</p>
+
+    <div class="g" style="margin-top:var(--space-24)">
+      <div class="c1-2"><span class="label">Approach</span></div>
+      <div class="c3-9">
+        <p>Led a team of four undergraduate students and managed schedules and proposals.</p>
+        <p style="margin-top:var(--space-4)">Designed a 100 mN class thruster using NASA CEA, RPA, and CATIA V5.</p>
+      </div>
+    </div>
+
+    <div class="g" style="margin-top:var(--space-16)">
+      <div class="c1-2"><span class="label">Results</span></div>
+      <div class="c3-9">
+        <p>Manufactured and tested a micro-thruster for chemical propulsion.</p>
+        <p style="margin-top:var(--space-4)">Validated performance across different initial conditions and H2O2
+          concentrations.</p>
+      </div>
+    </div>
+
+    <ol class="work" style="margin-top:var(--space-24)">
+      <li><a href="#"><span class="yr label">Previous</span>
+        <div class="ti"><span class="h3">Design, Fabrication, and Testing of a Miniaturised Rocket Propulsion System</span></div>
+        <div class="tg"><span class="label">2022</span></div></a></li>
+      <li><a href="#"><span class="yr label">Next</span>
+        <div class="ti"><span class="h3">Performance Improvement of Chemical Space Propulsion with Thermal Decomposition of Propellant</span></div>
+        <div class="tg"><span class="label">2024</span></div></a></li>
+    </ol>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--line-strong);padding-block:var(--space-16)">
+  <div class="wrap">
+    <div class="g">
+      <div class="c1-7"><p class="label">Grid — proposed, not applied</p>
+        <p class="muted small" style="margin-top:var(--space-3)">Branch <strong>design-system</strong>. Specification in
+          <strong>design/swiss/SPEC.md</strong>; tokens in <strong>design/swiss/tokens.css</strong>. No content file has
+          been modified.</p></div>
+      <div class="c9-12"><p class="label">Sibling option</p>
+        <p style="margin-top:var(--space-3)"><a class="link" href="../flight-deck/preview.html">Flight Deck →</a></p></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
