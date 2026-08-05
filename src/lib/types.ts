@@ -70,6 +70,24 @@ export interface Metric {
 }
 
 /**
+ * A single measurement in the home-page readout bar.
+ *
+ * Every value MUST be true and traceable to something else in the content —
+ * there is no decorative telemetry in this design. If you cannot point at the
+ * source, do not put it here.
+ */
+export interface Readout {
+  /** The number. Keep it short: "10", "×2", "3.95". */
+  value: string;
+  /** Suffix rendered small and baseline-aligned, e.g. "+" or "mN". */
+  unit?: string;
+  /** Uppercase mono caption, two or three words. */
+  label: string;
+  /** Optional second caption line giving the source or context. */
+  detail?: string;
+}
+
+/**
  * Project content shape.
  */
 export interface Project {
@@ -150,6 +168,8 @@ export interface Profile {
   };
   // Small highlight/key-stats area for Home
   highlights?: { label: string; value: string; detail?: string }[];
+  /** Four measurements for the home-page readout bar. See the Readout docs. */
+  readouts?: Readout[];
 }
 
 export type { TAGS as ALL_TAGS };

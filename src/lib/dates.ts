@@ -44,6 +44,21 @@ export function formatDateRange(start: string, end?: string): string {
   return `${from} – ${to}`;
 }
 
+/**
+ * "08.2025" -> "2025.08", for the mission-log date column.
+ *
+ * Year-first so the column sorts and scans vertically: the years line up and
+ * the eye reads down them. Unrecognised input is returned untouched.
+ */
+export function toLogStamp(value: string | undefined): string {
+  if (!value) return "Present";
+  const trimmed = value.trim();
+  if (PRESENT.test(trimmed)) return "Present";
+  const match = trimmed.match(/^(\d{1,2})\.(\d{4})$/);
+  if (!match) return trimmed;
+  return `${match[2]}.${match[1].padStart(2, "0")}`;
+}
+
 /** True while the role is ongoing. */
 export function isOngoing(end?: string): boolean {
   return !end || PRESENT.test(end.trim());

@@ -1,8 +1,22 @@
 # FLIGHT DECK — design system
 
 Portfolio of Adil Mahroof · `adilmrf.github.io/myPortfolio`
-Status: **proposed**, not applied. Branch `design-system`.
-Sibling option: [`../swiss/SPEC.md`](../swiss/SPEC.md). Pick one.
+Status: **CHOSEN AND APPLIED** to `src/` on branch `design-system`.
+Sibling option, not taken: [`../swiss/SPEC.md`](../swiss/SPEC.md).
+
+Deviations from this spec as written, decided during implementation:
+
+- **Dark-first is implemented as a default, not a class inversion.** `:root`
+  stays light and `.dark` stays the dark block; the no-flash script simply
+  applies `.dark` unless a stored preference says otherwise. Same visible
+  result as the `.light`-opt-out design in §9, without breaking every `dark:`
+  utility in the tree.
+- **A "Recognition" section was added to the home page.** §5 omitted the four
+  `profile.highlights` (Golden Visa, MBZ Scholar, Y4S, research years);
+  dropping them would have lost real credentials, so they render as a
+  four-panel grid between the readouts and Selected work.
+- **Selected work is newest-first**, following the content file order, so
+  `[01]` is the most recent project rather than the earliest.
 
 Open `design/flight-deck/preview.html` in a browser to see everything below
 rendered with real content.

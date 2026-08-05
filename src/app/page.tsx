@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { PROFILE } from "../content/profile";
 import { EXPERIENCE } from "../content/experience";
 import { EDUCATION } from "../content/education";
 import RECOMMENDATIONS from "../content/recommendations";
 import References from "../components/References";
 import Timeline, { type TimelineItem } from "../components/Timeline";
-import Card from "../components/ui/Card";
+import IndexList from "../components/ui/IndexList";
+import Panel from "../components/ui/Panel";
+import ReadoutBar from "../components/ui/Readout";
 import SectionHeading from "../components/ui/SectionHeading";
+import Status from "../components/ui/Status";
+import Rule from "../components/ui/Rule";
+import CornerMarks from "../components/ui/CornerMarks";
+import { DataRow, DataRows } from "../components/ui/DataRow";
+import { ButtonAnchor, ButtonLink } from "../components/ui/Button";
 import { ArrowRightIcon, DownloadIcon } from "../components/icons";
+import { toIndexEntries } from "../lib/projectEntries";
+import { getAllProjects } from "../lib/projects";
 import { withBasePath } from "../lib/assetPath";
 import { canonical } from "../lib/site";
 
@@ -42,86 +50,124 @@ const EDUCATION_ITEMS: TimelineItem[] = EDUCATION.map((e) => ({
   meta: e.grade,
 }));
 
+const PROJECT_ENTRIES = toIndexEntries(getAllProjects());
+
 export default function Home() {
   const resume = PROFILE.links?.resume;
+  const readouts = PROFILE.readouts ?? [];
 
   return (
     <>
-      <section className="py-10 sm:py-16">
-        <div className="flex flex-col-reverse items-center gap-8 md:flex-row md:items-center md:gap-12">
-          <div className="text-center md:flex-1 md:text-left">
-            <h1 className="text-display font-display font-bold text-ink">{PROFILE.name}</h1>
+      {/* Hero. The only framed panel and the only pulsing status on the page. */}
+      <section className="relative overflow-hidden rounded-[2px] border border-line bg-surface-raised">
+        <CornerMarks />
+        <div aria-hidden="true" className="grid-wash pointer-events-none absolute inset-0" />
 
-            {PROFILE.role && (
-              <p className="mt-3 text-lede font-medium text-ink">{PROFILE.role}</p>
-            )}
-            {PROFILE.focus && (
-              <p className="mt-1.5 text-small text-ink-muted">{PROFILE.focus}</p>
-            )}
-            {PROFILE.location && (
-              <p className="label mt-4">{PROFILE.location}</p>
-            )}
-
-            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 rounded-md bg-ink px-4 py-2.5 text-small font-medium text-paper transition-opacity hover:opacity-85"
-              >
-                View projects
-                <ArrowRightIcon />
-              </Link>
-              {resume && (
-                <a
-                  href={withBasePath(resume)}
-                  download
-                  className="inline-flex items-center gap-2 rounded-md border border-line-strong px-4 py-2.5 text-small font-medium text-ink transition-colors hover:border-accent hover:text-accent"
-                >
-                  <DownloadIcon />
-                  Download CV
-                </a>
-              )}
-            </div>
+        <div className="relative px-6 pb-8 pt-10 md:px-12 md:pb-12 md:pt-16">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <span className="label">Portfolio</span>
+            <Status variant="active" label="Open to opportunities" pulse />
           </div>
 
-          <Image
-            src={withBasePath("/media/headshot.jpeg")}
-            alt="Adil Mahroof"
-            width={352}
-            height={352}
-            priority
-            sizes="(max-width: 768px) 144px, 176px"
-            className="h-36 w-36 rounded-full border border-line object-cover shadow-xl shadow-black/5 md:h-44 md:w-44"
-          />
+          <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-start md:gap-12">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-callsign font-display font-bold uppercase text-ink">
+                {PROFILE.name}
+              </h1>
+
+              {PROFILE.role && (
+                <p className="mt-3 font-display text-h2 font-semibold text-accent">{PROFILE.role}</p>
+              )}
+              {PROFILE.focus && <p className="label mt-2 text-ink-muted">{PROFILE.focus}</p>}
+
+              <p className="mt-6 max-w-[56ch] text-lede text-ink-muted">
+                Hands-on experience in engineering design, analysis, and assembly, integration and
+                testing across rocket propulsion, aerodynamics, satellite systems and system design.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <ButtonLink href="/projects">
+                  Selected work
+                  <ArrowRightIcon />
+                </ButtonLink>
+                {resume && (
+                  <ButtonAnchor href={withBasePath(resume)} download>
+                    <DownloadIcon />
+                    Download CV
+                  </ButtonAnchor>
+                )}
+              </div>
+
+              <DataRows className="mt-8 max-w-[26rem]">
+                {PROFILE.location && (
+                  <DataRow label="Location" mono>
+                    {PROFILE.location}
+                  </DataRow>
+                )}
+                <DataRow label="Discipline" mono>
+                  Aerospace
+                </DataRow>
+              </DataRows>
+            </div>
+
+            <Image
+              src={withBasePath("/media/headshot.jpeg")}
+              alt="Adil Mahroof"
+              width={352}
+              height={352}
+              priority
+              sizes="(max-width: 768px) 128px, 176px"
+              className="h-32 w-32 shrink-0 rounded-[2px] border border-line object-cover md:h-44 md:w-44"
+            />
+          </div>
         </div>
       </section>
 
-      <section className="pb-14">
-        <SectionHeading eyebrow="At a glance">Highlights</SectionHeading>
+      {readouts.length > 0 && <ReadoutBar items={readouts} className="mt-6" />}
+
+      <Rule className="my-14" />
+
+      <section>
+        <SectionHeading>Recognition</SectionHeading>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROFILE.highlights?.map((h) => (
-            <Card key={h.label} className="flex flex-col gap-1.5">
-              <div className="label">{h.label}</div>
-              <div className="text-h3 font-semibold leading-snug text-ink">{h.value}</div>
-              {h.detail && <div className="text-small text-ink-muted">{h.detail}</div>}
-            </Card>
+            <Panel key={h.label} label={h.label}>
+              <div className="text-h3 font-display font-semibold leading-snug text-ink">
+                {h.value}
+              </div>
+              {h.detail && <div className="mt-1 text-small text-ink-muted">{h.detail}</div>}
+            </Panel>
           ))}
         </div>
       </section>
 
-      <section className="pb-14">
-        <SectionHeading eyebrow="Where I've worked" action={{ label: "See full experience", href: "/experience" }}>
-          Experience
-        </SectionHeading>
+      <Rule className="my-14" />
+
+      <section>
+        <SectionHeading>Selected work</SectionHeading>
+        <div className="mt-5">
+          <IndexList entries={PROJECT_ENTRIES} />
+        </div>
+      </section>
+
+      <Rule className="my-14" />
+
+      <section>
+        <SectionHeading action={{ label: "Full log", href: "/experience" }}>Log</SectionHeading>
         <Timeline items={EXPERIENCE_ITEMS} limit={4} compact />
       </section>
 
-      <section className="pb-14">
-        <SectionHeading eyebrow="Where I studied">Education</SectionHeading>
+      <Rule className="my-14" />
+
+      <section>
+        <SectionHeading>Education</SectionHeading>
         <Timeline items={EDUCATION_ITEMS} compact />
       </section>
 
-      <section className="pb-8">
-        <SectionHeading eyebrow="Vouched for by">References</SectionHeading>
+      <Rule className="my-14" />
+
+      <section>
+        <SectionHeading>References</SectionHeading>
         <div className="mt-6">
           <References items={RECOMMENDATIONS} />
         </div>

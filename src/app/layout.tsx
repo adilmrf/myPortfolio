@@ -49,10 +49,15 @@ export const metadata: Metadata = {
 };
 
 /**
- * Applies the stored (or system) theme before first paint. Runs blocking and
- * ahead of the body so there is no flash of the wrong theme.
+ * Applies the theme before first paint. Runs blocking and ahead of the body so
+ * there is no flash of the wrong theme.
+ *
+ * Dark is the DEFAULT, not merely an option: the design is dark-first, and
+ * most systems report a light preference, so honouring `prefers-color-scheme`
+ * here would show the secondary theme to the majority of visitors. A stored
+ * choice always wins, and the header toggle is always available.
  */
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark")}}catch(e){}})();`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"){document.documentElement.classList.add("dark")}}catch(e){document.documentElement.classList.add("dark")}})();`;
 
 const JSON_LD = {
   "@context": "https://schema.org",
@@ -102,24 +107,24 @@ export default function RootLayout({
       <body className="min-h-screen bg-paper text-ink">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-small focus:font-medium focus:text-accent-contrast"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[2px] focus:bg-accent focus:px-4 focus:py-2 focus:text-small focus:font-medium focus:text-accent-contrast"
         >
           Skip to content
         </a>
 
         <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
           <Container width="wide">
-            <div className="flex items-center justify-between py-3.5">
+            <div className="flex h-14 items-center justify-between">
               <Link
                 href="/"
-                className="flex items-center gap-2.5 font-display text-[0.95rem] font-bold tracking-tight"
+                className="label flex items-center gap-2.5 font-medium text-ink transition-colors duration-100 hover:text-accent"
               >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-[2px] border border-line">
                   <Image
                     src={withBasePath("/media/am.png")}
                     alt=""
-                    width={32}
-                    height={32}
+                    width={28}
+                    height={28}
                     className="h-full w-full scale-125 object-cover object-center"
                   />
                 </span>
@@ -140,8 +145,13 @@ export default function RootLayout({
 
           <footer className="border-t border-line pb-12 pt-10 text-small text-ink-muted">
             <div id="contact" className="scroll-mt-24">
-              <h2 className="font-display text-h3 font-semibold text-ink">Contact</h2>
-              <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
+              <h2 className="flex items-baseline gap-3 font-display text-h2 font-semibold text-ink">
+                <span aria-hidden="true" className="font-mono text-label font-bold text-accent">
+                  &gt;
+                </span>
+                Contact
+              </h2>
+              <div className="mt-5 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
                 {PROFILE.links?.linkedin && (
                   <a
                     href={PROFILE.links.linkedin}
@@ -178,9 +188,9 @@ export default function RootLayout({
               </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-2 text-ink-subtle">
-              <span>{PROFILE.location ?? ""}</span>
-              <span>&copy; {year} Adil Mahroof</span>
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-2">
+              <span className="label">{PROFILE.location ?? ""}</span>
+              <span className="label">&copy; {year} Adil Mahroof</span>
             </div>
           </footer>
         </Container>

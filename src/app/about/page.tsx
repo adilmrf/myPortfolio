@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { PROFILE } from "../../content/profile";
 import { canonical } from "../../lib/site";
-import Card from "../../components/ui/Card";
+import Panel from "../../components/ui/Panel";
+import Rule from "../../components/ui/Rule";
 
 export const metadata: Metadata = {
   title: "About",
@@ -14,28 +15,36 @@ export default function AboutPage() {
   const { skills = [], hobbies = [], languages = [] } = PROFILE;
 
   const LISTS = [
-    { heading: "Professional Skills", items: skills },
+    { heading: "Professional skills", items: skills },
     { heading: "Hobbies", items: hobbies },
     { heading: "Languages", items: languages },
   ];
 
   return (
-    <section className="py-8">
-      <h1 className="text-h1 font-display font-bold text-ink">About</h1>
+    <section>
+      <h1 className="text-h1 font-display font-bold uppercase text-ink">About</h1>
 
-      <p className="mt-5 max-w-[65ch] text-lede text-ink-muted">{PROFILE.summary}</p>
+      {/* Prose stays capped at 62ch regardless of the 1120px page width. */}
+      <p className="mt-5 max-w-[62ch] text-lede text-ink-muted">{PROFILE.summary}</p>
 
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <Rule className="my-10" />
+
+      <div className="grid gap-4 md:grid-cols-3">
         {LISTS.map(({ heading, items }) =>
           items.length > 0 ? (
-            <Card key={heading}>
-              <h2 className="label">{heading}</h2>
-              <ul className="mt-3 space-y-1.5 text-small text-ink-muted">
+            <Panel key={heading} label={heading}>
+              <ul className="flex flex-col gap-2 text-small text-ink-muted">
                 {items.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item} className="relative pl-4">
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-[0.7em] h-px w-[5px] bg-line-strong"
+                    />
+                    {item}
+                  </li>
                 ))}
               </ul>
-            </Card>
+            </Panel>
           ) : null,
         )}
       </div>

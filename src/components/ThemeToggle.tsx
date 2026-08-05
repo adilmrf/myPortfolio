@@ -23,9 +23,13 @@ function getSnapshot(): Theme {
   return document.documentElement.classList.contains("dark") ? "dark" : "light";
 }
 
-/** The server cannot know the visitor's preference; render the neutral icon. */
+/**
+ * The server cannot know the visitor's preference. Dark is the default the
+ * no-flash script applies, so matching it here keeps the first client render
+ * consistent with what is already on screen.
+ */
 function getServerSnapshot(): Theme {
-  return "light";
+  return "dark";
 }
 
 export default function ThemeToggle() {
@@ -47,7 +51,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] text-ink-muted transition-colors duration-100 hover:bg-surface hover:text-ink"
     >
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
     </button>

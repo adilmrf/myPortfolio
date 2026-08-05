@@ -1,50 +1,77 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
+   FLIGHT DECK
+   The site is an instrument panel reading out an engineering career. Full
+   rationale, component specs and the anti-gimmick rules live in
+   design/flight-deck/SPEC.md.
+
+   The rule that carries the identity: DATA IS MONOSPACE, PROSE IS SANS.
+   Dates, metrics, statuses, tags, indices -> --font-mono, tabular figures.
+   Sentences -> --font-sans. Never the reverse.
+--------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
    Dark mode
-   Class-based rather than media-only, so the header toggle can override the
-   system preference. The inline script in layout.tsx sets `.dark` on <html>
-   before first paint to avoid a flash of the wrong theme.
+   Dark is the PRIMARY theme. Rather than inverting the class (`:root` dark +
+   a `.light` opt-out), which would break every `dark:` utility in the tree,
+   the class semantics stay as they were and the no-flash script in layout.tsx
+   simply defaults to adding `.dark`. Same visible result, far less blast
+   radius. See SPEC §9.
 --------------------------------------------------------------------------- */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------------------------------------------------------------------------
-   Palette
-   Warm stone neutrals with a single signal accent. To change the accent across
-   the whole site, edit --accent / --accent-hover in both blocks below.
---------------------------------------------------------------------------- */
 :root {
   --paper: #ffffff;
-  --surface: #fafaf9;
+  --surface: #f7f8f9;
   --surface-raised: #ffffff;
-  --line: #e7e5e4;
-  --line-strong: #d6d3d1;
 
-  --ink: #1c1917;
-  --ink-muted: #57534e;
-  --ink-subtle: #78716c;
+  --line: #e3e6e9;
+  --line-strong: #c8cdd3;
 
+  --ink: #0f1114;
+  --ink-muted: #4a535c;
+  --ink-subtle: #6b747d; /* 4.6:1 on paper — the floor for 11px labels */
+
+  /* #ff9e1b on white is ~1.9:1 and unusable, so light mode runs a darker
+     amber. Same role, different value. */
   --accent: #b45309;
   --accent-hover: #92400e;
   --accent-contrast: #ffffff;
   --accent-wash: rgb(180 83 9 / 0.08);
+
+  /* Status is SEMANTIC ONLY: green = ongoing, grey = complete. Never used to
+     make something look interesting. */
+  --status-active: #047857;
+  --status-active-wash: rgb(4 120 87 / 0.1);
+  --status-idle: #6b747d;
+
+  --grid-wash: rgb(15 17 20 / 0.05);
 }
 
 .dark {
-  --paper: #0c0a09;
-  --surface: #1c1917;
-  --surface-raised: #1c1917;
-  --line: #292524;
-  --line-strong: #44403c;
+  /* Near-black with a cold cast, so the amber reads warm against it. */
+  --paper: #08090b;
+  --surface: #0f1114;
+  --surface-raised: #15181c;
 
-  --ink: #fafaf9;
-  --ink-muted: #a8a29e;
-  --ink-subtle: #78716c;
+  --line: #1e2227;
+  --line-strong: #2c3238;
 
-  --accent: #fbbf24;
-  --accent-hover: #fcd34d;
-  --accent-contrast: #1c1917;
-  --accent-wash: rgb(251 191 36 / 0.12);
+  --ink: #e6e9ed; /* 16.1:1 on paper */
+  --ink-muted: #98a1ab; /*  7.4:1 on paper */
+  --ink-subtle: #7a848e; /*  4.9:1 on paper — the floor */
+
+  --accent: #ff9e1b;
+  --accent-hover: #ffb84d;
+  --accent-contrast: #0f1114;
+  --accent-wash: rgb(255 158 27 / 0.1);
+
+  --status-active: #3dd68c;
+  --status-active-wash: rgb(61 214 140 / 0.12);
+  --status-idle: #7a848e;
+
+  --grid-wash: rgb(230 233 237 / 0.045);
 }
 
 /* ---------------------------------------------------------------------------
@@ -68,38 +95,56 @@
   --color-accent-contrast: var(--accent-contrast);
   --color-accent-wash: var(--accent-wash);
 
+  --color-status-active: var(--status-active);
+  --color-status-active-wash: var(--status-active-wash);
+  --color-status-idle: var(--status-idle);
+
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Consolas, monospace;
 
-  /* Fluid type scale. Lower bound = 360px viewport, upper = 1280px. */
-  --text-display: clamp(2.75rem, 1.35rem + 6.2vw, 4.5rem);
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.035em;
+  /* Callsign — the name, and nothing else. Uppercased in CSS so the content
+     file keeps storing "Adil Mahroof" and <title> stays sentence case. */
+  --text-callsign: clamp(2.25rem, 1.1rem + 5.2vw, 3.75rem);
+  --text-callsign--line-height: 0.95;
+  --text-callsign--letter-spacing: -0.02em;
 
-  --text-h1: clamp(1.875rem, 1.35rem + 2.3vw, 2.75rem);
+  --text-h1: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
   --text-h1--line-height: 1.1;
-  --text-h1--letter-spacing: -0.025em;
+  --text-h1--letter-spacing: -0.02em;
 
-  --text-h2: clamp(1.375rem, 1.15rem + 1vw, 1.75rem);
+  --text-h2: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
   --text-h2--line-height: 1.2;
-  --text-h2--letter-spacing: -0.015em;
+  --text-h2--letter-spacing: -0.01em;
 
-  --text-h3: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-h3: 1.0625rem;
   --text-h3--line-height: 1.35;
 
-  --text-lede: clamp(1.0625rem, 1rem + 0.45vw, 1.25rem);
-  --text-lede--line-height: 1.55;
+  /* Readout — the big mono number in a stat block. Always tabular. */
+  --text-readout: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+  --text-readout--line-height: 1;
+  --text-readout--letter-spacing: -0.02em;
+
+  --text-lede: clamp(1rem, 0.95rem + 0.35vw, 1.125rem);
+  --text-lede--line-height: 1.6;
 
   --text-body: 1rem;
-  --text-body--line-height: 1.65;
+  --text-body--line-height: 1.6;
 
   --text-small: 0.875rem;
-  --text-small--line-height: 1.6;
+  --text-small--line-height: 1.55;
 
-  --text-label: 0.75rem;
+  --text-label: 0.6875rem; /* 11px */
   --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.08em;
+  --text-label--letter-spacing: 0.12em;
+
+  --text-micro: 0.625rem; /* 10px */
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.14em;
+
+  /* Near-rectilinear. No pills anywhere, including status and tags — that is
+     what stops the panels reading as generic cards. */
+  --radius-panel: 2px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -116,7 +161,7 @@ body {
   color: var(--ink);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -159,13 +204,60 @@ h3 {
    Utilities
 --------------------------------------------------------------------------- */
 
-/* Small caps label used for section eyebrows, metric labels and dates. */
+/* Every mono element is tabular. Columns of dates and metrics that don't align
+   are the difference between this reading as an instrument and reading as a
+   theme. */
+.label,
+.micro,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Panel headers, column heads, dates, tags. */
 .label {
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-size: var(--text-label);
-  letter-spacing: 0.08em;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-subtle);
+}
+
+/* Index numbers and status text — the smallest type on the site. */
+.micro {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: var(--text-micro);
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* The one texture in the system: a 32px grid at 4-5% opacity, radially faded.
+   Hero panel only. Derived from --grid-wash so it is visible in BOTH themes —
+   the previous design's black dot texture was invisible in dark mode. */
+.grid-wash {
+  background-image:
+    linear-gradient(to right, var(--grid-wash) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-wash) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(120% 100% at 15% 0%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(120% 100% at 15% 0%, #000 0%, transparent 75%);
+}
+
+/* The only ambient animation on the site, and it appears once — on the hero
+   status indicator. Disabled wholesale by the reduced-motion block above. */
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
 }
 
 .hide-scrollbar {

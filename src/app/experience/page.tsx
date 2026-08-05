@@ -4,6 +4,7 @@ import { EXPERIENCE } from "../../content/experience";
 import TagDropdown from "../../components/TagDropdown";
 import TAG_LIST from "../../content/tags";
 import ExperienceList from "../../components/ExperienceList";
+import Rule from "../../components/ui/Rule";
 import { canonical } from "../../lib/site";
 
 export const metadata: Metadata = {
@@ -15,18 +16,20 @@ export const metadata: Metadata = {
 
 export default function ExperiencePage() {
   return (
-    <section className="py-8">
+    <section>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="label mb-2">{EXPERIENCE.length} roles</div>
-          <h1 className="text-h1 font-display font-bold text-ink">Experience</h1>
+          <div className="label mb-2">
+            {String(EXPERIENCE.length).padStart(2, "0")} entries
+          </div>
+          <h1 className="text-h1 font-display font-bold uppercase text-ink">Log</h1>
         </div>
         <TagDropdown allTags={TAG_LIST} />
       </div>
 
-      <React.Suspense
-        fallback={<div className="mt-8 text-small text-ink-subtle">Loading experience…</div>}
-      >
+      <Rule className="my-8" />
+
+      <React.Suspense fallback={<div className="label">Loading experience…</div>}>
         <ExperienceList experiences={EXPERIENCE} />
       </React.Suspense>
     </section>

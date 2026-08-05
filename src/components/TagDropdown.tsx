@@ -50,7 +50,7 @@ export default function TagDropdown({ allTags, label = "Tags" }: Props) {
         aria-expanded={open}
         aria-controls="tag-filter-panel"
         onClick={() => setOpen((s) => !s)}
-        className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-raised px-3 py-1.5 text-small text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
+        className="inline-flex items-center gap-1.5 rounded-[2px] border border-line bg-surface-raised px-3 py-1.5 text-small text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
       >
         {label}
         <ChevronDownIcon
@@ -61,7 +61,7 @@ export default function TagDropdown({ allTags, label = "Tags" }: Props) {
       {open && (
         <div
           id="tag-filter-panel"
-          className="absolute right-0 z-30 mt-2 w-64 rounded-lg border border-line bg-surface-raised p-4 shadow-xl shadow-black/10 sm:w-72"
+          className="absolute right-0 z-30 mt-2 w-64 rounded-[2px] border border-line bg-surface-raised p-4 shadow-xl shadow-black/10 sm:w-72"
         >
           <TagFilter allTags={allTags} />
         </div>

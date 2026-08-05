@@ -1,10 +1,13 @@
-# `design/` — two proposed design systems
+# `design/` — the two candidate design systems
 
-Two complete redesigns of the portfolio, delivered as **design systems** rather
-than as site edits. Nothing in `src/` has been touched, and no content file has
-been modified.
+> **Decided: [`flight-deck/`](./flight-deck/) was chosen and is applied to
+> `src/`.** [`swiss/`](./swiss/) is kept as the road not taken — it documents a
+> real alternative and the reasoning behind the choice, which is worth more
+> than deleting it.
 
-**Pick one.** They are alternatives, not layers.
+Two complete redesigns of the portfolio, originally delivered as **design
+systems** rather than as site edits so they could be compared before either was
+built.
 
 ```
 # Windows
@@ -104,7 +107,9 @@ need you: structural in Flight Deck, optional in Grid.
 
 ## Status
 
-Proposed, not applied. Branch `design-system`. Verified in Chrome across both
-themes and at a 390px viewport with no horizontal overflow.
+**Flight Deck is applied.** See `flight-deck/SPEC.md` for the three deviations
+made during implementation. Swiss remains a specification only.
 
-Each `SPEC.md` ends with a **Known risks** section — read those before deciding.
+Each `SPEC.md` ends with a **Known risks** section. For Flight Deck those risks
+are now live ones rather than hypotheticals — in particular, the site will look
+noticeably better once project photos and CAD renders land.

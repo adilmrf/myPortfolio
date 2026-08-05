@@ -1,5 +1,5 @@
 import type { Recommendation } from "../content/recommendations";
-import Card from "./ui/Card";
+import Panel from "./ui/Panel";
 import { LinkedInIcon } from "./icons";
 
 /**
@@ -15,16 +15,22 @@ export default function References({ items }: { items: Recommendation[] }) {
 
   return (
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((r) => (
-        <Card as="li" key={r.linkedin} className="flex flex-col">
-          <div className="text-h3 font-semibold leading-snug text-ink">{r.name}</div>
+      {items.map((r, i) => (
+        <Panel
+          as="li"
+          key={r.linkedin}
+          label="Reference"
+          meta={`${String(i + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`}
+          className="flex flex-col"
+        >
+          <div className="text-h3 font-display font-semibold leading-snug text-ink">{r.name}</div>
           <div className="mt-1 text-small text-ink-muted">{r.title}</div>
-          <div className="text-small text-ink-muted">{r.affiliation}</div>
+          <div className="label mt-3">{r.affiliation}</div>
           <a
             href={r.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 text-small font-medium text-accent underline-offset-4 hover:underline"
+            className="micro mt-4 inline-flex items-center gap-2 font-medium text-accent transition-colors duration-100 hover:text-accent-hover"
           >
             <LinkedInIcon />
             <span>
@@ -32,7 +38,7 @@ export default function References({ items }: { items: Recommendation[] }) {
               <span className="sr-only"> profile for {r.name}</span>
             </span>
           </a>
-        </Card>
+        </Panel>
       ))}
     </ul>
   );

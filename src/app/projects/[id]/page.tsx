@@ -3,10 +3,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { getAllProjects, getProjectById } from "../../../lib/projects";
+import { getAllProjects, getProjectById, getProjectYear } from "../../../lib/projects";
 import { canonical } from "../../../lib/site";
 import { withBasePath } from "../../../lib/assetPath";
-import Card from "../../../components/ui/Card";
+import Panel from "../../../components/ui/Panel";
+import ReadoutBar from "../../../components/ui/Readout";
+import Status from "../../../components/ui/Status";
+import Rule from "../../../components/ui/Rule";
+import CornerMarks from "../../../components/ui/CornerMarks";
+import { DataRow, DataRows } from "../../../components/ui/DataRow";
 import Gallery from "../../../components/Gallery";
 import { ArrowLeftIcon, ArrowRightIcon } from "../../../components/icons";
 
@@ -34,21 +39,20 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 /** Section wrapper so every block on the page gets identical rhythm. */
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-10">
-      <h2 className="text-h2 font-display font-semibold text-ink">{title}</h2>
-      <div className="mt-4">{children}</div>
+    <section className="mt-4">
+      <Panel label={title}>{children}</Panel>
     </section>
   );
 }
 
 function BulletList({ items }: { items: string[] }) {
   return (
-    <ul className="space-y-2 text-body text-ink-muted">
+    <ul className="flex flex-col gap-3 text-body text-ink-muted">
       {items.map((item, i) => (
-        <li key={i} className="relative pl-5">
+        <li key={i} className="relative max-w-[62ch] pl-4">
           <span
             aria-hidden="true"
-            className="absolute left-0 top-[0.72em] h-1.5 w-1.5 rounded-full bg-accent"
+            className="absolute left-0 top-[0.72em] h-px w-[5px] bg-line-strong"
           />
           {item}
         </li>
@@ -66,77 +70,93 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   const idx = all.findIndex((p) => p.id === project.id);
   const prev = all[idx - 1] ?? null;
   const next = all[idx + 1] ?? null;
+  const year = getProjectYear(project);
 
   const hasPublications = (project.publications?.length ?? 0) > 0;
   const hasPresentations = project.presentations.length > 0;
 
   return (
-    <article className="py-8">
+    <article>
       <Link
         href="/projects"
-        className="inline-flex items-center gap-1.5 text-small text-ink-muted transition-colors hover:text-accent"
+        className="label inline-flex items-center gap-1.5 transition-colors duration-100 hover:text-accent"
       >
-        <ArrowLeftIcon />
-        Projects
+        <ArrowLeftIcon className="h-3 w-3" />
+        All projects
       </Link>
 
       <header className="mt-6">
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex items-baseline gap-4">
+          <span
+            aria-hidden="true"
+            className="shrink-0 font-mono text-label font-medium tracking-[0.08em] tabular text-accent"
+          >
+            [{String(idx + 1).padStart(2, "0")}]
+          </span>
+          <h1 className="text-h1 font-display font-bold text-balance text-ink">{project.title}</h1>
+        </div>
+
+        <p className="mt-5 max-w-[62ch] text-lede text-ink-muted">{project.summary}</p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
           {project.tags.map((t) => (
             <span
               key={t}
-              className="rounded bg-surface px-2 py-0.5 font-mono text-label text-ink-subtle"
+              className="micro rounded-[2px] border border-line px-1.5 py-[3px] text-ink-subtle"
             >
               {t}
             </span>
           ))}
         </div>
-
-        <h1 className="mt-4 text-h1 font-display font-bold text-ink">{project.title}</h1>
-        <p className="mt-3 text-lede text-ink-muted">{project.summary}</p>
-
-        {(project.role || project.period) && (
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
-            {project.role && <span className="label">{project.role}</span>}
-            {project.period && <span className="label">{project.period}</span>}
-          </div>
-        )}
       </header>
 
+      <DataRows className="mt-8 max-w-[34rem]">
+        {project.role && <DataRow label="Role">{project.role}</DataRow>}
+        {(project.period || year) && (
+          <DataRow label="Period" mono>
+            {project.period ?? year}
+          </DataRow>
+        )}
+        {hasPresentations && (
+          <DataRow label="Presented" mono>
+            {project.presentations[0].replace(/\.$/, "")}
+          </DataRow>
+        )}
+        <DataRow label="Status">
+          <Status variant="complete" />
+        </DataRow>
+      </DataRows>
+
+      {project.metrics && project.metrics.length > 0 && (
+        <ReadoutBar
+          className="mt-8"
+          items={project.metrics.map((m) => ({
+            value: m.value,
+            unit: m.unit,
+            label: m.label,
+          }))}
+        />
+      )}
+
       {project.hero && (
-        <figure className="mt-8">
+        <figure className="relative mt-8">
+          <CornerMarks />
           <Image
             src={withBasePath(project.hero.src)}
             alt={project.hero.alt}
             width={project.hero.width}
             height={project.hero.height}
             priority
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="w-full rounded-lg border border-line object-cover"
+            sizes="(max-width: 1120px) 100vw, 1056px"
+            className="w-full rounded-[2px] border border-line object-cover"
           />
           {project.hero.caption && (
-            <figcaption className="mt-2 text-small text-ink-subtle">
-              {project.hero.caption}
-            </figcaption>
+            <figcaption className="label mt-3">{project.hero.caption}</figcaption>
           )}
         </figure>
       )}
 
-      {project.metrics && project.metrics.length > 0 && (
-        <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {project.metrics.map((m) => (
-            <Card key={m.label}>
-              <dt className="label">{m.label}</dt>
-              <dd className="mt-1.5 text-h2 font-display font-semibold text-ink">
-                {m.value}
-                {m.unit && (
-                  <span className="ml-1 text-h3 font-normal text-ink-muted">{m.unit}</span>
-                )}
-              </dd>
-            </Card>
-          ))}
-        </dl>
-      )}
+      <Rule className="my-10" />
 
       {project.context && project.context.length > 0 && (
         <Block title="Context">
@@ -167,28 +187,26 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
               poster={withBasePath(video.poster)}
               width={video.width}
               height={video.height}
-              className="w-full rounded-lg border border-line"
+              className="w-full rounded-[2px] border border-line"
             >
               <source src={withBasePath(video.src)} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            {video.caption && (
-              <figcaption className="mt-2 text-small text-ink-subtle">{video.caption}</figcaption>
-            )}
+            {video.caption && <figcaption className="label mt-3">{video.caption}</figcaption>}
           </figure>
         </Block>
       ))}
 
       {(hasPublications || hasPresentations) && (
         <Block title="Publications & presentations">
-          <ul className="space-y-3 text-body text-ink-muted">
+          <ul className="flex flex-col gap-3 text-body text-ink-muted">
             {project.publications?.map((p) => {
               const href = p.url ?? (p.doi ? `https://doi.org/${p.doi}` : undefined);
               return (
-                <li key={p.title} className="relative pl-5">
+                <li key={p.title} className="relative pl-4">
                   <span
                     aria-hidden="true"
-                    className="absolute left-0 top-[0.72em] h-1.5 w-1.5 rounded-full bg-accent"
+                    className="absolute left-0 top-[0.72em] h-px w-[5px] bg-line-strong"
                   />
                   {href ? (
                     <a
@@ -202,17 +220,17 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
                   ) : (
                     <span className="font-medium text-ink">{p.title}</span>
                   )}
-                  <span className="block text-small">
+                  <span className="label mt-1 block">
                     {p.venue}, {p.year}
                   </span>
                 </li>
               );
             })}
             {project.presentations.map((item, i) => (
-              <li key={i} className="relative pl-5">
+              <li key={i} className="relative pl-4">
                 <span
                   aria-hidden="true"
-                  className="absolute left-0 top-[0.72em] h-1.5 w-1.5 rounded-full bg-accent"
+                  className="absolute left-0 top-[0.72em] h-px w-[5px] bg-line-strong"
                 />
                 {item}
               </li>
@@ -230,7 +248,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
                   href={l.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md border border-line px-3 py-2 text-small font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+                  className="label inline-flex min-h-11 items-center rounded-[2px] border border-line-strong px-4 text-ink transition-colors duration-100 hover:border-accent hover:text-accent"
                 >
                   {l.label}
                 </a>
@@ -240,37 +258,48 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
         </Block>
       )}
 
-      <nav
-        aria-label="More projects"
-        className="mt-14 grid gap-3 border-t border-line pt-6 sm:grid-cols-2"
-      >
-        {prev ? (
+      <nav aria-label="More projects" className="mt-14 border-t border-line">
+        {prev && (
           <Link
             href={`/projects/${prev.id}`}
-            className="group flex min-h-[3.5rem] flex-col justify-center rounded-lg border border-line px-4 py-3 transition-colors hover:border-line-strong"
+            className="group flex min-h-14 items-center gap-4 border-b border-line px-3 py-4 transition-colors duration-100 hover:bg-surface"
           >
-            <span className="label mb-1 flex items-center gap-1.5">
-              <ArrowLeftIcon className="h-3 w-3" />
-              Previous
+            <span
+              aria-hidden="true"
+              className="shrink-0 font-mono text-label font-medium tabular text-accent"
+            >
+              [{String(idx).padStart(2, "0")}]
             </span>
-            <span className="text-small text-ink-muted transition-colors group-hover:text-ink">
-              {prev.title}
+            <span className="min-w-0">
+              <span className="label flex items-center gap-1.5">
+                <ArrowLeftIcon className="h-3 w-3" />
+                Previous
+              </span>
+              <span className="mt-1 block text-small text-ink-muted transition-colors duration-100 group-hover:text-ink">
+                {prev.title}
+              </span>
             </span>
           </Link>
-        ) : (
-          <span />
         )}
         {next && (
           <Link
             href={`/projects/${next.id}`}
-            className="group flex min-h-[3.5rem] flex-col justify-center rounded-lg border border-line px-4 py-3 transition-colors hover:border-line-strong sm:text-right"
+            className="group flex min-h-14 items-center gap-4 border-b border-line px-3 py-4 transition-colors duration-100 hover:bg-surface"
           >
-            <span className="label mb-1 flex items-center gap-1.5 sm:justify-end">
-              Next
-              <ArrowRightIcon className="h-3 w-3" />
+            <span
+              aria-hidden="true"
+              className="shrink-0 font-mono text-label font-medium tabular text-accent"
+            >
+              [{String(idx + 2).padStart(2, "0")}]
             </span>
-            <span className="text-small text-ink-muted transition-colors group-hover:text-ink">
-              {next.title}
+            <span className="min-w-0">
+              <span className="label flex items-center gap-1.5">
+                Next
+                <ArrowRightIcon className="h-3 w-3" />
+              </span>
+              <span className="mt-1 block text-small text-ink-muted transition-colors duration-100 group-hover:text-ink">
+                {next.title}
+              </span>
             </span>
           </Link>
         )}

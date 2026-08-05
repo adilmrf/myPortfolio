@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { withBasePath } from "../lib/assetPath";
-import { byRecencyDesc, formatDateRange, isOngoing } from "../lib/dates";
+import { byRecencyDesc, isOngoing, toLogStamp } from "../lib/dates";
+import Status from "./ui/Status";
 
 export type TimelineItem = {
   id: string;
@@ -11,7 +12,7 @@ export type TimelineItem = {
   logo?: string;
   startDate: string;
   endDate?: string;
-  /** GPA / grade, shown as a mono chip. */
+  /** GPA / grade, shown as a mono chip on the right. */
   meta?: string;
   bullets?: string[];
 };
@@ -25,70 +26,76 @@ type Props = {
 };
 
 /**
- * A vertical spine timeline.
+ * A mission log.
  *
- * This deliberately replaces the previous horizontal, absolutely-positioned
- * carousel: that version hid its navigation behind `:hover`, which made it
- * completely unusable on touch devices. This one is plain document flow — no
- * refs, no scroll syncing, no JavaScript — so it works at every width and is
- * navigable by keyboard and screen reader for free.
+ * Entries are stacked newest-first with a fixed-width mono date column on the
+ * left. There is no vertical spine: the date column *is* the spine, and unlike
+ * a decorative rail it carries information.
+ *
+ * Still zero JavaScript and plain document flow — no refs, no scroll syncing —
+ * so it works at every width and is keyboard- and screen-reader-navigable for
+ * free. The date column collapses above the entry below `sm`.
  */
 export default function Timeline({ items, limit, compact = false }: Props) {
   const ordered = [...items].sort(byRecencyDesc).slice(0, limit ?? items.length);
 
   return (
-    <ol className="relative mt-6 space-y-8">
-      {/* The spine. Sits behind the markers, inset to align with their centres. */}
-      <span
-        aria-hidden="true"
-        className="absolute left-[15px] top-2 bottom-2 w-px bg-line sm:left-[19px]"
-      />
-
+    <ol className="mt-6 border-t border-line">
       {ordered.map((item) => {
         const ongoing = isOngoing(item.endDate);
 
         return (
-          <li key={item.id} className="relative flex gap-4 sm:gap-5">
-            {/* Marker: the org logo when there is one, otherwise a plain dot. */}
-            <span className="relative z-10 mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-surface-raised sm:h-10 sm:w-10">
-              {item.logo ? (
-                <Image
-                  src={withBasePath(item.logo)}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className="h-full w-full object-contain p-1"
-                />
-              ) : (
-                <span className="h-2 w-2 rounded-full bg-accent" />
-              )}
-            </span>
+          <li
+            key={item.id}
+            className="grid gap-2 border-b border-line py-5 sm:grid-cols-[8ch_1fr] sm:gap-6"
+          >
+            <div className="label leading-relaxed">
+              <span className="sm:block">{toLogStamp(item.startDate)}</span>
+              <span aria-hidden="true" className="sm:hidden">
+                {" — "}
+              </span>
+              <span className="block text-ink-muted sm:inline">
+                {ongoing ? "Present" : toLogStamp(item.endDate)}
+              </span>
+            </div>
 
-            <div className="min-w-0 flex-1 pb-1">
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="label">{formatDateRange(item.startDate, item.endDate)}</span>
-                {ongoing && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-wash px-2 py-0.5 text-label font-medium text-accent">
-                    <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Current
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-3">
+                {item.logo && (
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-[2px] border border-line bg-surface">
+                    <Image
+                      src={withBasePath(item.logo)}
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="h-full w-full object-contain p-1"
+                    />
                   </span>
                 )}
+
+                <div className="min-w-0">
+                  <h3 className="text-h3 font-display font-semibold uppercase tracking-[0.02em] text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="text-small text-ink-muted">{item.subtitle}</p>
+                </div>
+
+                <span className="ml-auto shrink-0">
+                  {item.meta ? (
+                    <span className="label text-accent">{item.meta}</span>
+                  ) : (
+                    <Status variant={ongoing ? "active" : "complete"} />
+                  )}
+                </span>
               </div>
 
-              <h3 className="mt-1.5 text-h3 font-semibold text-ink">{item.title}</h3>
-              <p className="text-small text-ink-muted">{item.subtitle}</p>
-
-              {item.meta && (
-                <p className="mt-1.5 font-mono text-label text-ink-subtle">{item.meta}</p>
-              )}
-
               {!compact && item.bullets && item.bullets.length > 0 && (
-                <ul className="mt-3 space-y-1.5 text-small text-ink-muted">
+                <ul className="mt-3 flex flex-col gap-2 text-small text-ink-muted">
                   {item.bullets.map((bullet, i) => (
                     <li key={i} className="relative pl-4">
                       <span
                         aria-hidden="true"
-                        className="absolute left-0 top-[0.7em] h-1 w-1 rounded-full bg-line-strong"
+                        className="absolute left-0 top-[0.7em] h-px w-[5px] bg-line-strong"
                       />
                       {bullet}
                     </li>

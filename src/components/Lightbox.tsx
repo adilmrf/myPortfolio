@@ -69,7 +69,7 @@ export default function Lightbox({ items, index, onIndexChange, onClose }: Props
         if (e.target === dialogRef.current) onClose();
       }}
       aria-label={item.caption ?? item.alt}
-      className="m-auto max-h-[92vh] max-w-[min(92vw,72rem)] rounded-lg border border-line bg-paper p-0 text-ink backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+      className="m-auto max-h-[92vh] max-w-[min(92vw,72rem)] rounded-[2px] border border-line bg-paper p-0 text-ink backdrop:bg-black/70 backdrop:backdrop-blur-sm"
     >
       <div className="flex flex-col">
         <div className="flex items-center justify-between border-b border-line px-3 py-2">
@@ -83,7 +83,7 @@ export default function Lightbox({ items, index, onIndexChange, onClose }: Props
                   type="button"
                   onClick={() => step(-1)}
                   aria-label="Previous image"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] text-ink-muted transition-colors hover:bg-surface hover:text-ink"
                 >
                   <ArrowLeftIcon />
                 </button>
@@ -91,7 +91,7 @@ export default function Lightbox({ items, index, onIndexChange, onClose }: Props
                   type="button"
                   onClick={() => step(1)}
                   aria-label="Next image"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] text-ink-muted transition-colors hover:bg-surface hover:text-ink"
                 >
                   <ArrowRightIcon />
                 </button>
@@ -101,7 +101,7 @@ export default function Lightbox({ items, index, onIndexChange, onClose }: Props
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] text-ink-muted transition-colors hover:bg-surface hover:text-ink"
             >
               <CloseIcon />
             </button>

@@ -27,11 +27,13 @@ export default function HeaderNav() {
     return pathname.startsWith(href);
   };
 
+  // No pills. The active state is a 1px accent underline rather than a filled
+  // capsule, which is what keeps the header reading as an instrument bar.
   const linkClass = (href: string) =>
-    `rounded-full px-3 py-1.5 text-small transition-colors ${
+    `label border-b px-3 py-2 transition-colors duration-100 ${
       isActive(href)
-        ? "bg-ink text-paper"
-        : "text-ink-muted hover:bg-surface hover:text-ink"
+        ? "border-accent text-accent"
+        : "border-transparent hover:text-ink"
     }`;
 
   const handleContactClick = (e: React.MouseEvent) => {
@@ -140,7 +142,7 @@ export default function HeaderNav() {
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((s) => !s)}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-[2px] text-ink-muted transition-colors duration-100 hover:bg-surface hover:text-ink"
         >
           {open ? <CloseIcon /> : <MenuIcon />}
         </button>
@@ -149,7 +151,7 @@ export default function HeaderNav() {
           <nav
             id="mobile-nav"
             aria-label="Main"
-            className="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-lg border border-line bg-surface-raised shadow-xl shadow-black/10"
+            className="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-[2px] border border-line bg-surface-raised shadow-xl shadow-black/40"
           >
             <ul className="flex flex-col py-1">
               {NAV_LINKS.map(({ href, label }) => (
@@ -157,8 +159,8 @@ export default function HeaderNav() {
                   <Link
                     href={href}
                     aria-current={isActive(href) ? "page" : undefined}
-                    className={`block px-4 py-2.5 text-small transition-colors hover:bg-surface ${
-                      isActive(href) ? "font-medium text-accent" : "text-ink-muted"
+                    className={`label block px-4 py-3 transition-colors duration-100 hover:bg-surface ${
+                      isActive(href) ? "text-accent" : ""
                     }`}
                     onClick={(e) => {
                       if (href === "/#contact") handleContactClick(e);

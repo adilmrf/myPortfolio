@@ -2,7 +2,8 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { parseTagsFromSearchParams } from "../lib/tagQuery";
-import ProjectListCard from "./ProjectListCard";
+import { toIndexEntries } from "../lib/projectEntries";
+import IndexList from "./ui/IndexList";
 import type { Project } from "../lib/types";
 
 export default function ProjectsList({ projects }: { projects: Project[] }) {
@@ -21,11 +22,5 @@ export default function ProjectsList({ projects }: { projects: Project[] }) {
     );
   }
 
-  return (
-    <div className="grid gap-4">
-      {filtered.map((p) => (
-        <ProjectListCard key={p.id} project={p} />
-      ))}
-    </div>
-  );
+  return <IndexList entries={toIndexEntries(filtered)} />;
 }

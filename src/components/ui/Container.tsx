@@ -7,10 +7,15 @@ type Props = {
   className?: string;
 };
 
+/**
+ * 1120px — wider than a typical text-led site, because this design is column-
+ * and table-led and needs the room. Running prose never uses the full width:
+ * it is capped separately at 62ch.
+ */
 const WIDTHS = {
-  default: "max-w-4xl",
-  wide: "max-w-5xl",
-  prose: "max-w-2xl",
+  default: "max-w-[1120px]",
+  wide: "max-w-[1120px]",
+  prose: "max-w-[62ch]",
 } as const;
 
 /**

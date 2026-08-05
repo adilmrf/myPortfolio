@@ -27,7 +27,7 @@ export default function Gallery({ items }: { items: MediaItem[] }) {
               <button
                 type="button"
                 onClick={() => setOpenIndex(i)}
-                className="group relative block w-full overflow-hidden rounded-lg border border-line bg-surface"
+                className="group relative block w-full overflow-hidden rounded-[2px] border border-line bg-surface"
               >
                 <Image
                   src={withBasePath(item.src)}
